@@ -5,15 +5,11 @@ using Newtonsoft.Json; // To install the package, install NuGetForUnity Unity Pa
 
 public class Test : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void Click()
     {
+        var gameManager = GameManager.Singleton;
+        var gameState = gameManager.gameState;
         
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        gameState.Count++;
     }
 }
