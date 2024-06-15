@@ -1,0 +1,101 @@
+﻿using System;
+using Configs;
+using Enums;
+using UnityEngine;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
+
+/// <summary>
+///  this class is used to create and visualise an array of integers
+/// </summary>
+public class ArrayView
+{
+    private int[] array;
+    private readonly int arraySize;
+    private ESortType sortType;
+
+    private GameObject arrayParent;
+    private GameObject[] arrayObjects;
+    
+    private ArraySettings arraySettings;
+
+    public ArrayView(
+        GameObject arrayParent,
+        int arraySize,
+        ArraySettings arraySettings,
+        ESortType sortType = ESortType.Unsorted)
+    {
+        this.arrayParent = arrayParent;
+        this.arraySize = arraySize;
+        this.arraySettings = arraySettings;
+        this.sortType = sortType;
+        InitArray();
+    }
+    
+    private void InitArray()
+    {
+        // create an array of random integers
+        array = new int[arraySize];
+        for (var i = 0; i < arraySize; i++)
+        {
+            array[i] = Random.Range(arraySettings.minValue, arraySettings.maxValue + 1);
+        }
+        
+        // sort the array according to the sort type
+        switch (sortType)
+        {
+            case ESortType.Sorted:
+                Array.Sort(array);
+                break;
+            case ESortType.ReverseSorted:
+                Array.Sort(array);
+                Array.Reverse(array);
+                break;
+            case ESortType.AllTheSame:
+                var value = Random.Range(arraySettings.minValue, arraySettings.maxValue);
+                for (var i = 0; i < arraySize; i++)
+                {
+                    array[i] = value;
+                }
+                break;
+            case ESortType.Unsorted:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+        
+        arrayObjects = new GameObject[arraySize];
+        
+        // visualise the array using bars with different heights according to the values
+        for (var i = 0; i < arraySize; i++)
+        {
+            arrayObjects[i] = Object.Instantiate(arraySettings.barPrefab, arrayParent.transform);
+            var barTransform = arrayObjects[i].GetComponent<RectTransform>();
+            // safe the current height of the bar as 100%
+            var sizeDelta = barTransform.sizeDelta;
+            var maxBarHeight = sizeDelta.y;
+            // scale the bar height according to the value where 100% is the maxBarHeight and 0% is 0
+            var barHeight = maxBarHeight * array[i] / arraySettings.maxValue;
+            // set the new height of the bar
+            barTransform.sizeDelta = new Vector2(sizeDelta.x, barHeight);
+
+            arrayObjects[i].name = $"ArrayObject{i}";
+        }
+    }
+
+    // TODO: implement a method to highlight a specific element in the array
+    
+    public void PrintArray()
+    {
+        var arrayString = string.Join(", ", array);
+        Debug.Log($"<b>Array:</b> \n {arrayString}");
+    }
+    
+    public void DestroyArray()
+    {
+        foreach (var arrayObject in arrayObjects)
+        {
+            Object.Destroy(arrayObject);
+        }
+    }
+}
