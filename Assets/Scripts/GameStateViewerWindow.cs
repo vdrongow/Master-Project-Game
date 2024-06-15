@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public sealed class GameStateViewerWindow : EditorWindow
 {
@@ -28,10 +27,8 @@ public sealed class GameStateViewerWindow : EditorWindow
         switch (state)
         {
             case PlayModeStateChange.EnteredPlayMode:
-                Debug.Log("Entered Play Mode");
                 break;
             case PlayModeStateChange.ExitingPlayMode:
-                Debug.Log("Exiting Play Mode");
                 break;
             case PlayModeStateChange.EnteredEditMode:
             case PlayModeStateChange.ExitingEditMode:

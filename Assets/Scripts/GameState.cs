@@ -3,7 +3,7 @@ using UnityEngine;
 
 public sealed class GameState : MonoBehaviour
 {
-        public int Count = new();
+        public int Count;
         
         #region Dump
 
