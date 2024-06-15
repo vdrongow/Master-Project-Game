@@ -12,7 +12,7 @@ public class MySlider : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI maxText;
     
-    private void Start()
+    public void Init()
     {
         slider = GetComponent<Slider>();
         slider.onValueChanged.AddListener(OnSliderValueChanged);

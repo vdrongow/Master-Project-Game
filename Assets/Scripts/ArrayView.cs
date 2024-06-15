@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Configs;
 using Enums;
 using UnityEngine;
@@ -10,9 +11,9 @@ using Random = UnityEngine.Random;
 /// </summary>
 public class ArrayView
 {
-    private int[] array;
-    private readonly int arraySize;
-    private ESortType sortType;
+    public int[] array;
+    public readonly int arraySize;
+    public ESortType sortType;
 
     private GameObject arrayParent;
     private GameObject[] arrayObjects;
@@ -34,11 +35,29 @@ public class ArrayView
     
     private void InitArray()
     {
+        // if values in the array should be unique, make sure the max value is greater than the possible options
+        if (arraySettings.uniqueValues)
+        {
+            arraySettings.maxValue = arraySettings.minValue + arraySize - 1;
+        }
+        
         // create an array of random integers
         array = new int[arraySize];
         for (var i = 0; i < arraySize; i++)
         {
-            array[i] = Random.Range(arraySettings.minValue, arraySettings.maxValue + 1);
+            int value;
+            if(arraySettings.uniqueValues)
+            {
+                do
+                {
+                    value = Random.Range(arraySettings.minValue, arraySettings.maxValue + 1);
+                } while (Array.IndexOf(array, value) != -1);
+            }
+            else
+            {
+                value = Random.Range(arraySettings.minValue, arraySettings.maxValue + 1);
+            }
+            array[i] = value;
         }
         
         // sort the array according to the sort type
@@ -84,11 +103,17 @@ public class ArrayView
     }
 
     // TODO: implement a method to highlight a specific element in the array
-    
-    public void PrintArray()
+
+    public string AsString()
     {
-        var arrayString = string.Join(", ", array);
-        Debug.Log($"<b>Array:</b> \n {arrayString}");
+        var sb = new StringBuilder();
+
+        sb.AppendLine("Array: ");
+        sb.AppendLine($"Size: {arraySize.ToString()}");
+        sb.AppendLine($"SortType: {sortType.AsString()}");
+        sb.AppendLine(string.Join(", ", array));
+        
+        return sb.ToString();
     }
     
     public void DestroyArray()

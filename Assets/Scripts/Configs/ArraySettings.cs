@@ -13,7 +13,7 @@ namespace Configs
         public int minArraySize = 5;
         public int maxArraySize = 20;
         
-        // TODO: bool for unique values
+        public bool uniqueValues = false;
 
         public Color highlightColor = Color.blue;
         public Color defaultColor = Color.white;

@@ -9,11 +9,13 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private MySlider arraySizeSlider;
     
-    private ArrayView arrayView;
+    public ArrayView arrayView;
     
-    private void Start()
+    private void Awake()
     {
         var gameManager = GameManager.Singleton;
+
+        arraySizeSlider.Init();
         arraySizeSlider.SetMinValue(gameManager.arraySettings.minArraySize);
         arraySizeSlider.SetMaxValue(gameManager.arraySettings.maxArraySize);
         var handleValue = (gameManager.arraySettings.minArraySize + gameManager.arraySettings.maxArraySize) / 2;
@@ -39,7 +41,6 @@ public class LevelManager : MonoBehaviour
 
         arrayView?.DestroyArray();
         arrayView = new ArrayView(arrayParent, arraySize, arraySettings, (ESortType)sortType);
-        arrayView.PrintArray();
     }
     
     public void Click()

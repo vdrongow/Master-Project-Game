@@ -12,4 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac69212ed55c45218c015b2177d67f08, type: 3}
   m_Name: ArraySettings
   m_EditorClassIdentifier: 
-  enableHintPopover: 1
+  barPrefab: {fileID: 4616586036361178945, guid: d63eb2ab05f5457428cfa46ea6861240, type: 3}
+  minValue: 1
+  maxValue: 10
+  minArraySize: 5
+  maxArraySize: 20
+  highlightColor: {r: 0, g: 0, b: 1, a: 1}
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  sortedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}

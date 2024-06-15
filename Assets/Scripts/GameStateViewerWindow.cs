@@ -16,8 +16,8 @@ public sealed class GameStateViewerWindow : EditorWindow
         window.titleContent = new GUIContent("GameState Viewer");
         window.Show();
     }
-    
-    protected void OnEnable()
+
+    private void OnEnable()
     {
         EditorApplication.playModeStateChanged += PlayModeStateChanged;
     }
