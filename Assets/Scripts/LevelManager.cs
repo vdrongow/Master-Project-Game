@@ -1,5 +1,7 @@
-﻿using Enums;
+﻿using System;
+using Enums;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class LevelManager : MonoBehaviour
 {
@@ -25,6 +27,28 @@ public class LevelManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            HighlightRandomElements();
+        }
+    }
+
+    private void HighlightRandomElements()
+    {
+        if(arrayView == null)
+        {
+            return;
+        }
+        
+        arrayView.ClearHighlights();
+        var randomIndex = Random.Range(0, arrayView.arraySize);
+        arrayView.HighlightElement(randomIndex);
+        randomIndex = Random.Range(0, arrayView.arraySize);
+        arrayView.HighlightElement(randomIndex);
     }
 
     public void BackToMainMenu()

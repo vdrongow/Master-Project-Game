@@ -3,6 +3,7 @@ using System.Text;
 using Configs;
 using Enums;
 using UnityEngine;
+using UnityEngine.UI;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -102,7 +103,26 @@ public class ArrayView
         }
     }
 
-    // TODO: implement a method to highlight a specific element in the array
+    public void HighlightElement(int index)
+    {
+        var barRenderer = arrayObjects[index].GetComponent<Image>();
+        barRenderer.color = arraySettings.highlightColor;
+    }
+    
+    public void UnhighlightElement(int index)
+    {
+        var barRenderer = arrayObjects[index].GetComponent<Image>();
+        barRenderer.color = arraySettings.defaultColor;
+    }
+    
+    public void ClearHighlights()
+    {
+        foreach (var arrayObject in arrayObjects)
+        {
+            var barRenderer = arrayObject.GetComponent<Image>();
+            barRenderer.color = arraySettings.defaultColor;
+        }
+    }
 
     public string AsString()
     {
