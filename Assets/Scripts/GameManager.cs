@@ -37,7 +37,15 @@ public sealed class GameManager : MonoBehaviour
     
     public void LoadNextScene()
     {
-        sceneIndex++;
+        var currentScene = SceneManager.GetActiveScene();
+        if(currentScene.name == gameSettings.sceneNames[gameSettings.sceneNames.Length - 1])
+        {
+            sceneIndex = 0;
+        }
+        else
+        {
+            sceneIndex++;
+        }
         if(sceneIndex >= gameSettings.sceneNames.Length)
         {
             sceneIndex = 0;
