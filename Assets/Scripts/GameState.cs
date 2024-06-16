@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Linq;
+using System.Text;
 using UnityEngine;
 
 public sealed class GameState : MonoBehaviour
@@ -24,11 +25,13 @@ public sealed class GameState : MonoBehaviour
                         sb.AppendLine();
                         sb.AppendLine("LevelManager:");
                         sb.AppendLine("-----------------------------");
-                        sb.AppendLine();
                         if(levelManager.arrayView != null)
                         {
-                                sb.AppendLine(levelManager.arrayView.AsString());
                                 sb.AppendLine();
+                                sb.AppendLine("Array:");
+                                sb.AppendLine(levelManager.arrayView.IsEmpty
+                                        ? empty
+                                        : string.Join(", \n", levelManager.arrayView.ArrayElements.Select((arrayEl, index) => $"[{index.ToString()}] {arrayEl}")));
                         }
                         else
                         {

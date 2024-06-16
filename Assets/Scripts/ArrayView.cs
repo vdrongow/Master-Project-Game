@@ -1,25 +1,27 @@
 ﻿using System;
-using System.Text;
+using System.Collections.Generic;
+using System.Linq;
 using Configs;
 using Enums;
 using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
+// ReSharper disable MemberCanBePrivate.Global
 
 /// <summary>
 ///  this class is used to create and visualise an array of integers
 /// </summary>
 public class ArrayView
 {
-    public int[] array;
-    public readonly int arraySize;
-    public ESortType sortType;
+    public List<ArrayElement> ArrayElements = new();
+    public List<ArrayElement> SortedArrayElements = new();
+    public readonly int ArraySize;
+    public ESortType SortType;
 
-    private GameObject arrayParent;
-    private GameObject[] arrayObjects;
-    
-    private ArraySettings arraySettings;
+    private GameObject _arrayParent;
+
+    private ArraySettings _arraySettings;
 
     public ArrayView(
         GameObject arrayParent,
@@ -27,42 +29,42 @@ public class ArrayView
         ArraySettings arraySettings,
         ESortType sortType = ESortType.Unsorted)
     {
-        this.arrayParent = arrayParent;
-        this.arraySize = arraySize;
-        this.arraySettings = arraySettings;
-        this.sortType = sortType;
+        _arrayParent = arrayParent;
+        ArraySize = arraySize;
+        _arraySettings = arraySettings;
+        SortType = sortType;
         InitArray();
     }
     
     private void InitArray()
     {
         // if values in the array should be unique, make sure the max value is greater than the possible options
-        if (arraySettings.uniqueValues)
+        if (_arraySettings.uniqueValues)
         {
-            arraySettings.maxValue = arraySettings.minValue + arraySize - 1;
+            _arraySettings.maxValue = _arraySettings.minValue + ArraySize - 1;
         }
         
         // create an array of random integers
-        array = new int[arraySize];
-        for (var i = 0; i < arraySize; i++)
+        var array = new int[ArraySize];
+        for (var i = 0; i < ArraySize; i++)
         {
             int value;
-            if(arraySettings.uniqueValues)
+            if(_arraySettings.uniqueValues)
             {
                 do
                 {
-                    value = Random.Range(arraySettings.minValue, arraySettings.maxValue + 1);
+                    value = Random.Range(_arraySettings.minValue, _arraySettings.maxValue + 1);
                 } while (Array.IndexOf(array, value) != -1);
             }
             else
             {
-                value = Random.Range(arraySettings.minValue, arraySettings.maxValue + 1);
+                value = Random.Range(_arraySettings.minValue, _arraySettings.maxValue + 1);
             }
             array[i] = value;
         }
         
         // sort the array according to the sort type
-        switch (sortType)
+        switch (SortType)
         {
             case ESortType.Sorted:
                 Array.Sort(array);
@@ -72,8 +74,8 @@ public class ArrayView
                 Array.Reverse(array);
                 break;
             case ESortType.AllTheSame:
-                var value = Random.Range(arraySettings.minValue, arraySettings.maxValue);
-                for (var i = 0; i < arraySize; i++)
+                var value = Random.Range(_arraySettings.minValue, _arraySettings.maxValue);
+                for (var i = 0; i < ArraySize; i++)
                 {
                     array[i] = value;
                 }
@@ -83,64 +85,93 @@ public class ArrayView
             default:
                 throw new ArgumentOutOfRangeException();
         }
-        
-        arrayObjects = new GameObject[arraySize];
-        
+
         // visualise the array using bars with different heights according to the values
-        for (var i = 0; i < arraySize; i++)
+        for (var i = 0; i < ArraySize; i++)
         {
-            arrayObjects[i] = Object.Instantiate(arraySettings.barPrefab, arrayParent.transform);
-            var barTransform = arrayObjects[i].GetComponent<RectTransform>();
+            var go = Object.Instantiate(_arraySettings.barPrefab, _arrayParent.transform);
+            var barTransform = go.GetComponent<RectTransform>();
             // safe the current height of the bar as 100%
             var sizeDelta = barTransform.sizeDelta;
             var maxBarHeight = sizeDelta.y;
             // scale the bar height according to the value where 100% is the maxBarHeight and 0% is 0
-            var barHeight = maxBarHeight * array[i] / arraySettings.maxValue;
+            var barHeight = maxBarHeight * array[i] / _arraySettings.maxValue;
             // set the new height of the bar
             barTransform.sizeDelta = new Vector2(sizeDelta.x, barHeight);
+            go.name = $"ArrayObject{i}";
 
-            arrayObjects[i].name = $"ArrayObject{i}";
+            var arrayElement = go.GetComponent<ArrayElement>();
+            arrayElement.Init(array[i]);
+            ArrayElements.Add(arrayElement);
+        }
+        
+        // sort the array to compare the values with the sorted array
+        SortArray();
+        foreach (var arrayElement in ArrayElements)
+        {
+            // set the sorted flag for each element
+            arrayElement.IsSorted = IsElementSorted(ArrayElements.IndexOf(arrayElement));
         }
     }
 
     public void HighlightElement(int index)
     {
-        var barRenderer = arrayObjects[index].GetComponent<Image>();
-        barRenderer.color = arraySettings.highlightColor;
+        var barRenderer = ArrayElements[index].transform.GetComponent<Image>();
+        barRenderer.color = _arraySettings.highlightColor;
+        ArrayElements[index].IsHighlighted = true;
     }
     
     public void UnhighlightElement(int index)
     {
-        var barRenderer = arrayObjects[index].GetComponent<Image>();
-        barRenderer.color = arraySettings.defaultColor;
+        var barRenderer = ArrayElements[index].transform.GetComponent<Image>();
+        barRenderer.color = _arraySettings.defaultColor;
+        ArrayElements[index].IsHighlighted = false;
     }
     
     public void ClearHighlights()
     {
-        foreach (var arrayObject in arrayObjects)
+        foreach (var arrayElement in ArrayElements)
         {
-            var barRenderer = arrayObject.GetComponent<Image>();
-            barRenderer.color = arraySettings.defaultColor;
+            var barRenderer = arrayElement.transform.GetComponent<Image>();
+            barRenderer.color = _arraySettings.defaultColor;
+            arrayElement.IsHighlighted = false;
         }
     }
-
-    public string AsString()
+    
+    public bool IsSorted()
     {
-        var sb = new StringBuilder();
-
-        sb.AppendLine("Array: ");
-        sb.AppendLine($"Size: {arraySize.ToString()}");
-        sb.AppendLine($"SortType: {sortType.AsString()}");
-        sb.AppendLine(string.Join(", ", array));
-        
-        return sb.ToString();
+        for (var i = 0; i < ArraySize - 1; i++)
+        {
+            if (ArrayElements[i].Value > ArrayElements[i + 1].Value)
+            {
+                return false;
+            }
+        }
+        return true;
     }
     
+    public void SortArray()
+    {
+        var array = ArrayElements.ToArray();
+        Array.Sort(array, (a, b) => a.Value.CompareTo(b.Value));
+        
+        SortedArrayElements = array.ToList();
+    }
+
+    public bool IsElementSorted(int index)
+    {
+        var arrayElement = ArrayElements[index];
+        var wantedIndex = SortedArrayElements.IndexOf(arrayElement);
+        return index == wantedIndex;
+    }
+    
+    public bool IsEmpty => ArrayElements.Count == 0;
+
     public void DestroyArray()
     {
-        foreach (var arrayObject in arrayObjects)
+        foreach (var arrayElement in ArrayElements)
         {
-            Object.Destroy(arrayObject);
+            Object.Destroy(arrayElement.gameObject);
         }
     }
 }

@@ -45,9 +45,9 @@ public class LevelManager : MonoBehaviour
         }
         
         arrayView.ClearHighlights();
-        var randomIndex = Random.Range(0, arrayView.arraySize);
+        var randomIndex = Random.Range(0, arrayView.ArraySize);
         arrayView.HighlightElement(randomIndex);
-        randomIndex = Random.Range(0, arrayView.arraySize);
+        randomIndex = Random.Range(0, arrayView.ArraySize);
         arrayView.HighlightElement(randomIndex);
     }
 
