@@ -11,7 +11,10 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private MySlider arraySizeSlider;
     
-    public ArrayView arrayView;
+    public ArrayView ArrayView;
+
+    private int _randomIndex = -1;
+    private int _nextIndex = -1;
     
     private void Awake()
     {
@@ -35,20 +38,35 @@ public class LevelManager : MonoBehaviour
         {
             HighlightRandomElements();
         }
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            BackToMainMenu();
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            if(_randomIndex == -1 || _nextIndex == -1)
+            {
+                return;
+            }
+            ArrayView.SwapElements(_randomIndex, _nextIndex);
+        }
     }
 
     private void HighlightRandomElements()
     {
-        if(arrayView == null)
+        if(ArrayView == null)
         {
             return;
         }
         
-        arrayView.ClearHighlights();
-        var randomIndex = Random.Range(0, arrayView.ArraySize);
-        arrayView.HighlightElement(randomIndex);
-        randomIndex = Random.Range(0, arrayView.ArraySize);
-        arrayView.HighlightElement(randomIndex);
+        ArrayView.ClearHighlights();
+        _randomIndex = Random.Range(0, ArrayView.ArraySize - 1);
+        _nextIndex = _randomIndex + 1;
+        
+        ArrayView.HighlightElement(_randomIndex);
+        ArrayView.HighlightElement(_nextIndex);
+        
     }
 
     public void BackToMainMenu()
@@ -63,8 +81,8 @@ public class LevelManager : MonoBehaviour
         var arraySettings = gameManager.arraySettings;
         var arraySize = (int)arraySizeSlider.GetValue();
 
-        arrayView?.DestroyArray();
-        arrayView = new ArrayView(arrayParent, arraySize, arraySettings, (ESortType)sortType);
+        ArrayView?.DestroyArray();
+        ArrayView = new ArrayView(arrayParent, arraySize, arraySettings, (ESortType)sortType);
     }
     
     public void Click()

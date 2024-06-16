@@ -13,6 +13,8 @@ namespace Configs
         public int minArraySize = 5;
         public int maxArraySize = 20;
         
+        public float maxBarHeight = 805f;
+        
         public bool uniqueValues = false;
 
         public Color highlightColor = Color.blue;

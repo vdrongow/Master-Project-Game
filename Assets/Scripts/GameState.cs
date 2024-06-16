@@ -25,13 +25,13 @@ public sealed class GameState : MonoBehaviour
                         sb.AppendLine();
                         sb.AppendLine("LevelManager:");
                         sb.AppendLine("-----------------------------");
-                        if(levelManager.arrayView != null)
+                        if(levelManager.ArrayView != null)
                         {
                                 sb.AppendLine();
                                 sb.AppendLine("Array:");
-                                sb.AppendLine(levelManager.arrayView.IsEmpty
+                                sb.AppendLine(levelManager.ArrayView.IsEmpty
                                         ? empty
-                                        : string.Join(", \n", levelManager.arrayView.ArrayElements.Select((arrayEl, index) => $"[{index.ToString()}] {arrayEl}")));
+                                        : string.Join(", \n", levelManager.ArrayView.ArrayElements.Select((arrayEl, index) => $"[{index.ToString()}] {arrayEl}")));
                         }
                         else
                         {

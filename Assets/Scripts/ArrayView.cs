@@ -90,15 +90,7 @@ public class ArrayView
         for (var i = 0; i < ArraySize; i++)
         {
             var go = Object.Instantiate(_arraySettings.barPrefab, _arrayParent.transform);
-            var barTransform = go.GetComponent<RectTransform>();
-            // safe the current height of the bar as 100%
-            var sizeDelta = barTransform.sizeDelta;
-            var maxBarHeight = sizeDelta.y;
-            // scale the bar height according to the value where 100% is the maxBarHeight and 0% is 0
-            var barHeight = maxBarHeight * array[i] / _arraySettings.maxValue;
-            // set the new height of the bar
-            barTransform.sizeDelta = new Vector2(sizeDelta.x, barHeight);
-            go.name = $"ArrayObject{i}";
+            SetBarHeight(go, array[i]);
 
             var arrayElement = go.GetComponent<ArrayElement>();
             arrayElement.Init(array[i]);
@@ -112,6 +104,18 @@ public class ArrayView
             // set the sorted flag for each element
             arrayElement.IsSorted = IsElementSorted(ArrayElements.IndexOf(arrayElement));
         }
+    }
+    
+    private void SetBarHeight(GameObject go, int value)
+    {
+        var barTransform = go.GetComponent<RectTransform>();
+        // safe the current height of the bar as 100%
+        var sizeDelta = barTransform.sizeDelta;
+        // scale the bar height according to the value where 100% is the maxBarHeight and 0% is 0
+        var barHeight = _arraySettings.maxBarHeight * value / _arraySettings.maxValue;
+        // set the new height of the bar
+        barTransform.sizeDelta = new Vector2(sizeDelta.x, barHeight);
+        go.name = $"ArrayElement{value}";
     }
 
     public void HighlightElement(int index)
@@ -164,6 +168,22 @@ public class ArrayView
         var wantedIndex = SortedArrayElements.IndexOf(arrayElement);
         return index == wantedIndex;
     }
+
+    public void SwapElements(int index1, int index2)
+    {
+        if(index1 < 0 || index1 >= ArraySize || index2 < 0 || index2 >= ArraySize)
+        {
+            return;
+        }
+        (ArrayElements[index1], ArrayElements[index2]) = (ArrayElements[index2], ArrayElements[index1]);
+        // update the positions of the bars
+        ArrayElements[index1].transform.SetSiblingIndex(index1);
+        ArrayElements[index2].transform.SetSiblingIndex(index2);
+        // update the sorted flag for each element
+        ArrayElements[index1].IsSorted = IsElementSorted(index1);
+        ArrayElements[index2].IsSorted = IsElementSorted(index2);
+    }
+        
     
     public bool IsEmpty => ArrayElements.Count == 0;
 
