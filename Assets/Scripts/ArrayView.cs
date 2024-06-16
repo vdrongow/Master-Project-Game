@@ -137,6 +137,7 @@ public class ArrayView
         foreach (var arrayElement in ArrayElements)
         {
             var barRenderer = arrayElement.transform.GetComponent<Image>();
+            if (!arrayElement.IsHighlighted) continue;
             barRenderer.color = _arraySettings.defaultColor;
             arrayElement.IsHighlighted = false;
         }

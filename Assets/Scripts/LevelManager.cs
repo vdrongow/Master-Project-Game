@@ -1,5 +1,6 @@
 ﻿using System;
 using Enums;
+using SortingAlgorithms;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -51,6 +52,14 @@ public class LevelManager : MonoBehaviour
             }
             ArrayView.SwapElements(_randomIndex, _nextIndex);
         }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            // start sorting
+            var bubbleSort = new BubbleSort();
+            bubbleSort.Init(ArrayView, GameManager.Singleton.arraySettings);
+            StartCoroutine(bubbleSort.VisualizeSort());
+        }
     }
 
     private void HighlightRandomElements()
@@ -81,6 +90,8 @@ public class LevelManager : MonoBehaviour
         var arraySettings = gameManager.arraySettings;
         var arraySize = (int)arraySizeSlider.GetValue();
 
+        StopAllCoroutines();
+        
         ArrayView?.DestroyArray();
         ArrayView = new ArrayView(arrayParent, arraySize, arraySettings, (ESortType)sortType);
     }
