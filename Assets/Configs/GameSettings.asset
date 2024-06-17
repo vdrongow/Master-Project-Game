@@ -12,3 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb71dcde9dab41739d9f06b5ab7b6ac0, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
+  sceneNames:
+  - MainMenu
+  - Level
+  devMode: 1
+  showDebugLogs: 1
