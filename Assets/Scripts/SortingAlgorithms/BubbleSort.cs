@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Enums;
 
 namespace SortingAlgorithms
 {
@@ -10,6 +11,7 @@ namespace SortingAlgorithms
             // break down the algorithm into steps 
             var array = ArrayView.ArrayElements.Select(x => x.Value).ToArray();
             var isSorted = false;
+            var end = array.Length;
             while (!isSorted)
             {
                 isSorted = true;
@@ -18,15 +20,33 @@ namespace SortingAlgorithms
                     if (array[i] > array[i + 1])
                     {
                         isSorted = false;
-                        Steps.Add((i, i + 1, swap: true));
+                        Steps.Add((i, i + 1, swap: true, end));
                         (array[i], array[i + 1]) = (array[i + 1], array[i]);
                     } 
                     else
                     {
-                        Steps.Add((i, i + 1, swap: false));
+                        // add a step without swapping to highlight the elements that are compared, but only if they are not already sorted
+                        if(i + 1 < end)
+                        {
+                            Steps.Add((i, i + 1, swap: false, end));
+                        }
                     }
                 }
+                end--;
             }
+        }
+        
+        protected override EBarEffect GetEffect(int i, int currentStepIndex, int end)
+        {
+            if (i >= end)
+            {
+                return EBarEffect.Sorted;
+            }
+            if (i == currentStepIndex || i == currentStepIndex + 1)
+            {
+                return EBarEffect.Highlight;
+            }
+            return EBarEffect.None;
         }
     }
 }

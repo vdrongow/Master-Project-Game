@@ -1,8 +1,6 @@
-﻿using System;
-using Enums;
+﻿using Enums;
 using SortingAlgorithms;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class LevelManager : MonoBehaviour
 {
@@ -14,9 +12,6 @@ public class LevelManager : MonoBehaviour
     
     public ArrayView ArrayView;
 
-    private int _randomIndex = -1;
-    private int _nextIndex = -1;
-    
     private void Awake()
     {
         var gameManager = GameManager.Singleton;
@@ -35,10 +30,6 @@ public class LevelManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            HighlightRandomElements();
-        }
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             BackToMainMenu();
@@ -46,11 +37,7 @@ public class LevelManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            if(_randomIndex == -1 || _nextIndex == -1)
-            {
-                return;
-            }
-            ArrayView.SwapElements(_randomIndex, _nextIndex);
+            
         }
 
         if (Input.GetKeyDown(KeyCode.S))
@@ -60,22 +47,6 @@ public class LevelManager : MonoBehaviour
             bubbleSort.Init(ArrayView, GameManager.Singleton.arraySettings);
             StartCoroutine(bubbleSort.VisualizeSort());
         }
-    }
-
-    private void HighlightRandomElements()
-    {
-        if(ArrayView == null)
-        {
-            return;
-        }
-        
-        ArrayView.ClearHighlights();
-        _randomIndex = Random.Range(0, ArrayView.ArraySize - 1);
-        _nextIndex = _randomIndex + 1;
-        
-        ArrayView.HighlightElement(_randomIndex);
-        ArrayView.HighlightElement(_nextIndex);
-        
     }
 
     public void BackToMainMenu()

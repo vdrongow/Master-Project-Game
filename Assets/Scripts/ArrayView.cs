@@ -99,11 +99,6 @@ public class ArrayView
         
         // sort the array to compare the values with the sorted array
         SortArray();
-        foreach (var arrayElement in ArrayElements)
-        {
-            // set the sorted flag for each element
-            arrayElement.IsSorted = IsElementSorted(ArrayElements.IndexOf(arrayElement));
-        }
     }
     
     private void SetBarHeight(GameObject go, int value)
@@ -118,31 +113,33 @@ public class ArrayView
         go.name = $"ArrayElement{value}";
     }
 
-    public void HighlightElement(int index)
+    public void ApplyBarEffect(int index, EBarEffect effect)
     {
-        var barRenderer = ArrayElements[index].transform.GetComponent<Image>();
-        barRenderer.color = _arraySettings.highlightColor;
-        ArrayElements[index].IsHighlighted = true;
-    }
-    
-    public void UnhighlightElement(int index)
-    {
-        var barRenderer = ArrayElements[index].transform.GetComponent<Image>();
-        barRenderer.color = _arraySettings.defaultColor;
-        ArrayElements[index].IsHighlighted = false;
-    }
-    
-    public void ClearHighlights()
-    {
-        foreach (var arrayElement in ArrayElements)
+        if (index < 0 || index >= ArraySize)
         {
-            var barRenderer = arrayElement.transform.GetComponent<Image>();
-            if (!arrayElement.IsHighlighted) continue;
-            barRenderer.color = _arraySettings.defaultColor;
-            arrayElement.IsHighlighted = false;
+            return;
+        }
+        var barRenderer = ArrayElements[index].transform.GetComponent<Image>();
+        switch (effect)
+        {
+            case EBarEffect.None:
+                barRenderer.color = _arraySettings.defaultColor;
+                ArrayElements[index].IsHighlighted = false;
+                ArrayElements[index].IsSorted = false;
+                break;
+            case EBarEffect.Highlight:
+                barRenderer.color = _arraySettings.highlightColor;
+                ArrayElements[index].IsHighlighted = true;
+                break;
+            case EBarEffect.Sorted:
+                barRenderer.color = _arraySettings.sortedColor;
+                ArrayElements[index].IsSorted = true;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(effect), effect, null);
         }
     }
-    
+
     public bool IsSorted()
     {
         for (var i = 0; i < ArraySize - 1; i++)
@@ -159,15 +156,7 @@ public class ArrayView
     {
         var array = ArrayElements.ToArray();
         Array.Sort(array, (a, b) => a.Value.CompareTo(b.Value));
-        
         SortedArrayElements = array.ToList();
-    }
-
-    public bool IsElementSorted(int index)
-    {
-        var arrayElement = ArrayElements[index];
-        var wantedIndex = SortedArrayElements.IndexOf(arrayElement);
-        return index == wantedIndex;
     }
 
     public void SwapElements(int index1, int index2)
@@ -180,9 +169,6 @@ public class ArrayView
         // update the positions of the bars
         ArrayElements[index1].transform.SetSiblingIndex(index1);
         ArrayElements[index2].transform.SetSiblingIndex(index2);
-        // update the sorted flag for each element
-        ArrayElements[index1].IsSorted = IsElementSorted(index1);
-        ArrayElements[index2].IsSorted = IsElementSorted(index2);
     }
         
     
