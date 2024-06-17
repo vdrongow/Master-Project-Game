@@ -15,8 +15,7 @@ public sealed class GameManager : MonoBehaviour
     public ArraySettings arraySettings = null!;
     
     [Header("Game State")]
-    public bool isGameStarted;
-    public bool isGamePaused;
+    public bool isGameRunning;
     
     [HideInInspector]
     public ESortingAlgorithm sortingAlgorithm;

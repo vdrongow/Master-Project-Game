@@ -11,6 +11,10 @@ public class LevelManager : MonoBehaviour
     private GameObject arrayParent;
     [SerializeField]
     private TextMeshProUGUI countdownText;
+    [SerializeField]
+    private TextMeshProUGUI timerText;
+    [SerializeField]
+    private TextMeshProUGUI mistakeCountText;
     
     public ArrayView ArrayView;
     public SortingAlgorithm SortingAlgorithm;
@@ -79,18 +83,34 @@ public class LevelManager : MonoBehaviour
 
         StartSorting();
     }
+    
+    private IEnumerator Timer()
+    {
+        var gameManager = GameManager.Singleton;
+        var timer = 0;
+        while(gameManager.isGameRunning)
+        {
+            timer += 1;
+            // show the timer in minutes and seconds
+            var minutes = timer / 60;
+            var seconds = timer % 60;
+            timerText.text = $"{minutes:00}:{seconds:00}";
+            yield return new WaitForSeconds(1);
+        }
+    }
 
     private void StartSorting()
     {
         var gameManager = GameManager.Singleton;
-        gameManager.isGamePaused = false;
-        gameManager.isGameStarted = true;
         
         CreateArray(gameManager.sortingAlgorithm, gameManager.arraySize, gameManager.sortType);
+        
+        gameManager.isGameRunning = true;
+        StartCoroutine(Timer());
         StartCoroutine(SortingAlgorithm.PlaySort());
     }
 
-    public void CreateArray(ESortingAlgorithm sortingAlgorithm, int arraySize, ESortType sortType)
+    private void CreateArray(ESortingAlgorithm sortingAlgorithm, int arraySize, ESortType sortType)
     {
         var gameManager = GameManager.Singleton;
         var arraySettings = gameManager.arraySettings;
