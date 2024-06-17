@@ -1,5 +1,7 @@
-﻿using Enums;
+﻿using System.Collections;
+using Enums;
 using SortingAlgorithms;
+using TMPro;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -7,6 +9,8 @@ public class LevelManager : MonoBehaviour
     [Header("References")]
     [SerializeField]
     private GameObject arrayParent;
+    [SerializeField]
+    private TextMeshProUGUI countdownText;
     
     public ArrayView ArrayView;
     public SortingAlgorithm SortingAlgorithm;
@@ -18,12 +22,9 @@ public class LevelManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        
+
         var gameManager = GameManager.Singleton;
-        gameManager.isGamePaused = false;
-        
-        CreateArray(gameManager.sortingAlgorithm, gameManager.arraySize, gameManager.sortType);
-        StartCoroutine(SortingAlgorithm.PlaySort());
+        StartCoroutine(Countdown(gameManager.gameSettings.countdownTime));
     }
 
     private void Update()
@@ -57,6 +58,36 @@ public class LevelManager : MonoBehaviour
     {
         var gameManager = GameManager.Singleton;
         gameManager.LoadNextScene();
+    }
+    
+    private IEnumerator Countdown(int seconds)
+    {
+        var count = seconds;
+        countdownText.text = "Ready?...";
+        yield return new WaitForSeconds(1);
+        countdownText.gameObject.SetActive(true);
+        while (count > 0) {
+           
+            countdownText.text = count.ToString();
+            yield return new WaitForSeconds(1);
+            count --;
+        }
+        countdownText.text = "GOOO!";
+        yield return new WaitForSeconds(1);
+        countdownText.text = "";
+        countdownText.gameObject.SetActive(false);
+
+        StartSorting();
+    }
+
+    private void StartSorting()
+    {
+        var gameManager = GameManager.Singleton;
+        gameManager.isGamePaused = false;
+        gameManager.isGameStarted = true;
+        
+        CreateArray(gameManager.sortingAlgorithm, gameManager.arraySize, gameManager.sortType);
+        StartCoroutine(SortingAlgorithm.PlaySort());
     }
 
     public void CreateArray(ESortingAlgorithm sortingAlgorithm, int arraySize, ESortType sortType)

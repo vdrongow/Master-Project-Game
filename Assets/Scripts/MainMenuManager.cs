@@ -21,6 +21,6 @@ public class MainMenuManager : MonoBehaviour
             Debug.Log($"StartGame: {sortingAlgorithm}, {sortType}, {arraySize}");
         }
         
-        gameManager.StartGame(sortingAlgorithm, sortType, arraySize);
+        gameManager.StartLevel(sortingAlgorithm, sortType, arraySize);
     }
 }

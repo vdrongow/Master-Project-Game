@@ -13,5 +13,8 @@ namespace Configs
         
         public bool devMode = false;
         public bool showDebugLogs = true;
+        
+        [Space]
+        public int countdownTime = 3;
     }
 }

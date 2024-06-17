@@ -14,7 +14,8 @@ public sealed class GameManager : MonoBehaviour
     public GameSettings gameSettings = null!;
     public ArraySettings arraySettings = null!;
     
-    [HideInInspector]
+    [Header("Game State")]
+    public bool isGameStarted;
     public bool isGamePaused;
     
     [HideInInspector]
@@ -50,7 +51,7 @@ public sealed class GameManager : MonoBehaviour
         _sceneIndex = 0;
     }
     
-    public void StartGame(ESortingAlgorithm sortingAlgorithm, ESortType sortType, int arraySize)
+    public void StartLevel(ESortingAlgorithm sortingAlgorithm, ESortType sortType, int arraySize)
     {
         this.sortingAlgorithm = sortingAlgorithm;
         this.sortType = sortType;
