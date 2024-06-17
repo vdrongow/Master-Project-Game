@@ -1,4 +1,5 @@
-﻿using Enums;
+﻿using System.Collections.Generic;
+using Enums;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,17 +7,41 @@ namespace GameUI
 {
     public class SortTypeToggle : MonoBehaviour
     {
-        public ESortType GetSortType()
+        private ToggleGroup toggleGroup;
+        private List<Toggle> toggles;
+
+        private void Start()
         {
-            var toggleGroup = GetComponent<ToggleGroup>();
-            var activeToggleIndex = 0;
-            // get the child index of the active toggle
-            var current = toggleGroup.ActiveToggles().GetEnumerator().Current;
-            if (current != null)
+            toggleGroup = GetComponent<ToggleGroup>();
+            toggles = new List<Toggle>(toggleGroup.GetComponentsInChildren<Toggle>());
+
+            foreach (var toggle in toggles)
             {
-                activeToggleIndex = current.transform.GetSiblingIndex();
+                toggle.onValueChanged.AddListener(OnToggleValueChanged);
             }
-            return (ESortType)activeToggleIndex;
         }
+
+        private void OnToggleValueChanged(bool isOn)
+        {
+            if (isOn)
+            {
+                var activeToggleIndex = GetActiveToggleIndex();
+                Debug.Log("Active Toggle Index: " + activeToggleIndex);
+            }
+        }
+
+        private int GetActiveToggleIndex()
+        {
+            for (var i = 0; i < toggles.Count; i++)
+            {
+                if (toggles[i].isOn)
+                {
+                    return i;
+                }
+            }
+            return -1; // Return -1 if no toggle is active
+        }
+        
+        public ESortType GetSortType() => (ESortType)GetActiveToggleIndex();
     }
 }
