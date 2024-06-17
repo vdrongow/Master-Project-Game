@@ -12,10 +12,12 @@ namespace SortingAlgorithms
         internal readonly List<(int index1, int index2, bool swap, int end)> Steps = new();
         private int _currentStepIndex;
         
+        private LevelManager _levelManager;
         private ArraySettings _arraySettings;
 
-        public void Init(ArrayView arrayView, ArraySettings arraySettings)
+        public void Init(LevelManager levelManager, ArrayView arrayView, ArraySettings arraySettings)
         {
+            _levelManager = levelManager;
             ArrayView = arrayView;
             _arraySettings = arraySettings;
             PrepareSteps();
@@ -70,7 +72,7 @@ namespace SortingAlgorithms
             {
                 Debug.Log("PlaySort");
             }
-            var errors = 0;
+            var mistake = 0;
             while(_currentStepIndex < Steps.Count)
             {
                 var (index1, index2, swap, end) = GetNextStep();
@@ -96,10 +98,11 @@ namespace SortingAlgorithms
                     }
                     else
                     {
-                        errors++;
+                        mistake++;
+                        _levelManager.IncreaseMistakeCount();
                         if(gameSettings.showDebugLogs)
                         {
-                            Debug.Log("Error!");
+                            Debug.Log("Mistake!");
                         }
                         yield return new WaitForSeconds(_arraySettings.errorCooldown);
                     }
@@ -108,10 +111,11 @@ namespace SortingAlgorithms
                 {
                     if (swap)
                     {
-                        errors++;
+                        mistake++;
+                        _levelManager.IncreaseMistakeCount();
                         if (gameSettings.showDebugLogs)
                         {
-                            Debug.Log("Error!");
+                            Debug.Log("Mistake!");
                         }
                         yield return new WaitForSeconds(_arraySettings.errorCooldown);
                     }
@@ -126,7 +130,7 @@ namespace SortingAlgorithms
             {
                 ArrayView.ApplyBarEffect(i, EBarEffect.Sorted);
             }
-            Debug.Log($"Sorting finished with {errors} errors.");
+            Debug.Log($"Sorting finished with {mistake} mistakes.");
         }
 
         private (int, int, bool, int) GetNextStep()

@@ -2,6 +2,7 @@
 using Enums;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public sealed class GameManager : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public sealed class GameManager : MonoBehaviour
     
     [Header("Game State")]
     public bool isGameRunning;
+    [FormerlySerializedAs("errorCount")] public int mistakeCount;
     
     [HideInInspector]
     public ESortingAlgorithm sortingAlgorithm;

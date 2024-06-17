@@ -106,6 +106,7 @@ public class LevelManager : MonoBehaviour
         CreateArray(gameManager.sortingAlgorithm, gameManager.arraySize, gameManager.sortType);
         
         gameManager.isGameRunning = true;
+        gameManager.mistakeCount = 0;
         StartCoroutine(Timer());
         StartCoroutine(SortingAlgorithm.PlaySort());
     }
@@ -128,6 +129,13 @@ public class LevelManager : MonoBehaviour
             _ => throw new System.ArgumentOutOfRangeException(nameof(sortingAlgorithm), sortingAlgorithm, null)
         };
         
-        SortingAlgorithm.Init(ArrayView, GameManager.Singleton.arraySettings);
+        SortingAlgorithm.Init(this, ArrayView, GameManager.Singleton.arraySettings);
+    }
+    
+    public void IncreaseMistakeCount()
+    {
+        var gameManager = GameManager.Singleton;
+        gameManager.mistakeCount++;
+        mistakeCountText.text = $"Mistakes: {gameManager.mistakeCount}";
     }
 }
