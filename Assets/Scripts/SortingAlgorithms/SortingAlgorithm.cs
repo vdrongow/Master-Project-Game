@@ -131,6 +131,7 @@ namespace SortingAlgorithms
                 ArrayView.ApplyBarEffect(i, EBarEffect.Sorted);
             }
             Debug.Log($"Sorting finished with {mistake} mistakes.");
+            _levelManager.FinishSorting();
         }
 
         private (int, int, bool, int) GetNextStep()

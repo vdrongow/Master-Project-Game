@@ -15,6 +15,10 @@ public class LevelManager : MonoBehaviour
     private TextMeshProUGUI timerText;
     [SerializeField]
     private TextMeshProUGUI mistakeCountText;
+    [SerializeField]
+    private GameObject winPanel;
+    [SerializeField]
+    private TextMeshProUGUI winText;
     
     public ArrayView ArrayView;
     public SortingAlgorithm SortingAlgorithm;
@@ -28,6 +32,7 @@ public class LevelManager : MonoBehaviour
         }
 
         var gameManager = GameManager.Singleton;
+        winPanel.SetActive(false);
         StartCoroutine(Countdown(gameManager.gameSettings.countdownTime));
     }
 
@@ -62,6 +67,16 @@ public class LevelManager : MonoBehaviour
     {
         var gameManager = GameManager.Singleton;
         gameManager.LoadNextScene();
+    }
+    
+    public void RestartLevel()
+    {
+        var gameManager = GameManager.Singleton;
+        winPanel.SetActive(false);
+        mistakeCountText.text = "Mistakes: 0";
+        gameManager.mistakeCount = 0;
+        timerText.text = "00:00";
+        StartCoroutine(Countdown(gameManager.gameSettings.countdownTime));
     }
     
     private IEnumerator Countdown(int seconds)
@@ -107,6 +122,7 @@ public class LevelManager : MonoBehaviour
         
         gameManager.isGameRunning = true;
         gameManager.mistakeCount = 0;
+        mistakeCountText.text = "Mistakes: 0";
         StartCoroutine(Timer());
         StartCoroutine(SortingAlgorithm.PlaySort());
     }
@@ -130,6 +146,17 @@ public class LevelManager : MonoBehaviour
         };
         
         SortingAlgorithm.Init(this, ArrayView, GameManager.Singleton.arraySettings);
+    }
+    
+    public void FinishSorting()
+    {
+        var gameManager = GameManager.Singleton;
+        gameManager.isGameRunning = false;
+        // TODO: gameManager.gameState.SaveHighscore(timerText.text);
+        StopAllCoroutines();
+        ArrayView?.DestroyArray();
+        winPanel.SetActive(true);
+        winText.text = $"You finished in {timerText.text} with {gameManager.mistakeCount} mistakes!";
     }
     
     public void IncreaseMistakeCount()

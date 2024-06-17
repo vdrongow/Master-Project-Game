@@ -180,5 +180,6 @@ public class ArrayView
         {
             Object.Destroy(arrayElement.gameObject);
         }
+        ArrayElements.Clear();
     }
 }

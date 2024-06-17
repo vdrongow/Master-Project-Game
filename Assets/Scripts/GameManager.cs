@@ -17,7 +17,7 @@ public sealed class GameManager : MonoBehaviour
     
     [Header("Game State")]
     public bool isGameRunning;
-    [FormerlySerializedAs("errorCount")] public int mistakeCount;
+    public int mistakeCount;
     
     [HideInInspector]
     public ESortingAlgorithm sortingAlgorithm;
