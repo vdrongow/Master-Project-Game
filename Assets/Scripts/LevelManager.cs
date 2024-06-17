@@ -40,12 +40,24 @@ public class LevelManager : MonoBehaviour
             
         }
 
-        if (Input.GetKeyDown(KeyCode.S))
+        if(ArrayView != null)
         {
-            // start sorting
-            var bubbleSort = new BubbleSort();
-            bubbleSort.Init(ArrayView, GameManager.Singleton.arraySettings);
-            StartCoroutine(bubbleSort.VisualizeSort());
+            // press V for visualizing the sorting algorithm
+            if (Input.GetKeyDown(KeyCode.V))
+            {
+                // start sorting
+                var bubbleSort = new BubbleSort();
+                bubbleSort.Init(ArrayView, GameManager.Singleton.arraySettings);
+                StartCoroutine(bubbleSort.VisualizeSort());
+            }
+            // press P for playing the sorting algorithm
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                // start sorting
+                var bubbleSort = new BubbleSort();
+                bubbleSort.Init(ArrayView, GameManager.Singleton.arraySettings);
+                StartCoroutine(bubbleSort.PlaySort());
+            }
         }
     }
 

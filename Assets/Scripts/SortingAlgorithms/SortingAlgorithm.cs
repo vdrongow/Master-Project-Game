@@ -53,12 +53,67 @@ namespace SortingAlgorithms
                     ArrayView.SwapElements(index1, index2);
                     yield return new WaitForSeconds(_arraySettings.sortingSpeed);
                 }
+                _currentStepIndex++;
             }
             // apply the sorted effect to all elements
             for (var i = 0; i < ArrayView.ArraySize; i++)
             {
                 ArrayView.ApplyBarEffect(i, EBarEffect.Sorted);
             }
+        }
+
+        public IEnumerator PlaySort()
+        {
+            Debug.Log("Play Sort");
+            var errors = 0;
+            while(_currentStepIndex < Steps.Count)
+            {
+                var (index1, index2, swap, end) = GetNextStep();
+                if (index1 == -1 || index2 == -1)
+                {
+                    break;
+                }
+                for (var i = 0; i < ArrayView.ArraySize; i++)
+                {
+                    var effect = GetEffect(i, index1, end);
+                    ArrayView.ApplyBarEffect(i, effect);
+                }
+                // Wait until the left or right arrow key is pressed
+                yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow));
+        
+                // Check which key was pressed
+                if (Input.GetKeyDown(KeyCode.LeftArrow))
+                {
+                    if(swap)
+                    {
+                        ArrayView.SwapElements(index1, index2);
+                        _currentStepIndex++;
+                    }
+                    else
+                    {
+                        errors++;
+                        yield return new WaitForSeconds(_arraySettings.errorCooldown);
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.RightArrow))
+                {
+                    if (swap)
+                    {
+                        errors++;
+                        yield return new WaitForSeconds(_arraySettings.errorCooldown);
+                    }
+                    else
+                    {
+                        _currentStepIndex++;
+                    }
+                }
+            }
+            // apply the sorted effect to all elements
+            for (var i = 0; i < ArrayView.ArraySize; i++)
+            {
+                ArrayView.ApplyBarEffect(i, EBarEffect.Sorted);
+            }
+            Debug.Log($"Sorting finished with {errors} errors.");
         }
 
         private (int, int, bool, int) GetNextStep()
@@ -68,7 +123,6 @@ namespace SortingAlgorithms
                 return (-1, -1, false, ArrayView.ArraySize);
             }
             var step = Steps[_currentStepIndex];
-            _currentStepIndex++;
             return step;
         }
         
