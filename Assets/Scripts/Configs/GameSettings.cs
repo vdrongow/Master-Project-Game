@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Configs
 {
@@ -11,5 +10,8 @@ namespace Configs
             "MainMenu",
             "Level",
         };
+        
+        public bool devMode = false;
+        public bool showDebugLogs = true;
     }
 }

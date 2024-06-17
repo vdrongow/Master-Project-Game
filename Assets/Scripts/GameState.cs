@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Text;
+using Enums;
 using UnityEngine;
 
 public sealed class GameState : MonoBehaviour
@@ -28,10 +29,11 @@ public sealed class GameState : MonoBehaviour
                         if(levelManager.ArrayView != null)
                         {
                                 sb.AppendLine();
-                                sb.AppendLine("Array:");
+                                sb.AppendLine($"{levelManager.ArrayView.SortType.AsString()} Array with {levelManager.ArrayView.ArraySize} elements:");
                                 sb.AppendLine(levelManager.ArrayView.IsEmpty
                                         ? empty
                                         : string.Join(", \n", levelManager.ArrayView.ArrayElements.Select((arrayEl, index) => $"[{index.ToString()}] {arrayEl}")));
+                                sb.AppendLine($"Using {levelManager.SortingAlgorithm.GetSortingAlgorithm().AsString()} algorithm");
                         }
                         else
                         {

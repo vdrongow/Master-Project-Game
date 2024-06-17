@@ -64,7 +64,12 @@ namespace SortingAlgorithms
 
         public IEnumerator PlaySort()
         {
-            Debug.Log("Play Sort");
+            var gameManager = GameManager.Singleton;
+            var gameSettings = gameManager.gameSettings;
+            if (gameSettings.showDebugLogs)
+            {
+                Debug.Log("PlaySort");
+            }
             var errors = 0;
             while(_currentStepIndex < Steps.Count)
             {
@@ -92,6 +97,10 @@ namespace SortingAlgorithms
                     else
                     {
                         errors++;
+                        if(gameSettings.showDebugLogs)
+                        {
+                            Debug.Log("Error!");
+                        }
                         yield return new WaitForSeconds(_arraySettings.errorCooldown);
                     }
                 }
@@ -100,6 +109,10 @@ namespace SortingAlgorithms
                     if (swap)
                     {
                         errors++;
+                        if (gameSettings.showDebugLogs)
+                        {
+                            Debug.Log("Error!");
+                        }
                         yield return new WaitForSeconds(_arraySettings.errorCooldown);
                     }
                     else
@@ -126,5 +139,15 @@ namespace SortingAlgorithms
             return step;
         }
         
+        public ESortingAlgorithm GetSortingAlgorithm()
+        {
+            return GetType() switch
+            {
+                _ when GetType() == typeof(BubbleSort) => ESortingAlgorithm.BubbleSort,
+                _ when GetType() == typeof(BubbleSort) => ESortingAlgorithm.SelectionSort, // TODO: implement SelectionSort
+                _ when GetType() == typeof(BubbleSort) => ESortingAlgorithm.InsertionSort, // TODO: implement InsertionSort
+                _ => ESortingAlgorithm.BubbleSort
+            };
+        }
     }
 }
