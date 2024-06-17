@@ -18,6 +18,12 @@ public class LevelManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+        
+        var gameManager = GameManager.Singleton;
+        gameManager.isGamePaused = false;
+        
+        CreateArray(gameManager.sortingAlgorithm, gameManager.arraySize, gameManager.sortType);
+        StartCoroutine(SortingAlgorithm.PlaySort());
     }
 
     private void Update()
@@ -34,14 +40,14 @@ public class LevelManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.V))
             {
                 // start sorting
-                CreateArray(5, ESortType.Unsorted, ESortingAlgorithm.BubbleSort);
+                CreateArray(ESortingAlgorithm.BubbleSort, 5, ESortType.Unsorted);
                 StartCoroutine(SortingAlgorithm.VisualizeSort());
             }
             // press P for playing the sorting algorithm
             if (Input.GetKeyDown(KeyCode.P))
             {
                 // start sorting
-                CreateArray(5, ESortType.Unsorted, ESortingAlgorithm.BubbleSort);
+                CreateArray(ESortingAlgorithm.BubbleSort, 5, ESortType.Unsorted);
                 StartCoroutine(SortingAlgorithm.PlaySort());
             }
         }
@@ -53,12 +59,11 @@ public class LevelManager : MonoBehaviour
         gameManager.LoadNextScene();
     }
 
-    public void CreateArray(int arraySize, ESortType sortType, ESortingAlgorithm sortingAlgorithm)
+    public void CreateArray(ESortingAlgorithm sortingAlgorithm, int arraySize, ESortType sortType)
     {
         var gameManager = GameManager.Singleton;
         var arraySettings = gameManager.arraySettings;
-        //var arraySize = (int)arraySizeSlider.GetValue(); 
-
+        
         StopAllCoroutines();
         
         ArrayView?.DestroyArray();
@@ -73,13 +78,5 @@ public class LevelManager : MonoBehaviour
         };
         
         SortingAlgorithm.Init(ArrayView, GameManager.Singleton.arraySettings);
-    }
-    
-    public void Click()
-    {
-        var gameManager = GameManager.Singleton;
-        var gameState = gameManager.gameState;
-        
-        gameState.Count++;
     }
 }

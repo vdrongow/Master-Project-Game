@@ -1,4 +1,5 @@
 ﻿using Configs;
+using Enums;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,7 +14,17 @@ public sealed class GameManager : MonoBehaviour
     public GameSettings gameSettings = null!;
     public ArraySettings arraySettings = null!;
     
-    private int sceneIndex;
+    [HideInInspector]
+    public bool isGamePaused;
+    
+    [HideInInspector]
+    public ESortingAlgorithm sortingAlgorithm;
+    [HideInInspector]
+    public ESortType sortType;
+    [HideInInspector]
+    public int arraySize;
+    
+    private int _sceneIndex;
 
     private void Awake()
     {
@@ -28,11 +39,24 @@ public sealed class GameManager : MonoBehaviour
         }
         
         gameState = GetComponent<GameState>();
+        
+        sortingAlgorithm = ESortingAlgorithm.BubbleSort;
+        sortType = ESortType.Unsorted;
+        arraySize = 5;
     }
     
     private void Start()
     {
-        sceneIndex = 0;
+        _sceneIndex = 0;
+    }
+    
+    public void StartGame(ESortingAlgorithm sortingAlgorithm, ESortType sortType, int arraySize)
+    {
+        this.sortingAlgorithm = sortingAlgorithm;
+        this.sortType = sortType;
+        this.arraySize = arraySize;
+        
+        LoadNextScene();
     }
     
     public void LoadNextScene()
@@ -40,18 +64,18 @@ public sealed class GameManager : MonoBehaviour
         var currentScene = SceneManager.GetActiveScene();
         if(currentScene.name == gameSettings.sceneNames[gameSettings.sceneNames.Length - 1])
         {
-            sceneIndex = 0;
+            _sceneIndex = 0;
         }
         else
         {
-            sceneIndex++;
+            _sceneIndex++;
         }
-        if(sceneIndex >= gameSettings.sceneNames.Length)
+        if(_sceneIndex >= gameSettings.sceneNames.Length)
         {
-            sceneIndex = 0;
+            _sceneIndex = 0;
         }
         
-        var sceneName = gameSettings.sceneNames[sceneIndex];
+        var sceneName = gameSettings.sceneNames[_sceneIndex];
         SceneManager.LoadScene(sceneName);
     }
 }

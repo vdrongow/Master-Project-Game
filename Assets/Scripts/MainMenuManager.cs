@@ -10,26 +10,17 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField]
     private ArraySizeSlider arraySizeSlider;
 
-    private void Awake()
-    {
-        
-    }
-
     public void StartGame()
     {
+        var gameManager = GameManager.Singleton;
         var sortingAlgorithm = algorithmSelector.GetSortingAlgorithm();
         var sortType = sortTypeToggle.GetSortType();
         var arraySize = (int)arraySizeSlider.GetValue();
-        Debug.Log($"StartGame: {sortingAlgorithm}, {sortType}, {arraySize}");
-        var gameManager = GameManager.Singleton;
-        gameManager.LoadNextScene();
-    }
-
-    public void Click()
-    {
-        var gameManager = GameManager.Singleton;
-        var gameState = gameManager.gameState;
+        if (gameManager.gameSettings.devMode)
+        {
+            Debug.Log($"StartGame: {sortingAlgorithm}, {sortType}, {arraySize}");
+        }
         
-        gameState.Count++;
+        gameManager.StartGame(sortingAlgorithm, sortType, arraySize);
     }
 }
