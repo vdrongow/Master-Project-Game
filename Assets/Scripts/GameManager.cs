@@ -1,8 +1,8 @@
-﻿using Configs;
+﻿using Adlete;
+using Configs;
 using Enums;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 public sealed class GameManager : MonoBehaviour
 {
@@ -18,13 +18,9 @@ public sealed class GameManager : MonoBehaviour
     [Header("Game State")]
     public bool isGameRunning;
     public int mistakeCount;
-    
-    [HideInInspector]
-    public ESortingAlgorithm sortingAlgorithm;
-    [HideInInspector]
-    public ESortType sortType;
-    [HideInInspector]
-    public int arraySize;
+
+    public Learner Learner;
+    public Session Session;
     
     private int _sceneIndex;
 
@@ -42,9 +38,7 @@ public sealed class GameManager : MonoBehaviour
         
         gameState = GetComponent<GameState>();
         
-        sortingAlgorithm = ESortingAlgorithm.BubbleSort;
-        sortType = ESortType.Unsorted;
-        arraySize = 5;
+       Session = new Session(Learner, ESortingAlgorithm.BubbleSort, ESortType.Unsorted, 5);
     }
     
     private void Start()
@@ -54,9 +48,7 @@ public sealed class GameManager : MonoBehaviour
     
     public void StartLevel(ESortingAlgorithm sortingAlgorithm, ESortType sortType, int arraySize)
     {
-        this.sortingAlgorithm = sortingAlgorithm;
-        this.sortType = sortType;
-        this.arraySize = arraySize;
+        Session = new Session(Learner, sortingAlgorithm, sortType, arraySize);
         
         LoadNextScene();
     }
