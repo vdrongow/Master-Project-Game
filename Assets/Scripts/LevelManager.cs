@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Enums;
+using GameUI;
 using SortingAlgorithms;
 using TMPro;
 using UnityEngine;
@@ -19,7 +20,9 @@ public class LevelManager : MonoBehaviour
     private GameObject winPanel;
     [SerializeField]
     private TextMeshProUGUI winText;
-    
+    [SerializeField]
+    private GameObject pausePanel;
+
     public ArrayView ArrayView;
     public SortingAlgorithm SortingAlgorithm;
 
@@ -33,6 +36,7 @@ public class LevelManager : MonoBehaviour
 
         var gameManager = GameManager.Singleton;
         winPanel.SetActive(false);
+        pausePanel.SetActive(false);
         StartCoroutine(Countdown(gameManager.gameSettings.countdownTime));
     }
 
@@ -105,6 +109,9 @@ public class LevelManager : MonoBehaviour
         var timer = 0;
         while(gameManager.isGameRunning)
         {
+            // wait until the game is not paused
+            yield return new WaitUntil(() => gameManager.isGamePaused == false);
+            
             timer += 1;
             // show the timer in minutes and seconds
             var minutes = timer / 60;
@@ -122,6 +129,7 @@ public class LevelManager : MonoBehaviour
         CreateArray(session.SortingAlgorithm, session.ArraySize, session.SortType);
         
         gameManager.isGameRunning = true;
+        gameManager.isGamePaused = false;
         gameManager.mistakeCount = 0;
         mistakeCountText.text = "Mistakes: 0";
         StartCoroutine(Timer());
@@ -149,6 +157,20 @@ public class LevelManager : MonoBehaviour
         SortingAlgorithm.Init(this, ArrayView, GameManager.Singleton.arraySettings);
     }
     
+    public void PauseGame()
+    {
+        var gameManager = GameManager.Singleton;
+        gameManager.isGamePaused = true;
+        pausePanel.SetActive(true);
+    }
+    
+    public void ResumeGame()
+    {
+        var gameManager = GameManager.Singleton;
+        gameManager.isGamePaused = false;
+        pausePanel.SetActive(false);
+    }
+    
     public void FinishSorting()
     {
         var gameManager = GameManager.Singleton;
@@ -158,6 +180,11 @@ public class LevelManager : MonoBehaviour
         ArrayView?.DestroyArray();
         winPanel.SetActive(true);
         winText.text = $"You finished in {timerText.text} with {gameManager.mistakeCount} mistakes!";
+    }
+    
+    public void AskForHelp()
+    {
+        Debug.Log("Ask for help");
     }
     
     public void IncreaseMistakeCount()

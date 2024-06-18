@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ArraySettings
   m_EditorClassIdentifier: 
   barPrefab: {fileID: 4616586036361178945, guid: d63eb2ab05f5457428cfa46ea6861240, type: 3}
-  maxBarHeight: 805
+  maxBarHeight: 725
   minValue: 1
   maxValue: 5
   uniqueValues: 1

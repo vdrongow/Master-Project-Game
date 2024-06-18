@@ -17,6 +17,7 @@ public sealed class GameManager : MonoBehaviour
     
     [Header("Game State")]
     public bool isGameRunning;
+    public bool isGamePaused;
     public int mistakeCount;
 
     public Learner Learner;
