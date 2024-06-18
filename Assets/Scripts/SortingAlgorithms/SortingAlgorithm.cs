@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Configs;
 using Enums;
+using GameUI;
 using UnityEngine;
 
 namespace SortingAlgorithms
@@ -31,9 +32,13 @@ namespace SortingAlgorithms
         // TODO: implement a Tutorial for visualizing the sorting algorithm step by step and track the amount of how often the user has watched the tutorial
         public IEnumerator VisualizeSort()
         {
+            var gameManager = GameManager.Singleton;
             // do the Bubble Sort algorithm step by step
             while (_currentStepIndex < Steps.Count)
             {
+                // wait until the game is not paused
+                yield return new WaitUntil(() => gameManager.isGamePaused == false);
+                
                 var (index1, index2, swap, end) = GetNextStep();
                 if (index1 == -1 || index2 == -1)
                 {
@@ -75,6 +80,9 @@ namespace SortingAlgorithms
             var mistake = 0;
             while(_currentStepIndex < Steps.Count)
             {
+                // wait until the game is not paused
+                yield return new WaitUntil(() => gameManager.isGamePaused == false);
+                
                 var (index1, index2, swap, end) = GetNextStep();
                 if (index1 == -1 || index2 == -1)
                 {
@@ -85,13 +93,15 @@ namespace SortingAlgorithms
                     var effect = GetEffect(i, index1, end);
                     ArrayView.ApplyBarEffect(i, effect);
                 }
+
                 // Wait until the left or right arrow key is pressed
-                yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow));
-        
+                yield return new WaitUntil(() =>
+                    InputManager.Singleton.GetLeftInput() || InputManager.Singleton.GetRightInput());
+
                 // Check which key was pressed
-                if (Input.GetKeyDown(KeyCode.LeftArrow))
+                if (InputManager.Singleton.GetLeftInput())
                 {
-                    if(swap)
+                    if (swap)
                     {
                         ArrayView.SwapElements(index1, index2);
                         _currentStepIndex++;
@@ -107,7 +117,7 @@ namespace SortingAlgorithms
                         yield return new WaitForSeconds(_arraySettings.errorCooldown);
                     }
                 }
-                else if (Input.GetKeyDown(KeyCode.RightArrow))
+                else if (InputManager.Singleton.GetRightInput())
                 {
                     if (swap)
                     {
