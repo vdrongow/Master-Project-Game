@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using Enums;
-using GameUI;
 using SortingAlgorithms;
 using TMPro;
 using UnityEngine;
@@ -70,7 +69,7 @@ public class LevelManager : MonoBehaviour
     public void BackToMainMenu()
     {
         var gameManager = GameManager.Singleton;
-        gameManager.LoadNextScene();
+        gameManager.LoadScene(Constants.MAIN_MENU_SCENE);
     }
     
     public void RestartLevel()

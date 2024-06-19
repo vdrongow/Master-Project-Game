@@ -22,8 +22,6 @@ public sealed class GameManager : MonoBehaviour
 
     public Learner Learner;
     public Session Session;
-    
-    private int _sceneIndex;
 
     private void Awake()
     {
@@ -41,36 +39,16 @@ public sealed class GameManager : MonoBehaviour
         
        Session = new Session(Learner, ESortingAlgorithm.BubbleSort, ESortType.Unsorted, 5);
     }
-    
-    private void Start()
-    {
-        _sceneIndex = 0;
-    }
-    
+
     public void StartLevel(ESortingAlgorithm sortingAlgorithm, ESortType sortType, int arraySize)
     {
         Session = new Session(Learner, sortingAlgorithm, sortType, arraySize);
         
-        LoadNextScene();
+        LoadScene(Constants.LEVEL_SCENE);
     }
-    
-    public void LoadNextScene()
+
+    public void LoadScene(string sceneName)
     {
-        var currentScene = SceneManager.GetActiveScene();
-        if(currentScene.name == gameSettings.sceneNames[gameSettings.sceneNames.Length - 1])
-        {
-            _sceneIndex = 0;
-        }
-        else
-        {
-            _sceneIndex++;
-        }
-        if(_sceneIndex >= gameSettings.sceneNames.Length)
-        {
-            _sceneIndex = 0;
-        }
-        
-        var sceneName = gameSettings.sceneNames[_sceneIndex];
         SceneManager.LoadScene(sceneName);
     }
 }
