@@ -26,7 +26,7 @@ public class LevelManager : MonoBehaviour
     public ArrayView ArrayView;
     public SortingAlgorithm SortingAlgorithm;
 
-    private void Awake()
+    private void Start()
     {
         // delete all childs of the array parent
         foreach (Transform child in arrayParent.transform)

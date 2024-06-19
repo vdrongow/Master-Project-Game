@@ -2,6 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
+#if (UNITY_EDITOR) 
 public sealed class GameStateViewerWindow : EditorWindow
 {
     [SerializeField]
@@ -76,3 +77,4 @@ public sealed class GameStateViewerWindow : EditorWindow
         state = gameState.DumpGameState();
     }
 }
+#endif
