@@ -189,6 +189,8 @@ namespace Adlete
             return newLearnerIdPrefix + "_" + username;
         }
         
+        public string GetLoggedInUser() => loggedInLearnerId;
+        
         #endregion
 
         #region Analysis Routines

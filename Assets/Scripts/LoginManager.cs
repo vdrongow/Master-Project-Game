@@ -91,6 +91,8 @@ public class LoginManager : MonoBehaviour
         
         PlayerPrefs.SetString(UsernameKey, enteredUsername);
         PlayerPrefs.Save();
+        
+        GameManager.Singleton.LoadScene(Constants.MAIN_MENU_SCENE);
     }
 
     private void Start()

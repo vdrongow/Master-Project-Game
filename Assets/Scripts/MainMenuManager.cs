@@ -1,4 +1,5 @@
-﻿using GameUI;
+﻿using Adlete;
+using GameUI;
 using UnityEngine;
 
 public class MainMenuManager : MonoBehaviour
@@ -9,6 +10,12 @@ public class MainMenuManager : MonoBehaviour
     private SortTypeToggle sortTypeToggle;
     [SerializeField]
     private ArraySizeSlider arraySizeSlider;
+    
+    private void Start()
+    {
+        var moduleConnection = ModuleConnection.Singleton;
+        Debug.Log($"Logged in as {moduleConnection.GetLoggedInUser()}");
+    }
 
     public void StartGame()
     {
