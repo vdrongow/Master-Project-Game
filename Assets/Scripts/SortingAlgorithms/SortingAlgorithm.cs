@@ -10,7 +10,7 @@ namespace SortingAlgorithms
     public abstract class SortingAlgorithm
     {
         internal ArrayView ArrayView;
-        internal readonly List<(int index1, int index2, bool swap, int end)> Steps = new();
+        public readonly List<(int index1, int index2, bool swap, int end)> Steps = new();
         private int _currentStepIndex;
         
         private LevelManager _levelManager;
