@@ -9,7 +9,9 @@ public sealed class GameStateViewerWindow : EditorWindow
     private string state = string.Empty;
     
     private const string WAITING_FOR_PLAY_MODE = "Waiting For PlayMode";
-    
+
+    private Vector2 scrollPosition;
+
     [MenuItem("Custom/GameState Viewer")]
     public static void ShowWindow()
     {
@@ -42,7 +44,12 @@ public sealed class GameStateViewerWindow : EditorWindow
     private void OnGUI()
     {
         GUILayout.Label("GameState Viewer", EditorStyles.boldLabel);
+        
+        scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, GUILayout.Width(position.width), GUILayout.Height(position.height - 20));
+        
         DrawTextBox(state);
+        
+        EditorGUILayout.EndScrollView();
     }
 
     private void OnInspectorUpdate()
