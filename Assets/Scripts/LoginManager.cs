@@ -31,20 +31,24 @@ public class LoginManager : MonoBehaviour
 
     private void Login(string username)
     {
+        var gameManager = GameManager.Singleton;
         var moduleConnection = ModuleConnection.Singleton;
         var learnerID = moduleConnection.GetLearnerIDFromUsername(username);
         moduleConnection.Login(learnerID,
             _ => Debug.Log($"Logged in with learnerID: {learnerID}"),
-            errorString => Debug.Log($"Error while logging in: {errorString}"));
+            errorString => Debug.Log($"Error while logging in: {errorString}"),
+            () => gameManager.StartSession());
     }
     
     private void CreateNewLearner(string username)
     {
+        var gameManager = GameManager.Singleton;
         var moduleConnection = ModuleConnection.Singleton;
         var learnerID = moduleConnection.GetLearnerIDFromUsername(username);
         moduleConnection.CreateNewLearnerAndLogin(learnerID, "level_beginner",
             _ => Debug.Log($"Created Learner with learnerID: {learnerID}"),
-            errorString => Debug.Log($"Error while creating learner: {errorString}"));
+            errorString => Debug.Log($"Error while creating learner: {errorString}"),
+            () => gameManager.StartSession());
     }
 
     private void DeleteLearner(string username)

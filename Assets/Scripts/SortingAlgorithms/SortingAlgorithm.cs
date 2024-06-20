@@ -105,6 +105,15 @@ namespace SortingAlgorithms
                     {
                         ArrayView.SwapElements(index1, index2);
                         _currentStepIndex++;
+                        // var observation = new Observation
+                        // {
+                        //     activityName = "activityAddition",
+                        //     activityCorrectness = 1,
+                        //     activityDifficulty = 0.5f,
+                        //     timestamp = DateTime.Now,
+                        //     additionalInfos = "{\"data\":10}"
+                        // };
+                        // moduleConnection.SubmitActivityResult(observation);
                     }
                     else
                     {
@@ -132,6 +141,15 @@ namespace SortingAlgorithms
                     else
                     {
                         _currentStepIndex++;
+                        // var observation = new Observation
+                        // {
+                        //     activityName = "activitySubtraction",
+                        //     activityCorrectness = 1,
+                        //     activityDifficulty = 0.5f,
+                        //     timestamp = DateTime.Now,
+                        //     additionalInfos = "{\"data\":10}"
+                        // };
+                        // moduleConnection.SubmitActivityResult(observation);
                     }
                 }
             }

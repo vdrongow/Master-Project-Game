@@ -63,4 +63,21 @@ public sealed class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(sceneName);
     }
+
+    private void OnApplicationQuit()
+    {
+        StopSession();
+    }
+
+    // TODO: check if this works with the callback from the index.html
+    /*
+     * window.onbeforeunload = () => {
+        unityInstance.SendMessage(GameManager, CloseCallback);
+        return "Are you sure to leave this page?";
+      }
+     */
+    public void CloseCallback()
+    {
+        StopSession();
+    }
 }
