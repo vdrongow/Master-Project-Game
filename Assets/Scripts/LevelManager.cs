@@ -123,9 +123,9 @@ public class LevelManager : MonoBehaviour
     private void StartSorting()
     {
         var gameManager = GameManager.Singleton;
-        var session = gameManager.Session;
+        var game = gameManager.Game;
         
-        CreateArray(session.SortingAlgorithm, session.ArraySize, session.SortType);
+        CreateArray(game.SortingAlgorithm, game.ArraySize, game.SortType);
         
         gameManager.isGameRunning = true;
         gameManager.isGamePaused = false;

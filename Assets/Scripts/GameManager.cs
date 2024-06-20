@@ -20,8 +20,7 @@ public sealed class GameManager : MonoBehaviour
     public bool isGamePaused;
     public int mistakeCount;
 
-    public Learner Learner;
-    public Session Session;
+    public Game Game;
 
     private void Awake()
     {
@@ -37,13 +36,26 @@ public sealed class GameManager : MonoBehaviour
         
         gameState = GetComponent<GameState>();
         
-       Session = new Session(Learner, ESortingAlgorithm.BubbleSort, ESortType.Unsorted, 5);
+       Game = new Game(ESortingAlgorithm.BubbleSort, ESortType.Unsorted, 5);
+    }
+
+    public void StartSession()
+    {
+        var moduleConnection = ModuleConnection.Singleton;
+        moduleConnection.StartSession(_ => Debug.Log("Session started"),
+            errorString => Debug.Log($"Error while starting session: {errorString}"));
+    }
+
+    public void StopSession()
+    {
+        var moduleConnection = ModuleConnection.Singleton;
+        moduleConnection.StopSession(_ => Debug.Log("Session stopped"),
+            errorString => Debug.Log($"Error while stopping session: {errorString}"));
     }
 
     public void StartLevel(ESortingAlgorithm sortingAlgorithm, ESortType sortType, int arraySize)
     {
-        Session = new Session(Learner, sortingAlgorithm, sortType, arraySize);
-        
+        Game = new Game(sortingAlgorithm, sortType, arraySize);
         LoadScene(Constants.LEVEL_SCENE);
     }
 

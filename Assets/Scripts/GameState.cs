@@ -16,16 +16,15 @@ public sealed class GameState : MonoBehaviour
                 sb.AppendLine("GameState:");
                 sb.AppendLine("-----------------------------");
                 
-                // try find Session
-                if(gameManager.Session != null)
+                // try find Started Game
+                if(gameManager.Game != null)
                 {
                         sb.AppendLine();
-                        sb.AppendLine("Session:");
+                        sb.AppendLine("Game:");
                         sb.AppendLine("-----------------------------");
-                        sb.AppendLine($"Learner: {gameManager.Session.Learner.learnerId}");
-                        sb.AppendLine($"SortingAlgorithm: {gameManager.Session.SortingAlgorithm.AsString()}");
-                        sb.AppendLine($"SortType: {gameManager.Session.SortType.AsString()}");
-                        sb.AppendLine($"ArraySize: {gameManager.Session.ArraySize}");
+                        sb.AppendLine($"SortingAlgorithm: {gameManager.Game.SortingAlgorithm.AsString()}");
+                        sb.AppendLine($"SortType: {gameManager.Game.SortType.AsString()}");
+                        sb.AppendLine($"ArraySize: {gameManager.Game.ArraySize}");
                 }
                 else
                 {

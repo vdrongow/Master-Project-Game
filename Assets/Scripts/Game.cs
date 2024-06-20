@@ -1,17 +1,13 @@
-﻿using Adlete;
-using Enums;
+﻿using Enums;
 
-public class Session
+public class Game
 {
-    public Learner Learner;
-    
     public ESortingAlgorithm SortingAlgorithm;
     public ESortType SortType;
     public int ArraySize;
     
-    public Session(Learner learner, ESortingAlgorithm sortingAlgorithm, ESortType sortType, int arraySize)
+    public Game(ESortingAlgorithm sortingAlgorithm, ESortType sortType, int arraySize)
     {
-        Learner = learner;
         SortingAlgorithm = sortingAlgorithm;
         SortType = sortType;
         ArraySize = arraySize;
