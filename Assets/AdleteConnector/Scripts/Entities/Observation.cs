@@ -11,6 +11,7 @@ namespace Adlete
         public float activityCorrectness;
         public float activityDifficulty;
         public DateTime timestamp;
+        public string additionalInfos;
 
 
         public static Observation Deserialize(JToken jsonData)

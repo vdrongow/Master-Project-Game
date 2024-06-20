@@ -153,6 +153,7 @@ namespace Adlete
                 this.activityCorrectness = observation.activityCorrectness;
                 this.activityDifficulty = observation.activityDifficulty;
                 this.timestamp = observation.timestamp;
+                this.additionalInfos = observation.additionalInfos;
                 this.learnerId = learnerId;
             }
 
