@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Adlete;
 using Configs;
 using Enums;
 using GameUI;
@@ -72,6 +73,7 @@ namespace SortingAlgorithms
         public IEnumerator PlaySort()
         {
             var gameManager = GameManager.Singleton;
+            var moduleConnection = ModuleConnection.Singleton;
             var gameSettings = gameManager.gameSettings;
             if (gameSettings.showDebugLogs)
             {
@@ -178,7 +180,7 @@ namespace SortingAlgorithms
             {
                 _ when GetType() == typeof(BubbleSort) => ESortingAlgorithm.BubbleSort,
                 _ when GetType() == typeof(BubbleSort) => ESortingAlgorithm.SelectionSort, // TODO: implement SelectionSort
-                _ when GetType() == typeof(BubbleSort) => ESortingAlgorithm.InsertionSort, // TODO: implement InsertionSort
+                _ when GetType() == typeof(InsertionSort) => ESortingAlgorithm.InsertionSort,
                 _ => ESortingAlgorithm.BubbleSort
             };
         }

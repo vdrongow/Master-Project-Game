@@ -35,8 +35,10 @@ public sealed class GameManager : MonoBehaviour
         }
         
         gameState = GetComponent<GameState>();
-        
-       Game = new Game(ESortingAlgorithm.BubbleSort, ESortType.Unsorted, 5);
+
+        Game = new Game(gameSettings.defaultSortingAlgorithm, 
+            gameSettings.defaultSortType,
+            gameSettings.defaultArraySize);
     }
 
     public void StartSession()

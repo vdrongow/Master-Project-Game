@@ -149,7 +149,7 @@ public class LevelManager : MonoBehaviour
         {
             ESortingAlgorithm.BubbleSort => new BubbleSort(),
             ESortingAlgorithm.SelectionSort => new BubbleSort(), // TODO: implement SelectionSort
-            ESortingAlgorithm.InsertionSort => new BubbleSort(), // TODO: implement InsertionSort
+            ESortingAlgorithm.InsertionSort => new InsertionSort(),
             _ => throw new System.ArgumentOutOfRangeException(nameof(sortingAlgorithm), sortingAlgorithm, null)
         };
         
