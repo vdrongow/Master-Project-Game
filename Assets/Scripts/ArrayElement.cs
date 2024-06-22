@@ -6,6 +6,8 @@ public class ArrayElement : MonoBehaviour
     public bool IsHighlighted { get; set; }
     public bool IsSorted { get; set; }
     
+    public GameObject highlightCurrent = null!;
+    
     public void Init(int value)
     {
         Value = value;
