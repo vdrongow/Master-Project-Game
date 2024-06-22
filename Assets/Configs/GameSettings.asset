@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   devMode: 1
   showDebugLogs: 1
+  showCountdown: 0
   countdownTime: 3
   defaultSortingAlgorithm: 2
   defaultSortType: 0

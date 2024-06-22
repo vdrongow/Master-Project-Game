@@ -10,6 +10,7 @@ namespace Configs
         public bool showDebugLogs = true;
         
         [Space]
+        public bool showCountdown = true;
         public int countdownTime = 3;
         
         [Header("Sorting Algorithm Settings")]

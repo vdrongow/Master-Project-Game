@@ -36,7 +36,15 @@ public class LevelManager : MonoBehaviour
         var gameManager = GameManager.Singleton;
         winPanel.SetActive(false);
         pausePanel.SetActive(false);
-        StartCoroutine(Countdown(gameManager.gameSettings.countdownTime));
+        countdownText.gameObject.SetActive(false);
+        if(gameManager.gameSettings.showCountdown)
+        {
+            StartCoroutine(Countdown(gameManager.gameSettings.countdownTime));
+        }
+        else
+        {
+            StartSorting();
+        }
     }
 
     private void Update()
@@ -53,15 +61,13 @@ public class LevelManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.V))
             {
                 // start sorting
-                CreateArray(ESortingAlgorithm.BubbleSort, 5, ESortType.Unsorted);
+                CreateArray(gameManager.Game.SortingAlgorithm, gameManager.Game.ArraySize, gameManager.Game.SortType);
                 StartCoroutine(SortingAlgorithm.VisualizeSort());
             }
             // press P for playing the sorting algorithm
             if (Input.GetKeyDown(KeyCode.P))
             {
-                // start sorting
-                CreateArray(ESortingAlgorithm.BubbleSort, 5, ESortType.Unsorted);
-                StartCoroutine(SortingAlgorithm.PlaySort());
+                RestartLevel();
             }
         }
     }
@@ -79,7 +85,14 @@ public class LevelManager : MonoBehaviour
         mistakeCountText.text = "Mistakes: 0";
         gameManager.mistakeCount = 0;
         timerText.text = "00:00";
-        StartCoroutine(Countdown(gameManager.gameSettings.countdownTime));
+        if(gameManager.gameSettings.showCountdown)
+        {
+            StartCoroutine(Countdown(gameManager.gameSettings.countdownTime));
+        }
+        else
+        {
+            StartSorting();
+        }
     }
     
     private IEnumerator Countdown(int seconds)
