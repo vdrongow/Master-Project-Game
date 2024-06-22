@@ -51,5 +51,10 @@ namespace SortingAlgorithms
             }
             return EBarEffect.None;
         }
+
+        protected override EBarEffect GetEffect(int index, int index1, int index2, int end)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

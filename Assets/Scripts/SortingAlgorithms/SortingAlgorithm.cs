@@ -30,6 +30,8 @@ namespace SortingAlgorithms
         
         protected abstract EBarEffect GetEffect(int index, int currentStepIndex, int end);
         
+        protected abstract EBarEffect GetEffect(int index, int index1, int index2, int end);
+        
         // TODO: implement a Tutorial for visualizing the sorting algorithm step by step and track the amount of how often the user has watched the tutorial
         public IEnumerator VisualizeSort()
         {

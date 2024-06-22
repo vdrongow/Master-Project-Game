@@ -131,6 +131,12 @@ public class ArrayView
                 barRenderer.color = _arraySettings.highlightColor;
                 ArrayElements[index].IsHighlighted = true;
                 break;
+            case EBarEffect.HighlightCurrent:
+                barRenderer.color = _arraySettings.highlightColor;
+                // TODO: place an arrow or something to indicate the current element
+                
+                ArrayElements[index].IsHighlighted = true;
+                break;
             case EBarEffect.Sorted:
                 barRenderer.color = _arraySettings.sortedColor;
                 ArrayElements[index].IsSorted = true;

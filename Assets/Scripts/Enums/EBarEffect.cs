@@ -7,7 +7,8 @@ namespace Enums
     {
         None = 0,
         Highlight = 1,
-        Sorted = 2,
+        HighlightCurrent = 2,
+        Sorted = 3,
     }
     
     internal static class EBarEffectExtensions
