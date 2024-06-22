@@ -16,6 +16,6 @@ MonoBehaviour:
   showDebugLogs: 1
   showCountdown: 0
   countdownTime: 3
-  defaultSortingAlgorithm: 2
+  defaultSortingAlgorithm: 1
   defaultSortType: 0
   defaultArraySize: 10

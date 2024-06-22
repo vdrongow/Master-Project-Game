@@ -3,6 +3,7 @@ using Enums;
 using SortingAlgorithms;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
@@ -10,11 +11,15 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private GameObject arrayParent;
     [SerializeField]
+    private TextMeshProUGUI algorithmTitle;
+    [SerializeField]
     private TextMeshProUGUI countdownText;
     [SerializeField]
     private TextMeshProUGUI timerText;
     [SerializeField]
     private TextMeshProUGUI mistakeCountText;
+    [SerializeField]
+    private GameObject mistakeVisualizer;
     [SerializeField]
     private GameObject winPanel;
     [SerializeField]
@@ -37,6 +42,8 @@ public class LevelManager : MonoBehaviour
         winPanel.SetActive(false);
         pausePanel.SetActive(false);
         countdownText.gameObject.SetActive(false);
+        mistakeVisualizer.SetActive(false);
+        algorithmTitle.text = gameManager.Game.SortingAlgorithm.ToString();
         if(gameManager.gameSettings.showCountdown)
         {
             StartCoroutine(Countdown(gameManager.gameSettings.countdownTime));
@@ -131,6 +138,39 @@ public class LevelManager : MonoBehaviour
             timerText.text = $"{minutes:00}:{seconds:00}";
             yield return new WaitForSeconds(1);
         }
+    }
+
+    public void ShowMistakeVisualizer(float seconds)
+    {
+        StartCoroutine(MistakeVisualizerCoroutine(seconds));
+    }
+    
+    private IEnumerator MistakeVisualizerCoroutine(float seconds)
+    {
+        mistakeVisualizer.SetActive(true);
+
+        var visualizerImage = mistakeVisualizer.GetComponent<Image>();
+
+        var blinkInterval = 0.1f;
+        var blinkCount = Mathf.FloorToInt(seconds / (2 * blinkInterval));
+
+        for (var i = 0; i < blinkCount; i++)
+        {
+            SetImageAlpha(visualizerImage, 0);
+            yield return new WaitForSeconds(blinkInterval);
+
+            SetImageAlpha(visualizerImage, 1);
+            yield return new WaitForSeconds(blinkInterval);
+        }
+        SetImageAlpha(visualizerImage, 1);
+        mistakeVisualizer.SetActive(false);
+    }
+    
+    private static void SetImageAlpha(Graphic image, float alpha)
+    {
+        var color = image.color;
+        color.a = alpha;
+        image.color = color;
     }
 
     private void StartSorting()

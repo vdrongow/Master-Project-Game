@@ -123,6 +123,7 @@ namespace SortingAlgorithms
                         {
                             Debug.Log("Mistake!");
                         }
+                        _levelManager.ShowMistakeVisualizer(_arraySettings.errorCooldown);
                         yield return new WaitForSeconds(_arraySettings.errorCooldown);
                     }
                 }
@@ -136,6 +137,7 @@ namespace SortingAlgorithms
                         {
                             Debug.Log("Mistake!");
                         }
+                        _levelManager.ShowMistakeVisualizer(_arraySettings.errorCooldown);
                         yield return new WaitForSeconds(_arraySettings.errorCooldown);
                     }
                     else
