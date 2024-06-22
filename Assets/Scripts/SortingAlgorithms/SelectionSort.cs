@@ -10,13 +10,13 @@ namespace SortingAlgorithms
 {
     public sealed class SelectionSort : SortingAlgorithm
     {
-        private readonly List<(int index1, int index2, bool swap, int end)> Steps = new();
+        private readonly List<(int index, int minIndex, bool foundNewMin, bool swap, int end)> Steps = new();
         private int _currentStepIndex;
         
         protected override void PrepareSteps()
         {
             Steps.Clear();
-            // break down the Selection Sort algorithm into steps
+            // Break down the Selection Sort algorithm into steps
             var array = ArrayView.ArrayElements.Select(x => x.Value).ToArray();
 
             for (var i = 0; i < array.Length - 1; i++)
@@ -24,16 +24,20 @@ namespace SortingAlgorithms
                 var minIndex = i;
                 for (var j = i + 1; j < array.Length; j++)
                 {
-                    Steps.Add((j, minIndex, swap: false, i));
                     if (array[j] < array[minIndex])
                     {
+                        Steps.Add((j, minIndex, foundNewMin: true, swap: false, i));
                         minIndex = j;
+                    }
+                    else
+                    {
+                        Steps.Add((j, minIndex, foundNewMin: false, swap: false, i));
                     }
                 }
 
                 if (minIndex != i)
                 {
-                    Steps.Add((i, minIndex, swap: true, array.Length - 1));
+                    Steps.Add((i, minIndex, foundNewMin: false,  swap: true, i));
                     (array[i], array[minIndex]) = (array[minIndex], array[i]);
                 }
             }
@@ -49,7 +53,7 @@ namespace SortingAlgorithms
                 yield return new WaitUntil(() => gameManager.isGamePaused == false);
 
                 var step = GetNextStep();
-                if (step.index1 == -1 || step.index2 == -1)
+                if (step.index == -1 || step.minIndex == -1)
                 {
                     break;
                 }
@@ -62,7 +66,7 @@ namespace SortingAlgorithms
                 // swap the elements
                 if (step.swap)
                 {
-                    ArrayView.SwapElements(step.index1, step.index2);
+                    ArrayView.SwapElements(step.index, step.minIndex);
                     yield return new WaitForSeconds(ArraySettings.sortingSpeed);
                 }
 
@@ -92,13 +96,20 @@ namespace SortingAlgorithms
                 yield return new WaitUntil(() => gameManager.isGamePaused == false);
                 
                 var step = GetNextStep();
-                if (step.index1 == -1 || step.index2 == -1)
+                if (step.index == -1 || step.minIndex == -1)
                 {
                     break;
                 }
                 
                 // apply the effect to the elements, e.g. highlight the elements that are compared
                 ApplyEffects(step);
+                
+                if (step.swap)
+                {
+                    ArrayView.SwapElements(step.index, step.minIndex);
+                    _currentStepIndex++;
+                    continue;
+                }
 
                 // Wait until the left or right arrow key or the according button is pressed
                 yield return new WaitUntil(() =>
@@ -107,9 +118,8 @@ namespace SortingAlgorithms
                 // Check which key was pressed
                 if (InputManager.Singleton.GetLeftInput())
                 {
-                    if (step.swap)
+                    if (step.foundNewMin)
                     {
-                        ArrayView.SwapElements(step.index1, step.index2);
                         _currentStepIndex++;
                         // var observation = new Observation
                         // {
@@ -135,7 +145,7 @@ namespace SortingAlgorithms
                 }
                 else if (InputManager.Singleton.GetRightInput())
                 {
-                    if (step.swap)
+                    if (step.foundNewMin)
                     {
                         mistake++;
                         LevelManager.IncreaseMistakeCount();
@@ -170,11 +180,11 @@ namespace SortingAlgorithms
             LevelManager.FinishSorting();
         }
 
-        private void ApplyEffects((int index1, int index2, bool swap, int end) step)
+        private void ApplyEffects((int index, int minIndex, bool foundNewMin, bool swap, int end) step)
         {
             for (var i = 0; i < ArrayView.ArraySize; i++)
             {
-                var effect = GetEffect(i, step.index1, step.index2, step.end);
+                var effect = GetEffect(i, step.index, step.minIndex, step.end);
                 ArrayView.ApplyBarEffect(i, effect);
             }
         }
@@ -189,18 +199,18 @@ namespace SortingAlgorithms
             {
                 return EBarEffect.HighlightCurrent;
             }
-            if (i <= end)
+            if (i < end)
             {
                 return EBarEffect.Sorted;
             }
             return EBarEffect.None;
         }
         
-        private (int index1, int index2, bool swap, int end) GetNextStep()
+        private (int index, int minIndex, bool foundNewMin, bool swap, int end) GetNextStep()
         {
             if (_currentStepIndex >= Steps.Count)
             {
-                return (-1, -1, false, ArrayView.ArraySize);
+                return (-1, -1, false, false, ArrayView.ArraySize);
             }
             var step = Steps[_currentStepIndex];
             return step;
@@ -210,7 +220,7 @@ namespace SortingAlgorithms
         {
             return string.Join(", \n",
                 Steps.Select((step, index) =>
-                    $"[{index.ToString()}] (index1: {step.index1}, index2: {step.index2}, swap: {step.swap}, end: {step.end})"));
+                    $"[{index.ToString()}] (minIndex: {step.minIndex}, index: {step.index}, foundNewMin: {step.foundNewMin}, swap: {step.swap}, end: {step.end})"));
         }
         
         public override string GetCurrentStepAsString() => _currentStepIndex >= Steps.Count
