@@ -38,8 +38,17 @@ namespace SortingAlgorithms
                 array[j + 1] = key;
             }
         }
+        
+        protected override void ApplyEffects((int index1, int index2, bool swap, int end) step)
+        {
+            for (var i = 0; i < ArrayView.ArraySize; i++)
+            {
+                var effect = GetEffect(i, step.index1, step.end);
+                ArrayView.ApplyBarEffect(i, effect);
+            }
+        }
 
-        protected override EBarEffect GetEffect(int index, int currentStepIndex, int end)
+        private EBarEffect GetEffect(int index, int currentStepIndex, int end)
         {
             if(index == currentStepIndex || index == currentStepIndex - 1)
             {
@@ -50,11 +59,6 @@ namespace SortingAlgorithms
                 return EBarEffect.Sorted;
             }
             return EBarEffect.None;
-        }
-
-        protected override EBarEffect GetEffect(int index, int index1, int index2, int end)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

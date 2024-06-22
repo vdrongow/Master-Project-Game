@@ -33,22 +33,26 @@ namespace SortingAlgorithms
             }
         }
 
-        protected override EBarEffect GetEffect(int index, int currentStepIndex, int end)
+        protected override void ApplyEffects((int index1, int index2, bool swap, int end) step)
         {
-            throw new System.NotImplementedException();
+            for (var i = 0; i < ArrayView.ArraySize; i++)
+            {
+                var effect = GetEffect(i, step.index1, step.index2, step.end);
+                ArrayView.ApplyBarEffect(i, effect);
+            }
         }
 
-        protected override EBarEffect GetEffect(int index, int currentIndex, int minIndex, int end)
+        private EBarEffect GetEffect(int i, int currentIndex, int minIndex, int end)
         {
-            if (index == currentIndex)
+            if (i == currentIndex)
             {
                 return EBarEffect.Highlight;
             }
-            if (index == minIndex)
+            if (i == minIndex)
             {
                 return EBarEffect.HighlightCurrent;
             }
-            if (index <= end)
+            if (i <= end)
             {
                 return EBarEffect.Sorted;
             }

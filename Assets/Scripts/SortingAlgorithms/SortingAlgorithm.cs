@@ -28,9 +28,11 @@ namespace SortingAlgorithms
 
         protected abstract void PrepareSteps();
         
-        protected abstract EBarEffect GetEffect(int index, int currentStepIndex, int end);
+        // protected abstract EBarEffect GetEffect(int index, int currentStepIndex, int end);
         
-        protected abstract EBarEffect GetEffect(int index, int index1, int index2, int end);
+        // protected abstract EBarEffect GetEffect(int index, int index1, int index2, int end);
+        
+        protected abstract void ApplyEffects((int index1, int index2, bool swap, int end) step);
         
         // TODO: implement a Tutorial for visualizing the sorting algorithm step by step and track the amount of how often the user has watched the tutorial
         public IEnumerator VisualizeSort()
@@ -42,25 +44,21 @@ namespace SortingAlgorithms
                 // wait until the game is not paused
                 yield return new WaitUntil(() => gameManager.isGamePaused == false);
                 
-                var (index1, index2, swap, end) = GetNextStep();
-                if (index1 == -1 || index2 == -1)
+                var step = GetNextStep();
+                if (step.index1 == -1 || step.index2 == -1)
                 {
                     break;
                 }
 
                 // apply the effect to the elements
-                for (var i = 0; i < ArrayView.ArraySize; i++)
-                {
-                    var effect = GetEffect(i, index1, end);
-                    ArrayView.ApplyBarEffect(i, effect);
-                }
+                ApplyEffects(step);
                 
                 yield return new WaitForSeconds(_arraySettings.sortingSpeed);
                 
                 // swap the elements
-                if (swap)
+                if (step.swap)
                 {
-                    ArrayView.SwapElements(index1, index2);
+                    ArrayView.SwapElements(step.index1, step.index2);
                     yield return new WaitForSeconds(_arraySettings.sortingSpeed);
                 }
                 _currentStepIndex++;
@@ -87,27 +85,25 @@ namespace SortingAlgorithms
                 // wait until the game is not paused
                 yield return new WaitUntil(() => gameManager.isGamePaused == false);
                 
-                var (index1, index2, swap, end) = GetNextStep();
-                if (index1 == -1 || index2 == -1)
+                var step = GetNextStep();
+                if (step.index1 == -1 || step.index2 == -1)
                 {
                     break;
                 }
-                for (var i = 0; i < ArrayView.ArraySize; i++)
-                {
-                    var effect = GetEffect(i, index1, end);
-                    ArrayView.ApplyBarEffect(i, effect);
-                }
+                
+                // apply the effect to the elements, e.g. highlight the elements that are compared
+                ApplyEffects(step);
 
-                // Wait until the left or right arrow key is pressed
+                // Wait until the left or right arrow key or the according button is pressed
                 yield return new WaitUntil(() =>
                     InputManager.Singleton.GetLeftInput() || InputManager.Singleton.GetRightInput());
 
                 // Check which key was pressed
                 if (InputManager.Singleton.GetLeftInput())
                 {
-                    if (swap)
+                    if (step.swap)
                     {
-                        ArrayView.SwapElements(index1, index2);
+                        ArrayView.SwapElements(step.index1, step.index2);
                         _currentStepIndex++;
                         // var observation = new Observation
                         // {
@@ -132,7 +128,7 @@ namespace SortingAlgorithms
                 }
                 else if (InputManager.Singleton.GetRightInput())
                 {
-                    if (swap)
+                    if (step.swap)
                     {
                         mistake++;
                         _levelManager.IncreaseMistakeCount();
@@ -166,7 +162,7 @@ namespace SortingAlgorithms
             _levelManager.FinishSorting();
         }
 
-        private (int, int, bool, int) GetNextStep()
+        private (int index1, int index2, bool swap, int end) GetNextStep()
         {
             if (_currentStepIndex >= Steps.Count)
             {
@@ -181,7 +177,7 @@ namespace SortingAlgorithms
             return GetType() switch
             {
                 _ when GetType() == typeof(BubbleSort) => ESortingAlgorithm.BubbleSort,
-                _ when GetType() == typeof(BubbleSort) => ESortingAlgorithm.SelectionSort, // TODO: implement SelectionSort
+                _ when GetType() == typeof(SelectionSort) => ESortingAlgorithm.SelectionSort,
                 _ when GetType() == typeof(InsertionSort) => ESortingAlgorithm.InsertionSort,
                 _ => ESortingAlgorithm.BubbleSort
             };
