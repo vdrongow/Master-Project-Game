@@ -25,6 +25,8 @@ namespace SortingAlgorithms
         public abstract IEnumerator PlaySort();
 
         public abstract string GetStepsAsString();
+        
+        public abstract string GetCurrentStepAsString();
 
         public ESortingAlgorithm GetSortingAlgorithm()
         {

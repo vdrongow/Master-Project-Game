@@ -212,5 +212,9 @@ namespace SortingAlgorithms
                 Steps.Select((step, index) =>
                     $"[{index.ToString()}] (index1: {step.index1}, index2: {step.index2}, swap: {step.swap}, end: {step.end})"));
         }
+        
+        public override string GetCurrentStepAsString() => _currentStepIndex >= Steps.Count
+            ? "Sorting finished"
+            : $"currentStepIndex: [{_currentStepIndex}]";
     }
 }

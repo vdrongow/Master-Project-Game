@@ -57,6 +57,7 @@ public sealed class GameState : MonoBehaviour
                         {
                                 sb.AppendLine();
                                 sb.AppendLine("Sorting Algorithm Steps:");
+                                sb.AppendLine(levelManager.SortingAlgorithm.GetCurrentStepAsString());
                                 sb.AppendLine("-----------------------------");
                                 sb.AppendLine(levelManager.SortingAlgorithm.GetStepsAsString());
                                 sb.AppendLine();
