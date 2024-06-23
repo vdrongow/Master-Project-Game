@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Configs;
 using Enums;
+using Manager;
 
 namespace SortingAlgorithms
 {

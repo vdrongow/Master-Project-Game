@@ -4,6 +4,7 @@ using System.Linq;
 using Adlete;
 using Enums;
 using GameUI;
+using Manager;
 using UnityEngine;
 
 namespace SortingAlgorithms
