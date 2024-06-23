@@ -21,5 +21,8 @@ namespace Configs
         public ESortingAlgorithm defaultSortingAlgorithm = ESortingAlgorithm.BubbleSort;
         public ESortType defaultSortType = ESortType.Unsorted;
         public int defaultArraySize = 5;
+        
+        [Header("Basic Level Settings")]
+        public EBasicConcepts defaultBasicConcept = EBasicConcepts.IdentifyLargerElement;
     }
 }

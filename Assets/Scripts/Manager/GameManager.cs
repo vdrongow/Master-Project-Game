@@ -23,6 +23,7 @@ namespace Manager
         public bool isGamePaused;
 
         public SortingGame SortingGame;
+        public BasicGame BasicGame;
 
         private void Awake()
         {
@@ -42,6 +43,7 @@ namespace Manager
                 gameSettings.defaultSortType,
                 gameSettings.defaultArraySize);
             
+            BasicGame = new BasicGame(gameSettings.defaultBasicConcept);
         }
 
         public void StartSession()
@@ -64,6 +66,12 @@ namespace Manager
             LoadScene(Constants.LEVEL_SORTING_SCENE);
         }
         
+        public void StartBasicLevel(EBasicConcepts basicConcept)
+        {
+            BasicGame = new BasicGame(basicConcept);
+            LoadScene(Constants.LEVEL_BASICS_SCENE);
+        }
+
         public void LoadScene(string sceneName)
         {
             SceneManager.LoadScene(sceneName);
