@@ -1,11 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Enums;
 using SortingAlgorithms;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LevelManager : MonoBehaviour
+public class LevelSortingManager : MonoBehaviour
 {
     [Header("References")]
     [SerializeField]
@@ -13,9 +14,9 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI algorithmTitle;
     [SerializeField]
-    private TextMeshProUGUI countdownText;
+    private GameObject countdownPrefab;
     [SerializeField]
-    private TextMeshProUGUI timerText;
+    private Timer timer;
     [SerializeField]
     private TextMeshProUGUI mistakeCountText;
     [SerializeField]
@@ -41,12 +42,13 @@ public class LevelManager : MonoBehaviour
         var gameManager = GameManager.Singleton;
         winPanel.SetActive(false);
         pausePanel.SetActive(false);
-        countdownText.gameObject.SetActive(false);
         mistakeVisualizer.SetActive(false);
         algorithmTitle.text = gameManager.Game.SortingAlgorithm.ToString();
         if(gameManager.gameSettings.showCountdown)
         {
-            StartCoroutine(Countdown(gameManager.gameSettings.countdownTime));
+            var canvas = GameObject.Find("Canvas");
+            var countdown = Instantiate(countdownPrefab, canvas.transform).GetComponent<Countdown>();
+            countdown.Init(gameManager.gameSettings.countdownTime, StartSorting);
         }
         else
         {
@@ -88,55 +90,16 @@ public class LevelManager : MonoBehaviour
     public void RestartLevel()
     {
         var gameManager = GameManager.Singleton;
-        winPanel.SetActive(false);
-        mistakeCountText.text = "Mistakes: 0";
-        gameManager.mistakeCount = 0;
-        timerText.text = "00:00";
+        DestroyGame();
         if(gameManager.gameSettings.showCountdown)
         {
-            StartCoroutine(Countdown(gameManager.gameSettings.countdownTime));
+            var canvas = GameObject.Find("Canvas");
+            var countdown = Instantiate(countdownPrefab, canvas.transform).GetComponent<Countdown>();
+            countdown.Init(gameManager.gameSettings.countdownTime, StartSorting);
         }
         else
         {
             StartSorting();
-        }
-    }
-    
-    private IEnumerator Countdown(int seconds)
-    {
-        var count = seconds;
-        countdownText.text = "Ready?...";
-        yield return new WaitForSeconds(1);
-        countdownText.gameObject.SetActive(true);
-        while (count > 0) {
-           
-            countdownText.text = count.ToString();
-            yield return new WaitForSeconds(1);
-            count --;
-        }
-        countdownText.text = "GOOO!";
-        yield return new WaitForSeconds(1);
-        countdownText.text = "";
-        countdownText.gameObject.SetActive(false);
-
-        StartSorting();
-    }
-    
-    private IEnumerator Timer()
-    {
-        var gameManager = GameManager.Singleton;
-        var timer = 0;
-        while(gameManager.isGameRunning)
-        {
-            // wait until the game is not paused
-            yield return new WaitUntil(() => gameManager.isGamePaused == false);
-            
-            timer += 1;
-            // show the timer in minutes and seconds
-            var minutes = timer / 60;
-            var seconds = timer % 60;
-            timerText.text = $"{minutes:00}:{seconds:00}";
-            yield return new WaitForSeconds(1);
         }
     }
 
@@ -184,7 +147,7 @@ public class LevelManager : MonoBehaviour
         gameManager.isGamePaused = false;
         gameManager.mistakeCount = 0;
         mistakeCountText.text = "Mistakes: 0";
-        StartCoroutine(Timer());
+        timer.Init();
         StartCoroutine(SortingAlgorithm.PlaySort());
     }
 
@@ -193,15 +156,14 @@ public class LevelManager : MonoBehaviour
         var gameManager = GameManager.Singleton;
         var arraySettings = gameManager.arraySettings;
         
-        StopAllCoroutines();
+        DestroyGame();
         
-        ArrayView?.DestroyArray();
         ArrayView = new ArrayView(arrayParent, arraySize, arraySettings, sortType);
         
         SortingAlgorithm = sortingAlgorithm switch
         {
             ESortingAlgorithm.BubbleSort => new BubbleSort(),
-            ESortingAlgorithm.SelectionSort => new BubbleSort(), // TODO: implement SelectionSort
+            ESortingAlgorithm.SelectionSort => new SelectionSort(),
             ESortingAlgorithm.InsertionSort => new InsertionSort(),
             _ => throw new System.ArgumentOutOfRangeException(nameof(sortingAlgorithm), sortingAlgorithm, null)
         };
@@ -228,10 +190,11 @@ public class LevelManager : MonoBehaviour
         var gameManager = GameManager.Singleton;
         gameManager.isGameRunning = false;
         // TODO: gameManager.gameState.SaveHighscore(timerText.text);
+        // TODO: send the highscore to the server -> maybe something like finishedSorting with 1 for sorted and 0 for canceled game + additional info like time, mistakes, etc.
         StopAllCoroutines();
         ArrayView?.DestroyArray();
         winPanel.SetActive(true);
-        winText.text = $"You finished in {timerText.text} with {gameManager.mistakeCount} mistakes!";
+        winText.text = $"You finished in {timer.GetTime()} with {gameManager.mistakeCount} mistakes!";
     }
     
     public void AskForHelp()
@@ -244,5 +207,16 @@ public class LevelManager : MonoBehaviour
         var gameManager = GameManager.Singleton;
         gameManager.mistakeCount++;
         mistakeCountText.text = $"Mistakes: {gameManager.mistakeCount}";
+    }
+    
+    public void DestroyGame()
+    {
+        var gameManager = GameManager.Singleton;
+        winPanel.SetActive(false);
+        mistakeCountText.text = "Mistakes: 0";
+        gameManager.mistakeCount = 0;
+        timer.StopTimer();
+        StopAllCoroutines();
+        ArrayView?.DestroyArray();
     }
 }

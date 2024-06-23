@@ -7,12 +7,12 @@ namespace SortingAlgorithms
     public abstract class SortingAlgorithm
     {
         internal ArrayView ArrayView;
-        internal LevelManager LevelManager;
+        internal LevelSortingManager LevelSortingManager;
         internal ArraySettings ArraySettings;
 
-        public void Init(LevelManager levelManager, ArrayView arrayView, ArraySettings arraySettings)
+        public void Init(LevelSortingManager levelSortingManager, ArrayView arrayView, ArraySettings arraySettings)
         {
-            LevelManager = levelManager;
+            LevelSortingManager = levelSortingManager;
             ArrayView = arrayView;
             ArraySettings = arraySettings;
             PrepareSteps();

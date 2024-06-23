@@ -13,6 +13,10 @@ namespace Configs
         public bool showCountdown = true;
         public int countdownTime = 3;
         
+        [Space]
+        public bool showTimer = true;
+        public int timeLimit = 60;
+        
         [Header("Sorting Algorithm Settings")]
         public ESortingAlgorithm defaultSortingAlgorithm = ESortingAlgorithm.BubbleSort;
         public ESortType defaultSortType = ESortType.Unsorted;

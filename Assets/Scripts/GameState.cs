@@ -33,7 +33,7 @@ public sealed class GameState : MonoBehaviour
                 }
                 
                 // try find ArrayView
-                var levelManager = FindObjectOfType<LevelManager>();
+                var levelManager = FindObjectOfType<LevelSortingManager>();
                 if (levelManager != null)
                 {
                         if(levelManager.ArrayView != null)

@@ -58,7 +58,7 @@ public sealed class GameManager : MonoBehaviour
     public void StartLevel(ESortingAlgorithm sortingAlgorithm, ESortType sortType, int arraySize)
     {
         Game = new Game(sortingAlgorithm, sortType, arraySize);
-        LoadScene(Constants.LEVEL_SCENE);
+        LoadScene(Constants.LEVEL_SORTING_SCENE);
     }
 
     public void LoadScene(string sceneName)
