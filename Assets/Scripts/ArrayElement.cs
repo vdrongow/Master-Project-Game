@@ -1,15 +1,18 @@
-﻿using Manager;
+﻿using System;
+using Manager;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class ArrayElement : MonoBehaviour
+public class ArrayElement : MonoBehaviour, IPointerClickHandler
 {
     public int Value { get; set; }
     public bool IsHighlighted { get; set; }
     public bool IsSorted { get; set; }
     
     public GameObject highlightCurrent = null!;
-    
-    public void Init(int value)
+    private Action _onClick = null!;
+
+    public void Init(int value, Action onClick = null)
     {
         Value = value;
         IsHighlighted = false;
@@ -31,6 +34,11 @@ public class ArrayElement : MonoBehaviour
         delta = new Vector2(sizeDelta.x, barHeight);
         barTransform.sizeDelta = delta;
         gameObject.name = $"ArrayElement{value}";
+    }
+    
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        _onClick?.Invoke();
     }
 
     public override string ToString()
