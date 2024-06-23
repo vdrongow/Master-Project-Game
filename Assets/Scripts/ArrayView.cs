@@ -90,30 +90,14 @@ public class ArrayView
         for (var i = 0; i < ArraySize; i++)
         {
             var go = Object.Instantiate(_arraySettings.barPrefab, _arrayParent.transform);
-            SetBarHeight(go, array[i]);
 
             var arrayElement = go.GetComponent<ArrayElement>();
             arrayElement.Init(array[i]);
-            arrayElement.highlightCurrent.SetActive(false);
             ArrayElements.Add(arrayElement);
         }
         
         // sort the array to compare the values with the sorted array
         SortArray();
-    }
-    
-    private void SetBarHeight(GameObject go, int value)
-    {
-        var barTransform = go.GetComponent<RectTransform>();
-        // safe the current height of the bar as 100%
-        var delta = barTransform.sizeDelta;
-        var sizeDelta = delta;
-        // scale the bar height according to the value where 100% is the maxBarHeight and 0% is 0
-        var barHeight = _arraySettings.maxBarHeight * value / _arraySettings.maxValue;
-        // set the new height of the bar
-        delta = new Vector2(sizeDelta.x, barHeight);
-        barTransform.sizeDelta = delta;
-        go.name = $"ArrayElement{value}";
     }
 
     public void ApplyBarEffect(int index, EBarEffect effect)
