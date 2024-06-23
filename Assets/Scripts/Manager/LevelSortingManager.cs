@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using Enums;
+﻿using Enums;
 using SortingAlgorithms;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Manager
 {
@@ -21,7 +19,7 @@ namespace Manager
         [SerializeField]
         private TextMeshProUGUI mistakeCountText;
         [SerializeField]
-        private GameObject mistakeVisualizer;
+        private GameObject mistakeVisualizerPrefab;
         [SerializeField]
         private GameObject winPanel;
         [SerializeField]
@@ -43,7 +41,6 @@ namespace Manager
             var gameManager = GameManager.Singleton;
             winPanel.SetActive(false);
             pausePanel.SetActive(false);
-            mistakeVisualizer.SetActive(false);
             algorithmTitle.text = gameManager.SortingGame.SortingAlgorithm.ToString();
             if(gameManager.gameSettings.showCountdown)
             {
@@ -108,35 +105,9 @@ namespace Manager
 
         public void ShowMistakeVisualizer(float seconds)
         {
-            StartCoroutine(MistakeVisualizerCoroutine(seconds));
-        }
-    
-        private IEnumerator MistakeVisualizerCoroutine(float seconds)
-        {
-            mistakeVisualizer.SetActive(true);
-
-            var visualizerImage = mistakeVisualizer.GetComponent<Image>();
-
-            var blinkInterval = 0.1f;
-            var blinkCount = Mathf.FloorToInt(seconds / (2 * blinkInterval));
-
-            for (var i = 0; i < blinkCount; i++)
-            {
-                SetImageAlpha(visualizerImage, 0);
-                yield return new WaitForSeconds(blinkInterval);
-
-                SetImageAlpha(visualizerImage, 1);
-                yield return new WaitForSeconds(blinkInterval);
-            }
-            SetImageAlpha(visualizerImage, 1);
-            mistakeVisualizer.SetActive(false);
-            
-            void SetImageAlpha(Graphic image, float alpha)
-            {
-                var color = image.color;
-                color.a = alpha;
-                image.color = color;
-            }
+            var canvas = GameObject.Find("Canvas");
+            var mistakeVisualizer = Instantiate(mistakeVisualizerPrefab, canvas.transform).GetComponent<MistakeVisualizer>();
+            mistakeVisualizer.Init(seconds);
         }
 
         private void StartGame()

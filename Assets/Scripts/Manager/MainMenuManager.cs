@@ -19,7 +19,7 @@ namespace Manager
             Debug.Log($"Logged in as {moduleConnection.GetLoggedInUser()}");
         }
 
-        public void StartGame()
+        public void StartSortingGame()
         {
             var gameManager = GameManager.Singleton;
             var sortingAlgorithm = algorithmSelector.GetSortingAlgorithm();
