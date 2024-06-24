@@ -36,5 +36,7 @@ namespace BasicConcepts
         }
 
         public abstract void OnArrayElementClicked(ArrayElement arrayElement);
+        
+        public abstract string GetTaskAsString();
     }
 }

@@ -38,6 +38,7 @@ public sealed class GameState : MonoBehaviour
             sb.AppendLine("Basic Game:");
             sb.AppendLine("-----------------------------");
             sb.AppendLine(gameManager.BasicGame.ToString());
+            PrintBasicGameData();
         }
         else
         {
@@ -82,6 +83,26 @@ public sealed class GameState : MonoBehaviour
                 {
                     sb.AppendLine(empty);
                     sb.AppendLine();
+                }
+            }
+        }
+
+        void PrintBasicGameData()
+        {
+            // try find BasicConcepts
+            var levelManager = FindObjectOfType<LevelBasicsManager>();
+            if (levelManager != null)
+            {
+                if (levelManager.BasicConcepts != null)
+                {
+                    sb.AppendLine();
+                    sb.AppendLine("Basic Concept:");
+                    sb.AppendLine("-----------------------------");
+                    sb.AppendLine(levelManager.BasicConcepts.GetTaskAsString());
+                }
+                else
+                {
+                    sb.AppendLine(empty);
                 }
             }
         }

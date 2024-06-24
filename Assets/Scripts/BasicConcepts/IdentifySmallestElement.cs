@@ -53,5 +53,14 @@ namespace BasicConcepts
             }
             _arrayElements.Clear();
         }
+        
+        public override string GetTaskAsString()
+        {
+            var task = $"smallest Element: {_smallestElement.Value} \n";
+            task += string.Join(", \n",
+                _arrayElements.Select((arrayEl, index) =>
+                    $"[{index.ToString()}] {arrayEl.Value}"));
+            return task;
+        }
     }
 }
