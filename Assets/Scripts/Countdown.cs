@@ -33,7 +33,6 @@ public class Countdown : MonoBehaviour
         _countdownText.text = "GOOO!";
         yield return new WaitForSeconds(1);
         _countdownText.text = "";
-        _countdownText.gameObject.SetActive(false);
         
         _callback?.Invoke();
         DestroyCountdown();

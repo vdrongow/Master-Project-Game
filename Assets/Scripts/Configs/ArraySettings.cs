@@ -9,7 +9,7 @@ namespace Configs
         public GameObject barPrefab = null!;
 
         [Space]
-        public float maxBarHeight = 805f;
+        public float maxBarHeight = 725f;
         
         [Header("Values")]
         public int minValue = 1;

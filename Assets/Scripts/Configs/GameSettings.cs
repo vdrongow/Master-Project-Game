@@ -9,20 +9,21 @@ namespace Configs
         public bool devMode = false;
         public bool showDebugLogs = true;
         
-        [Space]
+        [Header("Countdown")]
         public bool showCountdown = true;
         public int countdownTime = 3;
         
-        [Space]
+        [Header("Timer")]
         public bool showTimer = true;
         public int timeLimit = 60;
         
-        [Header("Sorting Algorithm Settings")]
+        [Header("Sorting Algorithm Level")]
         public ESortingAlgorithm defaultSortingAlgorithm = ESortingAlgorithm.BubbleSort;
         public ESortType defaultSortType = ESortType.Unsorted;
         public int defaultArraySize = 5;
         
-        [Header("Basic Level Settings")]
+        [Header("Basic Level")]
         public EBasicConcepts defaultBasicConcept = EBasicConcepts.IdentifyLargerElement;
+        public int defaultBasicLevelElements = 5;
     }
 }

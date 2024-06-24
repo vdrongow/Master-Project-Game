@@ -162,9 +162,9 @@ namespace Manager
         public void FinishSorting()
         {
             var gameManager = GameManager.Singleton;
+            DestroyGame();
             winPanel.SetActive(true);
             winText.text = $"You finished in {timer.GetTime()} with {gameManager.SortingGame.MistakeCount} mistakes!";
-            DestroyGame();
             // TODO: gameManager.gameState.SaveHighscore(timerText.text);
             // TODO: send the highscore to the server -> maybe something like finishedSorting with 1 for sorted and 0 for canceled game + additional info like time, mistakes, etc.
         }
@@ -187,7 +187,10 @@ namespace Manager
             gameManager.isGameRunning = true;
             gameManager.isGamePaused = false;
             gameManager.SortingGame.IsRunning = false;
+            
             winPanel.SetActive(false);
+            pausePanel.SetActive(false);
+            
             ResetMistakes();
             timer.StopTimer();
             StopAllCoroutines();
