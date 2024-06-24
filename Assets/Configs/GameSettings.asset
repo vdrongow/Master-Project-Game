@@ -14,11 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   devMode: 1
   showDebugLogs: 1
-  showCountdown: 0
+  showCountdown: 1
   countdownTime: 3
   showTimer: 1
-  timeLimit: 60
+  timeLimit: 30
+  showMistakeVisualizer: 1
+  errorCooldown: 1
   defaultSortingAlgorithm: 1
   defaultSortType: 0
   defaultArraySize: 10
-  defaultBasicConcept: 0
+  defaultBasicSkill: 1
+  defaultBasicLevelElements: 10

@@ -136,12 +136,7 @@ namespace SortingAlgorithms
                     {
                         mistake++;
                         LevelSortingManager.IncreaseMistakeCount();
-                        if(gameSettings.showDebugLogs)
-                        {
-                            Debug.Log("Mistake!");
-                        }
-                        LevelSortingManager.ShowMistakeVisualizer(ArraySettings.errorCooldown);
-                        yield return new WaitForSeconds(ArraySettings.errorCooldown);
+                        yield return new WaitForSeconds(gameSettings.errorCooldown);
                     }
                 }
                 else if (InputManager.Singleton.GetRightInput())
@@ -150,12 +145,7 @@ namespace SortingAlgorithms
                     {
                         mistake++;
                         LevelSortingManager.IncreaseMistakeCount();
-                        if (gameSettings.showDebugLogs)
-                        {
-                            Debug.Log("Mistake!");
-                        }
-                        LevelSortingManager.ShowMistakeVisualizer(ArraySettings.errorCooldown);
-                        yield return new WaitForSeconds(ArraySettings.errorCooldown);
+                        yield return new WaitForSeconds(gameSettings.errorCooldown);
                     }
                     else
                     {
@@ -178,7 +168,7 @@ namespace SortingAlgorithms
                 ArrayView.ApplyBarEffect(i, EBarEffect.Sorted);
             }
             Debug.Log($"Sorting finished with {mistake} mistakes.");
-            LevelSortingManager.FinishSorting();
+            LevelSortingManager.EndGame();
         }
 
         private void ApplyEffects((int index, int minIndex, bool foundNewMin, bool swap, int end) step)

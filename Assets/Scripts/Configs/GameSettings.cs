@@ -17,6 +17,10 @@ namespace Configs
         public bool showTimer = true;
         public int timeLimit = 60;
         
+        [Header("MistakeVisualizer")]
+        public bool showMistakeVisualizer = true;
+        public float errorCooldown = 1f;
+        
         [Header("Sorting Algorithm Level")]
         public ESortingAlgorithm defaultSortingAlgorithm = ESortingAlgorithm.BubbleSort;
         public ESortType defaultSortType = ESortType.Unsorted;

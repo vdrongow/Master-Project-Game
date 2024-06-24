@@ -23,7 +23,6 @@ namespace Configs
         
         [Header("Sorting")]
         public float sortingSpeed = 1f;
-        public float errorCooldown = 1f;
 
         [Header("Colors")]
         public Color highlightColor = Color.blue;

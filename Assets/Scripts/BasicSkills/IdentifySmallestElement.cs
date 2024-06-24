@@ -16,8 +16,7 @@ namespace BasicSkills
         protected override void InitTask()
         {
             var gameSettings = GameManager.Singleton.gameSettings;
-            var arraySettings = GameManager.Singleton.arraySettings;
-            DestroyArrayElements();
+            DestroyTask();
             var size = gameSettings.defaultBasicLevelElements;
             var array = CreateArray(size);
             // visualise the array using bars with different heights according to the values
@@ -39,7 +38,7 @@ namespace BasicSkills
             }
         }
         
-        private void DestroyArrayElements()
+        public override void DestroyTask()
         {
             foreach (var arrayElement in _arrayElements)
             {

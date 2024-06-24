@@ -61,5 +61,7 @@ namespace BasicSkills
         public abstract void OnArrayElementClicked(ArrayElement arrayElement);
         
         public abstract string GetTaskAsString();
+
+        public abstract void DestroyTask();
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using BasicSkills;
 using Enums;
-using SortingAlgorithms;
 using TMPro;
 using UnityEngine;
 
@@ -35,9 +34,15 @@ namespace Manager
 
         private void Start()
         {
+            NewGame();
+        }
+
+        #region Game Control
+
+        public void NewGame()
+        {
             var gameManager = GameManager.Singleton;
-            winPanel.SetActive(false);
-            pausePanel.SetActive(false);
+            ResetGame();
             if (gameManager.gameSettings.showCountdown)
             {
                 var canvas = GameObject.Find("Canvas");
@@ -50,37 +55,25 @@ namespace Manager
             }
         }
 
-        #region Game Control
-
         private void StartGame()
         {
             var gameManager = GameManager.Singleton;
             gameManager.isGameRunning = true;
             gameManager.isGamePaused = false;
             gameManager.BasicGame.IsRunning = true;
-            ResetScore();
+            
             timer.Init(isCountingUp: false, startingTime: gameManager.gameSettings.timeLimit,
                 timerRunOutCallback: EndGame);
-            
-            var basicSkill = gameManager.BasicGame.BasicSkill;
-            
-            BasicSkill = basicSkill switch
-            {
-                EBasicSkill.IdentifySmallestElement => new IdentifySmallestElement(),
-                EBasicSkill.IdentifyLargestElement => new IdentifyLargestElement(),
-                _ => throw new ArgumentOutOfRangeException()
-            };
             BasicSkill.Init(this);
-            gameTitle.text = BasicSkill.GetTaskTitle();
         }
 
         private void EndGame()
         {
             var gameManager = GameManager.Singleton;
-
             gameManager.isGameRunning = false;
             gameManager.isGamePaused = true;
             gameManager.BasicGame.IsRunning = false;
+            
             winPanel.SetActive(true);
             winText.text = $"You scored {gameManager.BasicGame.Score} points in {gameManager.gameSettings.timeLimit} seconds!";
             timer.StopTimer();
@@ -99,30 +92,42 @@ namespace Manager
             gameManager.isGamePaused = false;
             pausePanel.SetActive(false);
         }
-
-        public void DestroyGame()
-        {
-            var gameManager = GameManager.Singleton;
-            gameManager.isGameRunning = true;
-            gameManager.isGamePaused = false;
-            gameManager.SortingGame.IsRunning = false;
-            winPanel.SetActive(false);
-            timer.StopTimer();
-            StopAllCoroutines();
-        }
-
-        private void ResetScore()
-        {
-            var gameManager = GameManager.Singleton;
-            gameManager.BasicGame.Score = 0;
-            scoreCountText.text = "Score: 0";
-        }
-
+        
         public void BackToMainMenu()
         {
-            DestroyGame();
             var gameManager = GameManager.Singleton;
             gameManager.LoadScene(Constants.MAIN_MENU_SCENE);
+        }
+
+        private void ResetGame()
+        {
+            var gameManager = GameManager.Singleton;
+            gameManager.isGameRunning = false;
+            gameManager.isGamePaused = false;
+            gameManager.SortingGame.IsRunning = false;
+            
+            // reset score and mistakes
+            gameManager.BasicGame.Score = 0;
+            scoreCountText.text = "Score: 0";
+            gameManager.BasicGame.Mistakes = 0;
+            mistakeCountText.text = "Mistakes: 0";
+            
+            BasicSkill?.DestroyTask();
+            var basicSkill = gameManager.BasicGame.BasicSkill;
+            BasicSkill = basicSkill switch
+            {
+                EBasicSkill.IdentifySmallestElement => new IdentifySmallestElement(),
+                EBasicSkill.IdentifyLargestElement => new IdentifyLargestElement(),
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            
+            gameTitle.text = BasicSkill.GetTaskTitle();
+            
+            winPanel.SetActive(false);
+            pausePanel.SetActive(false);
+            
+            timer.StopTimer();
+            StopAllCoroutines();
         }
 
         #endregion
@@ -142,8 +147,9 @@ namespace Manager
             gameManager.BasicGame.Mistakes++;
             mistakeCountText.text = $"Mistakes: {gameManager.BasicGame.Mistakes}";
             var canvas = GameObject.Find("Canvas");
-            var mistakeVisualizer = Instantiate(mistakeVisualizerPrefab, canvas.transform);
-            mistakeVisualizer.GetComponent<MistakeVisualizer>().Init(gameManager.BasicGame.Mistakes);
+            var mistakeVisualizer =
+                Instantiate(mistakeVisualizerPrefab, canvas.transform).GetComponent<MistakeVisualizer>();
+            mistakeVisualizer.Init(gameManager.gameSettings.errorCooldown);
         }
 
         #endregion
