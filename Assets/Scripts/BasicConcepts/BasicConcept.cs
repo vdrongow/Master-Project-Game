@@ -8,17 +8,20 @@ namespace BasicConcepts
     {
         internal LevelBasicsManager LevelBasicsManager;
         
-        public void StartGame(LevelBasicsManager levelBasicsManager)
+        public void Init(LevelBasicsManager levelBasicsManager)
         {
             LevelBasicsManager = levelBasicsManager;
-            InitGame();
+            InitTask();
         }
 
-        protected abstract void InitGame();
+        public abstract string GetTaskTitle();
+        
+        protected abstract void InitTask();
         
         protected int[] CreateArray(int size)
         {
             var arraySettings = GameManager.Singleton.arraySettings;
+            arraySettings.maxValue = arraySettings.minValue + size - 1;
             var array = new int[size];
             for (var i = 0; i < size; i++)
             {

@@ -17,6 +17,6 @@ namespace Structs
             IsRunning = isRunning;
         }
     
-        public override string ToString() => $"Basic Concept: {BasicConcept}, Score: {Score}";
+        public override string ToString() => $"Basic Concept: {BasicConcept}, Score: {Score}, Mistakes: {Mistakes}";
     }
 }

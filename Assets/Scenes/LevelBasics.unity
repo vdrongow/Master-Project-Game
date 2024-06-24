@@ -513,7 +513,7 @@ MonoBehaviour:
   winPanel: {fileID: 671532106}
   winText: {fileID: 2029405250}
   pausePanel: {fileID: 139877035}
-  contentParent: {fileID: 0}
+  contentParent: {fileID: 1429262494}
 --- !u!1 &139877035
 GameObject:
   m_ObjectHideFlags: 0
@@ -2589,7 +2589,7 @@ MonoBehaviour:
     m_Left: 75
     m_Right: 75
     m_Top: 0
-    m_Bottom: 15
+    m_Bottom: 75
   m_ChildAlignment: 7
   m_Spacing: 50
   m_ChildForceExpandWidth: 1

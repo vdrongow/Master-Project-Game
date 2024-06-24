@@ -18,6 +18,7 @@ public class ArrayElement : MonoBehaviour, IPointerClickHandler
         IsHighlighted = false;
         IsSorted = false;
         highlightCurrent.SetActive(false);
+        _onClick = onClick;
         SetBarHeight(value);
     }
 

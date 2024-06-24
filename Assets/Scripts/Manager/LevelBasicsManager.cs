@@ -1,4 +1,7 @@
-﻿using BasicConcepts;
+﻿using System;
+using BasicConcepts;
+using Enums;
+using SortingAlgorithms;
 using TMPro;
 using UnityEngine;
 
@@ -35,7 +38,6 @@ namespace Manager
             var gameManager = GameManager.Singleton;
             winPanel.SetActive(false);
             pausePanel.SetActive(false);
-            gameTitle.text = gameManager.BasicGame.BasicConcept.ToString();
             if (gameManager.gameSettings.showCountdown)
             {
                 var canvas = GameObject.Find("Canvas");
@@ -60,7 +62,20 @@ namespace Manager
             timer.Init(isCountingUp: false, startingTime: gameManager.gameSettings.timeLimit,
                 timerRunOutCallback: EndGame);
             
-            BasicConcepts.StartGame(this);
+            var basicConcept = gameManager.BasicGame.BasicConcept;
+            
+            BasicConcepts = basicConcept switch
+            {
+                EBasicConcepts.IdentifySmallestElement => new IdentifySmallestElement(),
+                // EBasicConcepts.IdentifyLargestElement => expr,
+                // EBasicConcepts.IdentifySmallerElement => expr,
+                // EBasicConcepts.IdentifyLargerElement => expr,
+                // EBasicConcepts.IdentifySortedArray => expr,
+                // EBasicConcepts.IdentifyUnsortedArray => expr,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            BasicConcepts.Init(this);
+            gameTitle.text = BasicConcepts.GetTaskTitle();
         }
 
         private void EndGame()
@@ -71,7 +86,7 @@ namespace Manager
             gameManager.isGamePaused = true;
             gameManager.BasicGame.IsRunning = false;
             winPanel.SetActive(true);
-            winText.text = $"You finished in {timer.GetTime()} with {gameManager.BasicGame.Score} correct answers!";
+            winText.text = $"You scored {gameManager.BasicGame.Score} points in {gameManager.gameSettings.timeLimit} seconds!";
             timer.StopTimer();
         }
 
@@ -129,8 +144,9 @@ namespace Manager
         {
             var gameManager = GameManager.Singleton;
             gameManager.BasicGame.Mistakes++;
-            mistakeCountText.text = $"Mistakes: {gameManager.SortingGame.MistakeCount}";
-            var mistakeVisualizer = Instantiate(mistakeVisualizerPrefab, transform);
+            mistakeCountText.text = $"Mistakes: {gameManager.BasicGame.Mistakes}";
+            var canvas = GameObject.Find("Canvas");
+            var mistakeVisualizer = Instantiate(mistakeVisualizerPrefab, canvas.transform);
             mistakeVisualizer.GetComponent<MistakeVisualizer>().Init(gameManager.BasicGame.Mistakes);
         }
 
