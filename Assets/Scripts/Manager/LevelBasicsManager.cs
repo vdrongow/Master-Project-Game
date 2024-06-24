@@ -67,11 +67,7 @@ namespace Manager
             BasicSkill = basicSkill switch
             {
                 EBasicSkill.IdentifySmallestElement => new IdentifySmallestElement(),
-                // EBasicConcepts.IdentifyLargestElement => expr,
-                // EBasicConcepts.IdentifySmallerElement => expr,
-                // EBasicConcepts.IdentifyLargerElement => expr,
-                // EBasicConcepts.IdentifySortedArray => expr,
-                // EBasicConcepts.IdentifyUnsortedArray => expr,
+                EBasicSkill.IdentifyLargestElement => new IdentifyLargestElement(),
                 _ => throw new ArgumentOutOfRangeException()
             };
             BasicSkill.Init(this);

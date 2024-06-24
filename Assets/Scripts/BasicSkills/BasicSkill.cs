@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using Configs;
 using Manager;
+using Unity.VisualScripting;
 using Random = UnityEngine.Random;
 
 namespace BasicSkills
@@ -7,10 +10,15 @@ namespace BasicSkills
     public abstract class BasicSkill
     {
         internal LevelBasicsManager LevelBasicsManager;
+        internal GameSettings GameSettings;
+        internal ArraySettings ArraySettings;
         
         public void Init(LevelBasicsManager levelBasicsManager)
         {
             LevelBasicsManager = levelBasicsManager;
+            var gameManager = GameManager.Singleton;
+            GameSettings = gameManager.gameSettings;
+            ArraySettings = gameManager.arraySettings;
             InitTask();
         }
 
@@ -33,6 +41,21 @@ namespace BasicSkills
                 array[i] = value;
             }
             return array;
+        }
+
+        protected List<ArrayElement> InitArrayElements(int[] array)
+        {
+            var size = array.Length;
+            var arrayElements = new List<ArrayElement>();
+            for (var i = 0; i < size; i++)
+            {
+                var go = UnityEngine.Object.Instantiate(ArraySettings.barPrefab, LevelBasicsManager.contentParent.transform);
+                var arrayElement = go.GetComponent<ArrayElement>();
+                arrayElement.Init(array[i], () => OnArrayElementClicked(arrayElement));
+                arrayElements.Add(arrayElement);
+            }
+
+            return arrayElements;
         }
 
         public abstract void OnArrayElementClicked(ArrayElement arrayElement);

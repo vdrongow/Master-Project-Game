@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace BasicSkills
 {
-    public sealed class IdentifySmallestElement : BasicSkill
+    public sealed class IdentifyLargestElement : BasicSkill
     {
-        private const string TaskTitle = "Pick the Smallest Element";
+        private const string TaskTitle = "Pick the Largest Element";
         private List<ArrayElement> _arrayElements = new();
-        private ArrayElement _smallestElement;
+        private ArrayElement _largestElement;
         
         public override string GetTaskTitle() => TaskTitle;
 
@@ -22,13 +22,13 @@ namespace BasicSkills
             var array = CreateArray(size);
             // visualise the array using bars with different heights according to the values
             _arrayElements = InitArrayElements(array);
-            // find the smallest element in the array
-            _smallestElement = _arrayElements.OrderBy(x => x.Value).First();
+            // find the largest element in the array
+            _largestElement = _arrayElements.OrderByDescending(x => x.Value).First();
         }
 
         public override void OnArrayElementClicked(ArrayElement arrayElement)
         {
-            if (arrayElement == _smallestElement)
+            if (arrayElement == _largestElement)
             {
                 LevelBasicsManager.IncreaseScoreCount();
                 InitTask();
@@ -47,10 +47,10 @@ namespace BasicSkills
             }
             _arrayElements.Clear();
         }
-        
+
         public override string GetTaskAsString()
         {
-            var task = $"smallest Element: {_smallestElement.Value} \n";
+            var task = $"largest Element: {_largestElement.Value} \n";
             task += string.Join(", \n",
                 _arrayElements.Select((arrayEl, index) =>
                     $"[{index.ToString()}] {arrayEl.Value}"));
