@@ -2,9 +2,9 @@
 using Manager;
 using Random = UnityEngine.Random;
 
-namespace BasicConcepts
+namespace BasicSkills
 {
-    public abstract class BasicConcept
+    public abstract class BasicSkill
     {
         internal LevelBasicsManager LevelBasicsManager;
         

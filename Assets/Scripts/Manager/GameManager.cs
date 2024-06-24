@@ -43,7 +43,7 @@ namespace Manager
                 gameSettings.defaultSortType,
                 gameSettings.defaultArraySize);
             
-            BasicGame = new BasicGame(gameSettings.defaultBasicConcept);
+            BasicGame = new BasicGame(gameSettings.defaultBasicSkill);
         }
 
         public void StartSession()
@@ -66,9 +66,9 @@ namespace Manager
             LoadScene(Constants.LEVEL_SORTING_SCENE);
         }
         
-        public void StartBasicLevel(EBasicConcepts basicConcept)
+        public void StartBasicLevel(EBasicSkill basicSkill)
         {
-            BasicGame = new BasicGame(basicConcept);
+            BasicGame = new BasicGame(basicSkill);
             LoadScene(Constants.LEVEL_BASICS_SCENE);
         }
 

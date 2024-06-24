@@ -22,8 +22,8 @@ namespace Configs
         public ESortType defaultSortType = ESortType.Unsorted;
         public int defaultArraySize = 5;
         
-        [Header("Basic Level")]
-        public EBasicConcepts defaultBasicConcept = EBasicConcepts.IdentifyLargerElement;
+        [Header("Basic Skill Level")]
+        public EBasicSkill defaultBasicSkill = EBasicSkill.IdentifyLargerNumber;
         public int defaultBasicLevelElements = 5;
     }
 }

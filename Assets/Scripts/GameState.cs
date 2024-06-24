@@ -93,12 +93,12 @@ public sealed class GameState : MonoBehaviour
             var levelManager = FindObjectOfType<LevelBasicsManager>();
             if (levelManager != null)
             {
-                if (levelManager.BasicConcepts != null)
+                if (levelManager.BasicSkill != null)
                 {
                     sb.AppendLine();
-                    sb.AppendLine("Basic Concept:");
+                    sb.AppendLine("Basic Skill:");
                     sb.AppendLine("-----------------------------");
-                    sb.AppendLine(levelManager.BasicConcepts.GetTaskAsString());
+                    sb.AppendLine(levelManager.BasicSkill.GetTaskAsString());
                 }
                 else
                 {

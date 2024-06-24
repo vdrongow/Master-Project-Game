@@ -3,12 +3,12 @@
 namespace Enums
 {
     [Serializable]
-    public enum EBasicConcepts
+    public enum EBasicSkill
     {
         IdentifySmallestElement = 0,
         IdentifyLargestElement = 1,
-        IdentifySmallerElement = 2,
-        IdentifyLargerElement = 3,
+        IdentifySmallerNumber = 2,
+        IdentifyLargerNumber = 3,
         IdentifySortedArray = 4,
         IdentifyUnsortedArray = 5,
     }

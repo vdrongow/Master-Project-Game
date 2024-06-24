@@ -1,5 +1,5 @@
 ﻿using System;
-using BasicConcepts;
+using BasicSkills;
 using Enums;
 using SortingAlgorithms;
 using TMPro;
@@ -31,7 +31,7 @@ namespace Manager
         [SerializeField]
         public GameObject contentParent;
         
-        public BasicConcept BasicConcepts;
+        public BasicSkill BasicSkill;
 
         private void Start()
         {
@@ -62,11 +62,11 @@ namespace Manager
             timer.Init(isCountingUp: false, startingTime: gameManager.gameSettings.timeLimit,
                 timerRunOutCallback: EndGame);
             
-            var basicConcept = gameManager.BasicGame.BasicConcept;
+            var basicSkill = gameManager.BasicGame.BasicSkill;
             
-            BasicConcepts = basicConcept switch
+            BasicSkill = basicSkill switch
             {
-                EBasicConcepts.IdentifySmallestElement => new IdentifySmallestElement(),
+                EBasicSkill.IdentifySmallestElement => new IdentifySmallestElement(),
                 // EBasicConcepts.IdentifyLargestElement => expr,
                 // EBasicConcepts.IdentifySmallerElement => expr,
                 // EBasicConcepts.IdentifyLargerElement => expr,
@@ -74,8 +74,8 @@ namespace Manager
                 // EBasicConcepts.IdentifyUnsortedArray => expr,
                 _ => throw new ArgumentOutOfRangeException()
             };
-            BasicConcepts.Init(this);
-            gameTitle.text = BasicConcepts.GetTaskTitle();
+            BasicSkill.Init(this);
+            gameTitle.text = BasicSkill.GetTaskTitle();
         }
 
         private void EndGame()

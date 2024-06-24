@@ -3,15 +3,15 @@ using System.Linq;
 using Manager;
 using UnityEngine;
 
-namespace BasicConcepts
+namespace BasicSkills
 {
-    public sealed class IdentifySmallestElement : BasicConcept
+    public sealed class IdentifySmallestElement : BasicSkill
     {
-        private string _taskTitle = "Pick the Smallest Element";
-        private List<ArrayElement> _arrayElements = new();
+        private const string TaskTitle = "Pick the Smallest Element";
+        private readonly List<ArrayElement> _arrayElements = new();
         private ArrayElement _smallestElement;
         
-        public override string GetTaskTitle() => _taskTitle;
+        public override string GetTaskTitle() => TaskTitle;
 
         protected override void InitTask()
         {
