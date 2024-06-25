@@ -65,6 +65,11 @@ namespace Manager
         public void NewGame()
         {
             var gameManager = GameManager.Singleton;
+            // check if game is started again, then send finished false to server
+            if (gameManager.isGameRunning)
+            {
+                gameManager.SubmitFinishedSortingGame(SortingAlgorithm.GetSortingAlgorithm(), correctness: 0, timer.GetTimeInSeconds(), gameManager.SortingGame.MistakeCount);
+            }
             ResetGame();
             if (gameManager.gameSettings.showCountdown)
             {
@@ -99,9 +104,10 @@ namespace Manager
             gameManager.SortingGame.IsRunning = false;
             
             winPanel.SetActive(true);
-            winText.text = $"You finished in {timer.GetTime()} with {gameManager.SortingGame.MistakeCount} mistakes!";
+            winText.text = $"You finished in {timer.GetTimeAsString()} with {gameManager.SortingGame.MistakeCount} mistakes!";
+            
+            gameManager.SubmitFinishedSortingGame(SortingAlgorithm.GetSortingAlgorithm(), correctness: 1, timer.GetTimeInSeconds(), gameManager.SortingGame.MistakeCount);
             // TODO: gameManager.gameState.SaveHighscore(timerText.text);
-            // TODO: send the highscore to the server -> maybe something like finishedSorting with 1 for sorted and 0 for canceled game + additional info like time, mistakes, etc.
         }
         
         public void PauseGame()
@@ -121,6 +127,7 @@ namespace Manager
         public void BackToMainMenu()
         {
             var gameManager = GameManager.Singleton;
+            gameManager.SubmitFinishedSortingGame(SortingAlgorithm.GetSortingAlgorithm(), correctness: 0, timer.GetTimeInSeconds(), gameManager.SortingGame.MistakeCount);
             gameManager.LoadScene(Constants.MAIN_MENU_SCENE);
         }
 

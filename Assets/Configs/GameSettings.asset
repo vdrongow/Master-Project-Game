@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   devMode: 1
   showDebugLogs: 1
-  showCountdown: 0
+  showCountdown: 1
   countdownTime: 3
   showTimer: 1
   timeLimit: 30

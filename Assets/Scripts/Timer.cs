@@ -62,8 +62,16 @@ public class Timer : MonoBehaviour
         }
     }
     
-    public string GetTime()
+    public string GetTimeAsString()
     {
         return _timerText.text;
+    }
+    
+    public int GetTimeInSeconds()
+    {
+        var time = _timerText.text.Split(':');
+        var minutes = int.Parse(time[0]);
+        var seconds = int.Parse(time[1]);
+        return minutes * 60 + seconds;
     }
 }

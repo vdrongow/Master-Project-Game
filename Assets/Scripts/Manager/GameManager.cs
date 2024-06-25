@@ -1,4 +1,5 @@
-﻿using Adlete;
+﻿using System;
+using Adlete;
 using Configs;
 using Enums;
 using Structs;
@@ -46,6 +47,8 @@ namespace Manager
             BasicGame = new BasicGame(gameSettings.defaultBasicSkill);
         }
 
+        #region Adlete
+        
         public void StartSession()
         {
             var moduleConnection = ModuleConnection.Singleton;
@@ -59,6 +62,45 @@ namespace Manager
             moduleConnection.StopSession(_ => Debug.Log("Session stopped"),
                 errorString => Debug.Log($"Error while stopping session: {errorString}"));
         }
+        
+        public void SubmitFinishedSortingGame(ESortingAlgorithm sortingAlgorithm, int correctness, int playedTime, int mistakes)
+        {
+            var activityName = sortingAlgorithm switch
+            {
+                ESortingAlgorithm.BubbleSort => Constants.ACTIVITY_BUBBLE_SORT_FINISHED,
+                ESortingAlgorithm.SelectionSort => Constants.ACTIVITY_SELECTION_SORT_FINISHED,
+                ESortingAlgorithm.InsertionSort => Constants.ACTIVITY_INSERTION_SORT_FINISHED,
+                _ => throw new ArgumentOutOfRangeException(nameof(sortingAlgorithm), sortingAlgorithm, null)
+            };
+            
+            var additionalInfos = $"Played Time: {playedTime}, Mistakes: {mistakes}";
+            SubmitActivityResult(activityName, correctness, additionalInfos);
+        }
+
+        public void SubmitActivityResult(string activityName, int correctness, string additionalInfos = "")
+        {
+            if(gameSettings.showDebugLogs)
+            {
+                Debug.Log($"SubmitActivityResult: {activityName}, {correctness}, {additionalInfos}");
+            }
+            var moduleConnection = ModuleConnection.Singleton;
+            if (moduleConnection.GetLoggedInUser() == null)
+            {
+                Debug.LogWarning("User is not logged in. Cannot submit activity result.");
+                return;
+            }
+            var observation = new Observation
+            {
+                activityName = activityName,
+                activityCorrectness = correctness,
+                activityDifficulty = 0.5f,
+                timestamp = DateTime.Now,
+                additionalInfos = additionalInfos
+            };
+            moduleConnection.SubmitActivityResult(observation);
+        }
+
+        #endregion
 
         public void StartSortingLevel(ESortingAlgorithm sortingAlgorithm, ESortType sortType, int arraySize)
         {

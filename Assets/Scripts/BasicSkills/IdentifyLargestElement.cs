@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Manager;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -59,14 +60,17 @@ namespace BasicSkills
 
         private void OnArrayElementClicked(ArrayElement arrayElement)
         {
+            var gameManager = GameManager.Singleton;
             if (arrayElement == _largestElement)
             {
                 LevelBasicsManager.IncreaseScoreCount();
+                gameManager.SubmitActivityResult(Constants.ACTIVITY_IDENTIFY_LARGEST_ELEMENT, 1);
                 InitTask();
             }
             else
             {
                 LevelBasicsManager.IncreaseMistakeCount();
+                gameManager.SubmitActivityResult(Constants.ACTIVITY_IDENTIFY_LARGEST_ELEMENT, 0);
             }
         }
         

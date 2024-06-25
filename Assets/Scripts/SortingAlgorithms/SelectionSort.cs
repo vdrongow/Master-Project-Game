@@ -122,19 +122,12 @@ namespace SortingAlgorithms
                     if (step.foundNewMin)
                     {
                         _currentStepIndex++;
-                        // var observation = new Observation
-                        // {
-                        //     activityName = "activityAddition",
-                        //     activityCorrectness = 1,
-                        //     activityDifficulty = 0.5f,
-                        //     timestamp = DateTime.Now,
-                        //     additionalInfos = "{\"data\":10}"
-                        // };
-                        // moduleConnection.SubmitActivityResult(observation);
+                        gameManager.SubmitActivityResult(Constants.ACTIVITY_SELECTION_SORT_FOUND_NEW_MIN, 1);
                     }
                     else
                     {
                         mistake++;
+                        gameManager.SubmitActivityResult(Constants.ACTIVITY_SELECTION_SORT_NO_NEW_MIN, 0);
                         LevelSortingManager.IncreaseMistakeCount();
                         yield return new WaitForSeconds(gameSettings.errorCooldown);
                     }
@@ -144,21 +137,14 @@ namespace SortingAlgorithms
                     if (step.foundNewMin)
                     {
                         mistake++;
+                        gameManager.SubmitActivityResult(Constants.ACTIVITY_SELECTION_SORT_FOUND_NEW_MIN, 0);
                         LevelSortingManager.IncreaseMistakeCount();
                         yield return new WaitForSeconds(gameSettings.errorCooldown);
                     }
                     else
                     {
                         _currentStepIndex++;
-                        // var observation = new Observation
-                        // {
-                        //     activityName = "activitySubtraction",
-                        //     activityCorrectness = 1,
-                        //     activityDifficulty = 0.5f,
-                        //     timestamp = DateTime.Now,
-                        //     additionalInfos = "{\"data\":10}"
-                        // };
-                        // moduleConnection.SubmitActivityResult(observation);
+                        gameManager.SubmitActivityResult(Constants.ACTIVITY_SELECTION_SORT_NO_NEW_MIN, 1);
                     }
                 }
             }

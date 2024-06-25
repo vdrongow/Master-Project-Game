@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Manager;
+using UnityEngine;
 
 namespace BasicSkills
 {
@@ -36,15 +37,18 @@ namespace BasicSkills
 
         private void OnElementClicked(int number)
         {
+            var gameManager = GameManager.Singleton;
             var smallerNumber = Mathf.Min(_number1, _number2);
             if (number == smallerNumber)
             {
                 LevelBasicsManager.IncreaseScoreCount();
+                gameManager.SubmitActivityResult(Constants.ACTIVITY_IDENTIFY_SMALLER_NUMBER, 1);
                 InitTask();
             }
             else
             {
                 LevelBasicsManager.IncreaseMistakeCount();
+                gameManager.SubmitActivityResult(Constants.ACTIVITY_IDENTIFY_SMALLER_NUMBER, 0);
             }
         }
 

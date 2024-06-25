@@ -120,19 +120,12 @@ namespace SortingAlgorithms
                     {
                         ArrayView.SwapElements(step.index1, step.index2);
                         _currentStepIndex++;
-                        // var observation = new Observation
-                        // {
-                        //     activityName = "activityAddition",
-                        //     activityCorrectness = 1,
-                        //     activityDifficulty = 0.5f,
-                        //     timestamp = DateTime.Now,
-                        //     additionalInfos = "{\"data\":10}"
-                        // };
-                        // moduleConnection.SubmitActivityResult(observation);
+                        gameManager.SubmitActivityResult(Constants.ACTIVITY_INSERTION_SORT_SWAP_FURTHER_FORWARDS, 1);
                     }
                     else
                     {
                         mistake++;
+                        gameManager.SubmitActivityResult(Constants.ACTIVITY_INSERTION_SORT_INSERT_ELEMENT, 0);
                         LevelSortingManager.IncreaseMistakeCount();
                         yield return new WaitForSeconds(gameSettings.errorCooldown);
                     }
@@ -142,21 +135,14 @@ namespace SortingAlgorithms
                     if (step.swap)
                     {
                         mistake++;
+                        gameManager.SubmitActivityResult(Constants.ACTIVITY_INSERTION_SORT_SWAP_FURTHER_FORWARDS, 0);
                         LevelSortingManager.IncreaseMistakeCount();
                         yield return new WaitForSeconds(gameSettings.errorCooldown);
                     }
                     else
                     {
                         _currentStepIndex++;
-                        // var observation = new Observation
-                        // {
-                        //     activityName = "activitySubtraction",
-                        //     activityCorrectness = 1,
-                        //     activityDifficulty = 0.5f,
-                        //     timestamp = DateTime.Now,
-                        //     additionalInfos = "{\"data\":10}"
-                        // };
-                        // moduleConnection.SubmitActivityResult(observation);
+                        gameManager.SubmitActivityResult(Constants.ACTIVITY_INSERTION_SORT_INSERT_ELEMENT, 1);
                     }
                 }
             }
