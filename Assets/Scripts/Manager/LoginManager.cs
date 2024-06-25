@@ -1,5 +1,4 @@
 ﻿using Adlete;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +7,7 @@ namespace Manager
     public class LoginManager : MonoBehaviour
     {
         [SerializeField]
-        private TMP_InputField usernameInputField;
+        private InputField usernameInputField;
         [SerializeField]
         private Button loginButton;
 
