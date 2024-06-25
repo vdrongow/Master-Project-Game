@@ -27,7 +27,8 @@ namespace BasicSkills
         
         private int[] CreateArray(int size)
         {
-            ArraySettings.maxValue = ArraySettings.minValue + size - 1;
+            var randomMaxOffset = Random.Range(1, 10);
+            ArraySettings.maxValue = ArraySettings.minValue + size - 1 + randomMaxOffset;
             var array = new int[size];
             for (var i = 0; i < size; i++)
             {
