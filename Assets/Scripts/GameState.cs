@@ -98,6 +98,7 @@ public sealed class GameState : MonoBehaviour
                     sb.AppendLine();
                     sb.AppendLine("Basic Skill:");
                     sb.AppendLine("-----------------------------");
+                    sb.AppendLine(levelManager.BasicSkill.GetTaskTitle());
                     sb.AppendLine(levelManager.BasicSkill.GetTaskAsString());
                 }
                 else

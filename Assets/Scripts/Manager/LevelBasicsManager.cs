@@ -3,6 +3,7 @@ using BasicSkills;
 using Enums;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Manager
 {
@@ -10,9 +11,6 @@ namespace Manager
     {
         [Header("References")] [SerializeField]
         private TextMeshProUGUI gameTitle;
-
-        [SerializeField] 
-        private GameObject countdownPrefab;
         [SerializeField] 
         private Timer timer;
         [SerializeField] 
@@ -20,15 +18,21 @@ namespace Manager
         [SerializeField]
         private TextMeshProUGUI mistakeCountText;
         [SerializeField] 
-        private GameObject mistakeVisualizerPrefab;
-        [SerializeField] 
         private GameObject winPanel;
         [SerializeField] 
         private TextMeshProUGUI winText;
         [SerializeField] 
         private GameObject pausePanel;
         [SerializeField]
-        public GameObject contentParent;
+        public GameObject arrayParent;
+        
+        [Header("Prefabs")]
+        [SerializeField] 
+        private GameObject mistakeVisualizerPrefab;
+        [SerializeField] 
+        private GameObject countdownPrefab;
+        [SerializeField]
+        public GameObject pickNumberPrefab;
         
         public BasicSkill BasicSkill;
 
@@ -74,6 +78,8 @@ namespace Manager
             gameManager.isGamePaused = true;
             gameManager.BasicGame.IsRunning = false;
             
+            BasicSkill.DestroyTask();
+            
             winPanel.SetActive(true);
             winText.text = $"You scored {gameManager.BasicGame.Score} points in {gameManager.gameSettings.timeLimit} seconds!";
             timer.StopTimer();
@@ -118,6 +124,7 @@ namespace Manager
             {
                 EBasicSkill.IdentifySmallestElement => new IdentifySmallestElement(),
                 EBasicSkill.IdentifyLargestElement => new IdentifyLargestElement(),
+                EBasicSkill.IdentifySmallerNumber => new IdentifySmallerNumber(),
                 _ => throw new ArgumentOutOfRangeException()
             };
             

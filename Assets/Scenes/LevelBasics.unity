@@ -505,15 +505,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameTitle: {fileID: 764416796}
-  countdownPrefab: {fileID: 6652329127966048972, guid: 933ae7e96123dc545aaf9547545a77f4, type: 3}
   timer: {fileID: 1133749694}
   scoreCountText: {fileID: 1590048959}
   mistakeCountText: {fileID: 911157761}
-  mistakeVisualizerPrefab: {fileID: 8516931729865097232, guid: 6b746502106c79b479a37383d0646f9f, type: 3}
   winPanel: {fileID: 671532106}
   winText: {fileID: 2029405250}
   pausePanel: {fileID: 139877035}
-  contentParent: {fileID: 1429262494}
+  arrayParent: {fileID: 1429262494}
+  mistakeVisualizerPrefab: {fileID: 8516931729865097232, guid: 6b746502106c79b479a37383d0646f9f, type: 3}
+  countdownPrefab: {fileID: 6652329127966048972, guid: 933ae7e96123dc545aaf9547545a77f4, type: 3}
+  pickNumberPrefab: {fileID: 3475008881965210089, guid: ed4b64518192b3744b1fbc152e2d91cf, type: 3}
 --- !u!1 &139877035
 GameObject:
   m_ObjectHideFlags: 0
@@ -2038,7 +2039,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000061035156}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1022499496
@@ -2548,7 +2549,7 @@ GameObject:
   - component: {fileID: 1429262496}
   - component: {fileID: 1429262497}
   m_Layer: 5
-  m_Name: ContentParent
+  m_Name: ArraytParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3475,7 +3476,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000061035156}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1916694212

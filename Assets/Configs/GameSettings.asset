@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   devMode: 1
   showDebugLogs: 1
-  showCountdown: 1
+  showCountdown: 0
   countdownTime: 3
   showTimer: 1
   timeLimit: 30
@@ -23,5 +23,7 @@ MonoBehaviour:
   defaultSortingAlgorithm: 1
   defaultSortType: 0
   defaultArraySize: 10
-  defaultBasicSkill: 1
+  defaultBasicSkill: 2
   defaultBasicLevelElements: 10
+  defaultMinValue: 1
+  defaultMaxValue: 10

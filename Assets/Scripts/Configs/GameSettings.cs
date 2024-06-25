@@ -1,5 +1,6 @@
 ﻿using Enums;
 using UnityEngine;
+// ReSharper disable InconsistentNaming
 
 namespace Configs
 {
@@ -29,5 +30,7 @@ namespace Configs
         [Header("Basic Skill Level")]
         public EBasicSkill defaultBasicSkill = EBasicSkill.IdentifyLargerNumber;
         public int defaultBasicLevelElements = 5;
+        public int defaultMinValue = 1;
+        public int defaultMaxValue = 10;
     }
 }

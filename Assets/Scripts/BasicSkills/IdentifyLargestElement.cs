@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Manager;
-using UnityEngine;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace BasicSkills
 {
@@ -15,9 +16,8 @@ namespace BasicSkills
 
         protected override void InitTask()
         {
-            var gameSettings = GameManager.Singleton.gameSettings;
             DestroyTask();
-            var size = gameSettings.defaultBasicLevelElements;
+            var size = GameSettings.defaultBasicLevelElements;
             var array = CreateArray(size);
             // visualise the array using bars with different heights according to the values
             _arrayElements = InitArrayElements(array);
@@ -25,7 +25,38 @@ namespace BasicSkills
             _largestElement = _arrayElements.OrderByDescending(x => x.Value).First();
         }
 
-        public override void OnArrayElementClicked(ArrayElement arrayElement)
+        private int[] CreateArray(int size)
+        {
+            ArraySettings.maxValue = ArraySettings.minValue + size - 1;
+            var array = new int[size];
+            for (var i = 0; i < size; i++)
+            {
+                int value;
+                do
+                {
+                    value = Random.Range(ArraySettings.minValue, ArraySettings.maxValue + 1);
+                } while (Array.IndexOf(array, value) != -1);
+                array[i] = value;
+            }
+            return array;
+        }
+
+        private List<ArrayElement> InitArrayElements(int[] array)
+        {
+            var size = array.Length;
+            var arrayElements = new List<ArrayElement>();
+            for (var i = 0; i < size; i++)
+            {
+                var go = Object.Instantiate(ArraySettings.barPrefab, LevelBasicsManager.arrayParent.transform);
+                var arrayElement = go.GetComponent<ArrayElement>();
+                arrayElement.Init(array[i], () => OnArrayElementClicked(arrayElement));
+                arrayElements.Add(arrayElement);
+            }
+
+            return arrayElements;
+        }
+
+        private void OnArrayElementClicked(ArrayElement arrayElement)
         {
             if (arrayElement == _largestElement)
             {
