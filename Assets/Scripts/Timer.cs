@@ -69,6 +69,10 @@ public class Timer : MonoBehaviour
     
     public int GetTimeInSeconds()
     {
+        if (_timerText == null)
+        {
+            return 0;
+        }
         var time = _timerText.text.Split(':');
         var minutes = int.Parse(time[0]);
         var seconds = int.Parse(time[1]);

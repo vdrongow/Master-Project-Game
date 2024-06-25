@@ -50,5 +50,11 @@ namespace Manager
         
             gameManager.StartBasicLevel(basicSkill);
         }
+        
+        public void CloseGame()
+        {
+            var gameManager = GameManager.Singleton;
+            gameManager.CloseGame();
+        }
     }
 }

@@ -62,7 +62,7 @@ namespace Manager
             moduleConnection.StopSession(_ => Debug.Log("Session stopped"),
                 errorString => Debug.Log($"Error while stopping session: {errorString}"));
         }
-        
+
         public void SubmitFinishedSortingGame(ESortingAlgorithm sortingAlgorithm, int correctness, int playedTime, int mistakes)
         {
             var activityName = sortingAlgorithm switch
@@ -117,6 +117,17 @@ namespace Manager
         public void LoadScene(string sceneName)
         {
             SceneManager.LoadScene(sceneName);
+        }
+        
+        public void CloseGame()
+        {
+            var moduleConnection = ModuleConnection.Singleton;
+            if(moduleConnection.GetLoggedInUser() != null)
+            {
+                StopSession();
+                moduleConnection.Logout();
+            }
+            LoadScene(Constants.LOGIN_SCENE);
         }
 
         private void OnApplicationQuit()
