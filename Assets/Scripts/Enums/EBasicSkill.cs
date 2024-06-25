@@ -9,7 +9,7 @@ namespace Enums
         IdentifyLargestElement = 1,
         IdentifySmallerNumber = 2,
         IdentifyLargerNumber = 3,
-        IdentifySortedArray = 4,
-        IdentifyUnsortedArray = 5,
+        // IdentifySortedArray = 4,
+        // IdentifyUnsortedArray = 5,
     }
 }

@@ -23,7 +23,7 @@ MonoBehaviour:
   defaultSortingAlgorithm: 1
   defaultSortType: 0
   defaultArraySize: 10
-  defaultBasicSkill: 2
+  defaultBasicSkill: 3
   defaultBasicLevelElements: 10
   defaultMinValue: 1
   defaultMaxValue: 10

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace GameUI
 {
-    public class AlgorithmOptionSelector : MonoBehaviour
+    public class OptionSelector : MonoBehaviour
     {
         [SerializeField]
         private TextMeshProUGUI optionText;
@@ -48,9 +48,6 @@ namespace GameUI
             optionText.text = options[_currentIndex];
         }
         
-        public ESortingAlgorithm GetSortingAlgorithm()
-        {
-            return (ESortingAlgorithm)_currentIndex;
-        }
+        public int GetCurrentIndex() => _currentIndex;
     }
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5034241998906930392}
   - component: {fileID: 7761123531827653659}
   m_Layer: 5
-  m_Name: SortingAlgorithm_OptionSelector
+  m_Name: OptionSelector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
