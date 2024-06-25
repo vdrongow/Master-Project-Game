@@ -2,9 +2,9 @@
 
 namespace BasicSkills
 {
-    public sealed class IdentifySmallerNumber : BasicSkill
+    public sealed class IdentifyLargerNumber : BasicSkill
     {
-        private const string TaskTitle = "Pick the Smaller Number";
+        private const string TaskTitle = "Pick the Larger Number";
         private int _number1;
         private int _number2;
         private PickNumber _pickNumber;
@@ -36,8 +36,8 @@ namespace BasicSkills
 
         private void OnElementClicked(int number)
         {
-            var smallerNumber = Mathf.Min(_number1, _number2);
-            if (number == smallerNumber)
+            var biggerNumber = Mathf.Max(_number1, _number2);
+            if (number == biggerNumber)
             {
                 LevelBasicsManager.IncreaseScoreCount();
                 InitTask();

@@ -125,6 +125,7 @@ namespace Manager
                 EBasicSkill.IdentifySmallestElement => new IdentifySmallestElement(),
                 EBasicSkill.IdentifyLargestElement => new IdentifyLargestElement(),
                 EBasicSkill.IdentifySmallerNumber => new IdentifySmallerNumber(),
+                EBasicSkill.IdentifyLargerNumber => new IdentifyLargerNumber(),
                 _ => throw new ArgumentOutOfRangeException()
             };
             

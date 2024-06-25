@@ -69,15 +69,6 @@ namespace BasicSkills
             }
         }
         
-        public override void DestroyTask()
-        {
-            foreach (var arrayElement in _arrayElements)
-            {
-                Object.Destroy(arrayElement.gameObject);
-            }
-            _arrayElements.Clear();
-        }
-        
         public override string GetTaskAsString()
         {
             var task = $"smallest Element: {_smallestElement.Value} \n";
@@ -85,6 +76,15 @@ namespace BasicSkills
                 _arrayElements.Select((arrayEl, index) =>
                     $"[{index.ToString()}] {arrayEl.Value}"));
             return task;
+        }
+        
+        public override void DestroyTask()
+        {
+            foreach (var arrayElement in _arrayElements)
+            {
+                Object.Destroy(arrayElement.gameObject);
+            }
+            _arrayElements.Clear();
         }
     }
 }
