@@ -141,6 +141,11 @@ namespace Manager
         #endregion
 
         #region Game Logic
+        
+        public void AskForHelp()
+        {
+            Debug.Log("Ask for help");
+        }
 
         public void IncreaseScoreCount()
         {
