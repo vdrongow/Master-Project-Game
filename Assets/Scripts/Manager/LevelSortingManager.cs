@@ -86,6 +86,8 @@ namespace Manager
             gameManager.SortingGame.IsRunning = true;
             
             timer.Init();
+            ArrayView = new ArrayView(arrayParent, gameManager.SortingGame.ArraySize, gameManager.arraySettings, gameManager.SortingGame.SortType);
+            SortingAlgorithm.Init(this, ArrayView, gameManager.arraySettings);
             StartCoroutine(SortingAlgorithm.PlaySort());
         }
         
@@ -133,11 +135,9 @@ namespace Manager
             mistakeCountText.text = "Mistakes: 0";
             
             var sortingGame = gameManager.SortingGame;
-            var arraySettings = gameManager.arraySettings;
         
             ArrayView?.DestroyArray();
-            ArrayView = new ArrayView(arrayParent, sortingGame.ArraySize, arraySettings, sortingGame.SortType);
-        
+
             SortingAlgorithm = sortingGame.SortingAlgorithm switch
             {
                 ESortingAlgorithm.BubbleSort => new BubbleSort(),
@@ -145,9 +145,7 @@ namespace Manager
                 ESortingAlgorithm.InsertionSort => new InsertionSort(),
                 _ => throw new System.ArgumentOutOfRangeException(nameof(sortingGame.SortingAlgorithm), sortingGame.SortingAlgorithm, null)
             };
-        
-            SortingAlgorithm.Init(this, ArrayView, arraySettings);
-            
+
             algorithmTitle.text = gameManager.SortingGame.SortingAlgorithm.ToString();
             
             winPanel.SetActive(false);
