@@ -40,7 +40,7 @@ namespace Manager
             var gameManager = GameManager.Singleton;
             if(Input.GetKeyDown(KeyCode.Escape))
             {
-                BackToMainMenu();
+                BackToMainMenu(true);
             }
 
             if(gameManager.gameSettings.devMode)
@@ -124,10 +124,14 @@ namespace Manager
             pausePanel.SetActive(false);
         }
         
-        public void BackToMainMenu()
+        public void BackToMainMenu(bool finishedSorting)
         {
             var gameManager = GameManager.Singleton;
-            gameManager.SubmitFinishedSortingGame(SortingAlgorithm.GetSortingAlgorithm(), correctness: 0, timer.GetTimeInSeconds(), gameManager.SortingGame.MistakeCount);
+            // only send finished false if game is not finished (not in win panel)
+            if (!finishedSorting)
+            {
+                gameManager.SubmitFinishedSortingGame(SortingAlgorithm.GetSortingAlgorithm(), correctness: 0, timer.GetTimeInSeconds(), gameManager.SortingGame.MistakeCount);
+            }
             gameManager.LoadScene(Constants.MAIN_MENU_SCENE);
         }
 
