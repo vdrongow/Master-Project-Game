@@ -62,6 +62,8 @@ namespace Manager
             moduleConnection.StopSession(_ => Debug.Log("Session stopped"),
                 errorString => Debug.Log($"Error while stopping session: {errorString}"));
         }
+        
+        // TODO: implement SubmitFinishedBasicSkillGame
 
         public void SubmitFinishedSortingGame(ESortingAlgorithm sortingAlgorithm, int correctness, int playedTime, int mistakes)
         {
@@ -73,6 +75,7 @@ namespace Manager
                 _ => throw new ArgumentOutOfRangeException(nameof(sortingAlgorithm), sortingAlgorithm, null)
             };
             
+            // TODO: add arraySize
             var additionalInfos = $"Played Time: {playedTime}, Mistakes: {mistakes}";
             SubmitActivityResult(activityName, correctness, additionalInfos);
         }
