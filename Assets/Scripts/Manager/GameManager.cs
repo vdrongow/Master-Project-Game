@@ -27,12 +27,18 @@ namespace Manager
         [Header("Game State")]
         public bool isGameRunning;
         public bool isGamePaused;
+        public bool serverGamePaused;
+        
+        [Header("Prefabs")]
+        public GameObject serverPausedPanelPrefab = null!;
 
         public SortingGame SortingGame;
         public BasicGame BasicGame;
         
         public Lobby CurrentLobby;
         public string playerId;
+        
+        private GameObject _serverPausedPanel = null!;
 
         private void Awake()
         {
@@ -142,12 +148,24 @@ namespace Manager
         
         private void OnLobbyDataChanged(Dictionary<string, ChangedOrRemovedLobbyValue<DataObject>> changedData)
         {
-            if(changedData.ContainsKey(Constants.LOBBY_IS_GAME_STARTED))
+            if(changedData.TryGetValue(Constants.LOBBY_IS_GAME_STARTED, out var started))
             {
-                var isGameStarted = bool.Parse(changedData[Constants.LOBBY_IS_GAME_STARTED].Value.Value);
-                if(isGameStarted)
+                var serverStartedGame = bool.Parse(started.Value.Value);
+                if(serverStartedGame)
                 {
                     LoadScene(Constants.MAIN_MENU_SCENE);
+                }
+            }
+            if(changedData.TryGetValue(Constants.LOBBY_IS_GAME_PAUSED, out var paused))
+            {
+                var serverPausedGame = bool.Parse(paused.Value.Value);
+                if(serverPausedGame)
+                {
+                    ServerPauseGame();
+                }
+                else
+                {
+                    ServerResumeGame();
                 }
             }
         }
@@ -164,6 +182,22 @@ namespace Manager
         {
             BasicGame = new BasicGame(basicSkill);
             LoadScene(Constants.LEVEL_BASICS_SCENE);
+        }
+        
+        public void ServerPauseGame()
+        {
+            serverGamePaused = true;
+            var canvas = FindObjectOfType<Canvas>();
+            _serverPausedPanel = Instantiate(serverPausedPanelPrefab, canvas.transform);
+        }
+        
+        public void ServerResumeGame()
+        {
+            serverGamePaused = false;
+            if(_serverPausedPanel != null)
+            {
+                Destroy(_serverPausedPanel);
+            }
         }
 
         public void LoadScene(string sceneName)

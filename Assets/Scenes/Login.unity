@@ -251,6 +251,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 841471570698759615, guid: 15f38e1e2ab98794cb29d730d8942e5d, type: 3}
+      propertyPath: serverPausedPanelPrefab
+      value: 
+      objectReference: {fileID: 1455577267564229681, guid: 03a410d8b26b68c4994f8c08da5d86d2, type: 3}
     - target: {fileID: 7238544216089434698, guid: 15f38e1e2ab98794cb29d730d8942e5d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

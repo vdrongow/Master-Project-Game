@@ -27,7 +27,7 @@ public class Timer : MonoBehaviour
         while (gameManager.isGameRunning)
         {
             // wait until the game is not paused
-            yield return new WaitUntil(() => gameManager.isGamePaused == false);
+            yield return new WaitUntil(() => gameManager.isGamePaused == false && gameManager.serverGamePaused == false);
 
             // Update the timer based on counting direction
             if (_isCountingUp)
