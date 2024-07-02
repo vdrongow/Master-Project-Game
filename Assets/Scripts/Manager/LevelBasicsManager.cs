@@ -3,7 +3,6 @@ using BasicSkills;
 using Enums;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Manager
 {
@@ -83,6 +82,8 @@ namespace Manager
             winPanel.SetActive(true);
             winText.text = $"You scored {gameManager.BasicGame.Score} points in {gameManager.gameSettings.timeLimit} seconds!";
             timer.StopTimer();
+            
+            // TODO: send finish with mistakes and time to server
         }
 
         public void PauseGame()

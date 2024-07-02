@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using Adlete;
 using Configs;
 using Enums;
 using Structs;
+using Unity.Services.Authentication;
+using Unity.Services.Core;
+using Unity.Services.Lobbies;
+using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -25,6 +30,9 @@ namespace Manager
 
         public SortingGame SortingGame;
         public BasicGame BasicGame;
+        
+        public Lobby CurrentLobby;
+        public string playerId;
 
         private void Awake()
         {
@@ -47,6 +55,20 @@ namespace Manager
             BasicGame = new BasicGame(gameSettings.defaultBasicSkill);
         }
 
+        private async void Start()
+        {
+            if (CurrentLobby == null)
+            {
+                await UnityServices.InitializeAsync();
+                AuthenticationService.Instance.SignedIn += () =>
+                {
+                    playerId = AuthenticationService.Instance.PlayerId;
+                    Debug.Log("Signed in " + playerId);
+                };
+                await AuthenticationService.Instance.SignInAnonymouslyAsync();
+            }
+        }
+
         #region Adlete
         
         public void StartSession()
@@ -62,10 +84,8 @@ namespace Manager
             moduleConnection.StopSession(_ => Debug.Log("Session stopped"),
                 errorString => Debug.Log($"Error while stopping session: {errorString}"));
         }
-        
-        // TODO: implement SubmitFinishedBasicSkillGame
 
-        public void SubmitFinishedSortingGame(ESortingAlgorithm sortingAlgorithm, int correctness, int playedTime, int mistakes)
+        /*public void SubmitFinishedSortingGame(ESortingAlgorithm sortingAlgorithm, int correctness, int playedTime, int mistakes)
         {
             var activityName = sortingAlgorithm switch
             {
@@ -78,7 +98,7 @@ namespace Manager
             // TODO: add arraySize
             var additionalInfos = $"Played Time: {playedTime}, Mistakes: {mistakes}";
             SubmitActivityResult(activityName, correctness, additionalInfos);
-        }
+        }*/
 
         public void SubmitActivityResult(string activityName, int correctness, string additionalInfos = "")
         {
@@ -89,7 +109,6 @@ namespace Manager
             var moduleConnection = ModuleConnection.Singleton;
             if (moduleConnection.GetLoggedInUser() == null)
             {
-                Debug.LogWarning("User is not logged in. Cannot submit activity result.");
                 return;
             }
             var observation = new Observation
@@ -101,6 +120,36 @@ namespace Manager
                 additionalInfos = additionalInfos
             };
             moduleConnection.SubmitActivityResult(observation);
+        }
+
+        #endregion
+
+        #region Network Lobby
+
+        public async void SubscribeToLobbyEvents()
+        {
+            var callbacks = new LobbyEventCallbacks();
+            callbacks.DataChanged += OnLobbyDataChanged;
+            try
+            {
+                await Lobbies.Instance.SubscribeToLobbyEventsAsync(CurrentLobby.Id, callbacks);
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.Log(e);
+            }
+        }
+        
+        private void OnLobbyDataChanged(Dictionary<string, ChangedOrRemovedLobbyValue<DataObject>> changedData)
+        {
+            if(changedData.ContainsKey(Constants.LOBBY_IS_GAME_STARTED))
+            {
+                var isGameStarted = bool.Parse(changedData[Constants.LOBBY_IS_GAME_STARTED].Value.Value);
+                if(isGameStarted)
+                {
+                    LoadScene(Constants.MAIN_MENU_SCENE);
+                }
+            }
         }
 
         #endregion
@@ -122,13 +171,25 @@ namespace Manager
             SceneManager.LoadScene(sceneName);
         }
         
-        public void CloseGame()
+        public async void CloseGame()
         {
             var moduleConnection = ModuleConnection.Singleton;
             if(moduleConnection.GetLoggedInUser() != null)
             {
                 StopSession();
                 moduleConnection.Logout();
+            }
+            if(CurrentLobby != null)
+            {
+                try
+                {
+                    await LobbyService.Instance.RemovePlayerAsync(CurrentLobby.Id, playerId);
+                    CurrentLobby = null;
+                }
+                catch (LobbyServiceException e)
+                {
+                    Debug.Log(e);
+                }
             }
             LoadScene(Constants.LOGIN_SCENE);
         }

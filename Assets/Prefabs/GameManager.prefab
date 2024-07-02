@@ -48,6 +48,8 @@ MonoBehaviour:
   gameState: {fileID: 0}
   gameSettings: {fileID: 11400000, guid: f9ab3e6767c29da448f4665949d55d75, type: 2}
   arraySettings: {fileID: 11400000, guid: 1d492d34d72859643af630a5923e6200, type: 2}
+  isGameRunning: 0
+  isGamePaused: 0
 --- !u!114 &3164272659902080069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,4 +62,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b037634aa1cf43cea87f621e7ce7366e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Count: 0
