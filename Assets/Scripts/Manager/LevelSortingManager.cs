@@ -100,6 +100,8 @@ namespace Manager
             
             winPanel.SetActive(true);
             winText.text = $"You finished in {timer.GetTimeAsString()} with {gameManager.SortingGame.MistakeCount} mistakes!";
+            gameManager.IncreasePlayerFinishedLevels();
+            gameManager.IncreasePlayerTotalPlayedTime(timer.GetTimeInSeconds());
             
             // TODO: gameManager.gameState.SaveHighscore(timerText.text);
             // TODO: send finish with mistakes and time to server
@@ -169,6 +171,7 @@ namespace Manager
         {
             var gameManager = GameManager.Singleton;
             gameManager.SortingGame.MistakeCount++;
+            gameManager.IncreasePlayerTotalMistakes();
             mistakeCountText.text = $"Mistakes: {gameManager.SortingGame.MistakeCount}";
             var canvas = GameObject.Find("Canvas");
             var mistakeVisualizer = Instantiate(mistakeVisualizerPrefab, canvas.transform).GetComponent<MistakeVisualizer>();

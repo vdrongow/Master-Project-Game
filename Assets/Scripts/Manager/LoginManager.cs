@@ -1,10 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Adlete;
 using TMPro;
-using Unity.Services.Authentication;
-using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
@@ -106,9 +103,8 @@ namespace Manager
                 () => gameManager.StartSession());
         }
 
-        private async void CheckAndLogin()
+        private void CheckAndLogin()
         {
-            var gameManager = GameManager.Singleton;
             var enteredUsername = usernameInputField.text;
             var enteredRoomCode = roomCodeInputField.text;
             if (string.IsNullOrWhiteSpace(enteredUsername) || string.IsNullOrWhiteSpace(enteredRoomCode))
@@ -145,13 +141,31 @@ namespace Manager
             var gameManager = GameManager.Singleton;
             try
             {
-                var options = new JoinLobbyByCodeOptions { Player = new Player
+                var options = new JoinLobbyByCodeOptions
                 {
-                    Data = new Dictionary<string, PlayerDataObject>
+                    Player = new Player
                     {
-                        { "PlayerName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, playerName) }
+                        Data = new Dictionary<string, PlayerDataObject>
+                        {
+                            {
+                                Constants.PLAYER_NAME,
+                                new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, playerName)
+                            },
+                            {
+                                Constants.PLAYER_FINISHED_LEVELS,
+                                new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, gameManager.player_finishedLevels.ToString())
+                            },
+                            {
+                                Constants.PLAYER_TOTAL_MISTAKES,
+                                new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, gameManager.player_totalMistakes.ToString())
+                            },
+                            {
+                                Constants.PLAYER_TOTAL_PLAYED_TIME,
+                                new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, gameManager.player_totalPlayedTime.ToString())
+                            }
+                        }
                     }
-                }};
+                };
                 gameManager.CurrentLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(roomCode, options);
                 gameManager.SubscribeToLobbyEvents();
                 

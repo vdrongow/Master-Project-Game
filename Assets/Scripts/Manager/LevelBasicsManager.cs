@@ -83,6 +83,9 @@ namespace Manager
             winText.text = $"You scored {gameManager.BasicGame.Score} points in {gameManager.gameSettings.timeLimit} seconds!";
             timer.StopTimer();
             
+            gameManager.IncreasePlayerFinishedLevels();
+            gameManager.IncreasePlayerTotalPlayedTime(gameManager.gameSettings.timeLimit);
+            
             // TODO: send finish with mistakes and time to server
         }
 
@@ -159,6 +162,7 @@ namespace Manager
         {
             var gameManager = GameManager.Singleton;
             gameManager.BasicGame.Mistakes++;
+            gameManager.IncreasePlayerTotalMistakes();
             mistakeCountText.text = $"Mistakes: {gameManager.BasicGame.Mistakes}";
             var canvas = GameObject.Find("Canvas");
             var mistakeVisualizer =

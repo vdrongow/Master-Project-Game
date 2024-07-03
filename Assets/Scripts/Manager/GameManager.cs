@@ -10,6 +10,7 @@ using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+// ReSharper disable InconsistentNaming
 
 namespace Manager
 {
@@ -37,6 +38,10 @@ namespace Manager
         
         public Lobby CurrentLobby;
         public string playerId;
+        
+        public int player_finishedLevels;
+        public int player_totalMistakes;
+        public int player_totalPlayedTime; // in seconds
         
         private GameObject _serverPausedPanel = null!;
 
@@ -203,6 +208,93 @@ namespace Manager
         public void LoadScene(string sceneName)
         {
             SceneManager.LoadScene(sceneName);
+        }
+
+        public async void IncreasePlayerFinishedLevels()
+        {
+            player_finishedLevels++;
+            if (CurrentLobby == null)
+            {
+                return;
+            }
+
+            try
+            {
+                var updateOptions = new UpdatePlayerOptions()
+                {
+                    Data = new Dictionary<string, PlayerDataObject>
+                    {
+                        {
+                            Constants.PLAYER_FINISHED_LEVELS,
+                            new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member,
+                                player_finishedLevels.ToString())
+                        }
+                    }
+                };
+                CurrentLobby = await LobbyService.Instance.UpdatePlayerAsync(CurrentLobby.Id, playerId, updateOptions);
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.Log(e);
+            }
+        }
+
+        public async void IncreasePlayerTotalMistakes()
+        {
+            player_totalMistakes++;
+            if (CurrentLobby == null)
+            {
+                return;
+            }
+
+            try
+            {
+                var updateOptions = new UpdatePlayerOptions()
+                {
+                    Data = new Dictionary<string, PlayerDataObject>
+                    {
+                        {
+                            Constants.PLAYER_TOTAL_MISTAKES,
+                            new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member,
+                                player_totalMistakes.ToString())
+                        }
+                    }
+                };
+                CurrentLobby = await LobbyService.Instance.UpdatePlayerAsync(CurrentLobby.Id, playerId, updateOptions);
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.Log(e);
+            }
+        }
+
+        public async void IncreasePlayerTotalPlayedTime(int seconds)
+        {
+            player_totalPlayedTime += seconds;
+            if (CurrentLobby == null)
+            {
+                return;
+            }
+
+            try
+            {
+                var updateOptions = new UpdatePlayerOptions()
+                {
+                    Data = new Dictionary<string, PlayerDataObject>
+                    {
+                        {
+                            Constants.PLAYER_TOTAL_PLAYED_TIME,
+                            new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member,
+                                player_totalPlayedTime.ToString())
+                        }
+                    }
+                };
+                CurrentLobby = await LobbyService.Instance.UpdatePlayerAsync(CurrentLobby.Id, playerId, updateOptions);
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.Log(e);
+            }
         }
         
         public async void CloseGame()
