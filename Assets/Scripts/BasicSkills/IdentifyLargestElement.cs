@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Enums;
 using Manager;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
@@ -64,13 +65,13 @@ namespace BasicSkills
             if (arrayElement == _largestElement)
             {
                 LevelBasicsManager.IncreaseScoreCount();
-                gameManager.SubmitActivityResult(Constants.ACTIVITY_IDENTIFY_LARGEST_ELEMENT, 1);
+                gameManager.SubmitActivityResult(EActivityType.IdentifyLargestElement, 1);
                 InitTask();
             }
             else
             {
                 LevelBasicsManager.IncreaseMistakeCount();
-                gameManager.SubmitActivityResult(Constants.ACTIVITY_IDENTIFY_LARGEST_ELEMENT, 0);
+                gameManager.SubmitActivityResult(EActivityType.IdentifyLargestElement, 0);
             }
         }
         

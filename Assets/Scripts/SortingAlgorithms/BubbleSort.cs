@@ -117,12 +117,12 @@ namespace SortingAlgorithms
                     {
                         ArrayView.SwapElements(step.index1, step.index2);
                         _currentStepIndex++;
-                        gameManager.SubmitActivityResult(Constants.ACTIVITY_BUBBLE_SORT_SWAP_ELEMENTS, 1);
+                        gameManager.SubmitActivityResult(EActivityType.BubbleSortSwapElements, 1);
                     }
                     else
                     {
                         mistake++;
-                        gameManager.SubmitActivityResult(Constants.ACTIVITY_BUBBLE_SORT_STEP_OVER, 0);
+                        gameManager.SubmitActivityResult(EActivityType.BubbleSortStepOver, 0);
                         LevelSortingManager.IncreaseMistakeCount();
                         yield return new WaitForSeconds(gameSettings.errorCooldown);
                     }
@@ -132,14 +132,14 @@ namespace SortingAlgorithms
                     if (step.swap)
                     {
                         mistake++;
-                        gameManager.SubmitActivityResult(Constants.ACTIVITY_BUBBLE_SORT_SWAP_ELEMENTS, 0);
+                        gameManager.SubmitActivityResult(EActivityType.BubbleSortSwapElements, 0);
                         LevelSortingManager.IncreaseMistakeCount();
                         yield return new WaitForSeconds(gameSettings.errorCooldown);
                     }
                     else
                     {
                         _currentStepIndex++;
-                        gameManager.SubmitActivityResult(Constants.ACTIVITY_BUBBLE_SORT_STEP_OVER, 1);
+                        gameManager.SubmitActivityResult(EActivityType.BubbleSortStepOver, 1);
                     }
                 }
             }

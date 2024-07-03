@@ -44,6 +44,8 @@ namespace Manager
         public int player_totalPlayedTime; // in seconds
         
         private GameObject _serverPausedPanel = null!;
+        
+        private List<Activity> _activities = new();
 
         private void Awake()
         {
@@ -96,41 +98,69 @@ namespace Manager
                 errorString => Debug.Log($"Error while stopping session: {errorString}"));
         }
 
-        /*public void SubmitFinishedSortingGame(ESortingAlgorithm sortingAlgorithm, int correctness, int playedTime, int mistakes)
+        public void ResetActivities()
         {
-            var activityName = sortingAlgorithm switch
+            _activities.Clear();
+            foreach (EActivityType activityType in Enum.GetValues(typeof(EActivityType)))
             {
-                ESortingAlgorithm.BubbleSort => Constants.ACTIVITY_BUBBLE_SORT_FINISHED,
-                ESortingAlgorithm.SelectionSort => Constants.ACTIVITY_SELECTION_SORT_FINISHED,
-                ESortingAlgorithm.InsertionSort => Constants.ACTIVITY_INSERTION_SORT_FINISHED,
-                _ => throw new ArgumentOutOfRangeException(nameof(sortingAlgorithm), sortingAlgorithm, null)
-            };
-            
-            // TODO: add arraySize
-            var additionalInfos = $"Played Time: {playedTime}, Mistakes: {mistakes}";
-            SubmitActivityResult(activityName, correctness, additionalInfos);
-        }*/
+                _activities.Add(new Activity(activityType));
+            }
+        }
 
-        public void SubmitActivityResult(string activityName, int correctness, string additionalInfos = "")
+        public void SubmitActivityResult(EActivityType activityType, int correctness, string additionalInfos = "")
         {
+            var activity = _activities.Find(a => a.ActivityType == activityType);
             if(gameSettings.showDebugLogs)
             {
-                Debug.Log($"SubmitActivityResult: {activityName}, {correctness}, {additionalInfos}");
+                Debug.Log($"Activity: {activity.GetActivityName()}, {correctness}, {additionalInfos}");
             }
+            activity.AddTaskInput(correctness);
+            
+            if(activity.TotalTasks >= gameSettings.adlete_requestInterval)
+            {
+                var moduleConnection = ModuleConnection.Singleton;
+                if (moduleConnection.GetLoggedInUser() == null)
+                {
+                    return;
+                }
+                var observation = new Observation
+                {
+                    activityName = activity.GetActivityName(),
+                    activityCorrectness = activity.GetTotalCorrectness(),
+                    activityDifficulty = gameSettings.adlete_defaultDifficulty,
+                    timestamp = DateTime.Now,
+                    additionalInfos = additionalInfos
+                };
+                moduleConnection.SubmitActivityResult(observation);
+                
+                activity.ResetActivity();
+            }
+        }
+        
+        public void SubmitLeftoverActivities()
+        {
             var moduleConnection = ModuleConnection.Singleton;
             if (moduleConnection.GetLoggedInUser() == null)
             {
                 return;
             }
-            var observation = new Observation
+            foreach (var activity in _activities)
             {
-                activityName = activityName,
-                activityCorrectness = correctness,
-                activityDifficulty = 0.5f,
-                timestamp = DateTime.Now,
-                additionalInfos = additionalInfos
-            };
-            moduleConnection.SubmitActivityResult(observation);
+                if (activity.TotalTasks <= 0)
+                {
+                    continue;
+                }
+                var observation = new Observation
+                {
+                    activityName = activity.GetActivityName(),
+                    activityCorrectness = activity.GetTotalCorrectness(),
+                    activityDifficulty = gameSettings.adlete_defaultDifficulty,
+                    timestamp = DateTime.Now
+                };
+                moduleConnection.SubmitActivityResult(observation);
+                    
+                activity.ResetActivity();
+            }
         }
 
         #endregion

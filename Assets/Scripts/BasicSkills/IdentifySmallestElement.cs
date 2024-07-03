@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Enums;
 using Manager;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
@@ -64,13 +65,13 @@ namespace BasicSkills
             if (arrayElement == _smallestElement)
             {
                 LevelBasicsManager.IncreaseScoreCount();
-                gameManager.SubmitActivityResult(Constants.ACTIVITY_IDENTIFY_SMALLEST_ELEMENT, 1);
+                gameManager.SubmitActivityResult(EActivityType.IdentifySmallestElement, 1);
                 InitTask();
             }
             else
             {
                 LevelBasicsManager.IncreaseMistakeCount();
-                gameManager.SubmitActivityResult(Constants.ACTIVITY_IDENTIFY_SMALLEST_ELEMENT, 0);
+                gameManager.SubmitActivityResult(EActivityType.IdentifySmallestElement, 0);
             }
         }
         

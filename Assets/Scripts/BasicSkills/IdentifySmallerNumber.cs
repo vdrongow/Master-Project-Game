@@ -1,4 +1,5 @@
-﻿using Manager;
+﻿using Enums;
+using Manager;
 using UnityEngine;
 
 namespace BasicSkills
@@ -42,13 +43,13 @@ namespace BasicSkills
             if (number == smallerNumber)
             {
                 LevelBasicsManager.IncreaseScoreCount();
-                gameManager.SubmitActivityResult(Constants.ACTIVITY_IDENTIFY_SMALLER_NUMBER, 1);
+                gameManager.SubmitActivityResult(EActivityType.IdentifySmallerNumber, 1);
                 InitTask();
             }
             else
             {
                 LevelBasicsManager.IncreaseMistakeCount();
-                gameManager.SubmitActivityResult(Constants.ACTIVITY_IDENTIFY_SMALLER_NUMBER, 0);
+                gameManager.SubmitActivityResult(EActivityType.IdentifySmallerNumber, 0);
             }
         }
 

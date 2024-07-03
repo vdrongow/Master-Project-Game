@@ -15,11 +15,9 @@ namespace Configs
         public int countdownTime = 3;
         
         [Header("Timer")]
-        public bool showTimer = true;
         public int timeLimit = 60;
         
         [Header("MistakeVisualizer")]
-        public bool showMistakeVisualizer = true;
         public float errorCooldown = 1f;
         
         [Header("Sorting Algorithm Level")]
@@ -32,5 +30,9 @@ namespace Configs
         public int defaultBasicLevelElements = 5;
         public int defaultMinValue = 1;
         public int defaultMaxValue = 10;
+        
+        [Header("Adlete Configs")]
+        public int adlete_requestInterval = 10;
+        public float adlete_defaultDifficulty = 0.5f;
     }
 }

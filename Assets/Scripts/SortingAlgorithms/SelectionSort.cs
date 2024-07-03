@@ -122,12 +122,12 @@ namespace SortingAlgorithms
                     if (step.foundNewMin)
                     {
                         _currentStepIndex++;
-                        gameManager.SubmitActivityResult(Constants.ACTIVITY_SELECTION_SORT_FOUND_NEW_MIN, 1);
+                        gameManager.SubmitActivityResult(EActivityType.SelectionSortFoundNewMin, 1);
                     }
                     else
                     {
                         mistake++;
-                        gameManager.SubmitActivityResult(Constants.ACTIVITY_SELECTION_SORT_NO_NEW_MIN, 0);
+                        gameManager.SubmitActivityResult(EActivityType.SelectionSortNoNewMin, 0);
                         LevelSortingManager.IncreaseMistakeCount();
                         yield return new WaitForSeconds(gameSettings.errorCooldown);
                     }
@@ -137,14 +137,14 @@ namespace SortingAlgorithms
                     if (step.foundNewMin)
                     {
                         mistake++;
-                        gameManager.SubmitActivityResult(Constants.ACTIVITY_SELECTION_SORT_FOUND_NEW_MIN, 0);
+                        gameManager.SubmitActivityResult(EActivityType.SelectionSortFoundNewMin, 0);
                         LevelSortingManager.IncreaseMistakeCount();
                         yield return new WaitForSeconds(gameSettings.errorCooldown);
                     }
                     else
                     {
                         _currentStepIndex++;
-                        gameManager.SubmitActivityResult(Constants.ACTIVITY_SELECTION_SORT_NO_NEW_MIN, 1);
+                        gameManager.SubmitActivityResult(EActivityType.SelectionSortNoNewMin, 1);
                     }
                 }
             }

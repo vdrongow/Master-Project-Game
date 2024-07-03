@@ -103,8 +103,7 @@ namespace Manager
             gameManager.IncreasePlayerFinishedLevels();
             gameManager.IncreasePlayerTotalPlayedTime(timer.GetTimeInSeconds());
             
-            // TODO: gameManager.gameState.SaveHighscore(timerText.text);
-            // TODO: send finish with mistakes and time to server
+            gameManager.SubmitLeftoverActivities();
         }
         
         public void PauseGame()
@@ -124,6 +123,7 @@ namespace Manager
         public void BackToMainMenu(bool finishedSorting)
         {
             var gameManager = GameManager.Singleton;
+            gameManager.SubmitLeftoverActivities();
             gameManager.LoadScene(Constants.MAIN_MENU_SCENE);
         }
 
@@ -133,6 +133,9 @@ namespace Manager
             gameManager.isGameRunning = false;
             gameManager.isGamePaused = false;
             gameManager.SortingGame.IsRunning = false;
+            
+            gameManager.SubmitLeftoverActivities();
+            gameManager.ResetActivities();
             
             gameManager.SortingGame.MistakeCount = 0;
             mistakeCountText.text = "Mistakes: 0";
