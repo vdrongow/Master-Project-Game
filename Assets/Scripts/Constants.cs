@@ -12,15 +12,12 @@ public static class Constants
 
     #region Adlete Activity Names
 
-    public static string ACTIVITY_BUBBLE_SORT_FINISHED = "activityFinishedBubbleSort";
     public static string ACTIVITY_BUBBLE_SORT_SWAP_ELEMENTS = "activitySwapElements";
     public static string ACTIVITY_BUBBLE_SORT_STEP_OVER = "activityStepOver";
     
-    public static string ACTIVITY_SELECTION_SORT_FINISHED = "activityFinishedSelectionSort";
     public static string ACTIVITY_SELECTION_SORT_FOUND_NEW_MIN = "activityFoundNewMin";
     public static string ACTIVITY_SELECTION_SORT_NO_NEW_MIN = "activityNoNewMin";
     
-    public static string ACTIVITY_INSERTION_SORT_FINISHED = "activityFinishedInsertionSort";
     public static string ACTIVITY_INSERTION_SORT_SWAP_FURTHER_FORWARDS = "activitySwapFurtherForwards";
     public static string ACTIVITY_INSERTION_SORT_INSERT_ELEMENT = "activityInsertElement";
     
