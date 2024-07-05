@@ -174,6 +174,14 @@ namespace Manager
                 lobbyNameText.text = gameManager.CurrentLobby.Name;
                 roomCodeText.text = gameManager.CurrentLobby.LobbyCode;
                 waitingRoomText.text = "Waiting for the host to start the game...";
+                
+                // directly load scene if user joined late
+                gameManager.CurrentLobby.Data.TryGetValue(Constants.LOBBY_IS_GAME_STARTED, out var started);
+                var serverStartedGame = started != null && bool.Parse(started.Value);
+                if(serverStartedGame)
+                {
+                    gameManager.LoadScene(Constants.MAIN_MENU_SCENE);
+                }
             }
             catch (LobbyServiceException e)
             {
