@@ -46,6 +46,8 @@ namespace Manager
         private GameObject _serverPausedPanel = null!;
         
         private List<Activity> _activities = new();
+        
+        private int _requestInterval;
 
         private void Awake()
         {
@@ -66,6 +68,8 @@ namespace Manager
                 gameSettings.defaultArraySize);
             
             BasicGame = new BasicGame(gameSettings.defaultBasicSkill);
+            
+            _requestInterval = gameSettings.adlete_requestInterval;
         }
 
         private async void Start()
@@ -116,7 +120,7 @@ namespace Manager
             }
             activity.AddTaskInput(correctness);
             
-            if(activity.TotalTasks >= gameSettings.adlete_requestInterval)
+            if(activity.TotalTasks >= _requestInterval)
             {
                 var moduleConnection = ModuleConnection.Singleton;
                 if (moduleConnection.GetLoggedInUser() == null)
@@ -161,6 +165,18 @@ namespace Manager
                     
                 activity.ResetActivity();
             }
+        }
+        
+        public void IncreaseRequestInterval(int amount = 1)
+        {
+            _requestInterval += amount;
+            Debug.Log($"Request Interval: {_requestInterval}");
+        }
+    
+        public void DecreaseRequestInterval(int amount = 1)
+        {
+            _requestInterval -= amount;
+            Debug.Log($"Request Interval: {_requestInterval}");
         }
 
         #endregion

@@ -50,6 +50,12 @@ MonoBehaviour:
   arraySettings: {fileID: 11400000, guid: 1d492d34d72859643af630a5923e6200, type: 2}
   isGameRunning: 0
   isGamePaused: 0
+  serverGamePaused: 0
+  serverPausedPanelPrefab: {fileID: 0}
+  playerId: 
+  player_finishedLevels: 0
+  player_totalMistakes: 0
+  player_totalPlayedTime: 0
 --- !u!114 &3164272659902080069
 MonoBehaviour:
   m_ObjectHideFlags: 0
