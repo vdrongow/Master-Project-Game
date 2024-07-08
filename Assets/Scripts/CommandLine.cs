@@ -16,6 +16,7 @@ public class CommandLine : MonoBehaviour
 
     private static Command<int> INCREASE_REQUEST_INTERVAL;
     private static Command<int> DECREASE_REQUEST_INTERVAL;
+    private static Command<int> SET_DIFFICULTY;
     private static Command HELP;
     
     private void Awake()
@@ -34,6 +35,12 @@ public class CommandLine : MonoBehaviour
             {
                 gameManager.DecreaseRequestInterval(value);
             });
+        SET_DIFFICULTY = new Command<int>("set_difficulty",
+            "Sets the difficulty of the activity from 0 to 1.",
+            "set_difficulty <value>", (value) =>
+            {
+                gameManager.SetDifficulty(value);
+            });
         
         HELP = new Command("help", "Shows all available commands.", "help", () =>
         {
@@ -44,6 +51,7 @@ public class CommandLine : MonoBehaviour
         {
             INCREASE_REQUEST_INTERVAL,
             DECREASE_REQUEST_INTERVAL,
+            SET_DIFFICULTY,
             HELP
         };
     }

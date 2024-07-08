@@ -48,6 +48,7 @@ namespace Manager
         private List<Activity> _activities = new();
         
         private int _requestInterval;
+        private float _difficulty;
 
         private void Awake()
         {
@@ -70,6 +71,7 @@ namespace Manager
             BasicGame = new BasicGame(gameSettings.defaultBasicSkill);
             
             _requestInterval = gameSettings.adlete_requestInterval;
+            _difficulty = gameSettings.adlete_defaultDifficulty;
         }
 
         private async void Start()
@@ -131,7 +133,7 @@ namespace Manager
                 {
                     activityName = activity.GetActivityName(),
                     activityCorrectness = activity.GetTotalCorrectness(),
-                    activityDifficulty = gameSettings.adlete_defaultDifficulty,
+                    activityDifficulty = _difficulty,
                     timestamp = DateTime.Now,
                 };
                 moduleConnection.SubmitActivityResult(observation);
@@ -157,7 +159,7 @@ namespace Manager
                 {
                     activityName = activity.GetActivityName(),
                     activityCorrectness = activity.GetTotalCorrectness(),
-                    activityDifficulty = gameSettings.adlete_defaultDifficulty,
+                    activityDifficulty = _difficulty,
                     timestamp = DateTime.Now
                 };
                 moduleConnection.SubmitActivityResult(observation);
@@ -176,6 +178,16 @@ namespace Manager
         {
             _requestInterval -= amount;
             Debug.Log($"Request Interval: {_requestInterval}");
+        }
+        
+        public void SetDifficulty(float difficulty)
+        {
+            // only allow values between 0 and 1
+            if (difficulty is < 0 or > 1)
+            {
+                return;
+            }
+            _difficulty = difficulty;
         }
 
         #endregion
