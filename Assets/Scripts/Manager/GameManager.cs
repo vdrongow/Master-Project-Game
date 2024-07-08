@@ -111,12 +111,12 @@ namespace Manager
             }
         }
 
-        public void SubmitActivityResult(EActivityType activityType, int correctness, string additionalInfos = "")
+        public void SubmitActivityResult(EActivityType activityType, int correctness)
         {
             var activity = _activities.Find(a => a.ActivityType == activityType);
             if(gameSettings.showDebugLogs)
             {
-                Debug.Log($"Activity: {activity.GetActivityName()}, {correctness}, {additionalInfos}");
+                Debug.Log($"Activity: {activity.GetActivityName()}, {correctness}");
             }
             activity.AddTaskInput(correctness);
             
@@ -133,7 +133,6 @@ namespace Manager
                     activityCorrectness = activity.GetTotalCorrectness(),
                     activityDifficulty = gameSettings.adlete_defaultDifficulty,
                     timestamp = DateTime.Now,
-                    additionalInfos = additionalInfos
                 };
                 moduleConnection.SubmitActivityResult(observation);
                 

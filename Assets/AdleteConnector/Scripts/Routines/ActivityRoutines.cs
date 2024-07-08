@@ -114,7 +114,7 @@ namespace Adlete
             {
                 variables = $"{{ \"learnerId\": \"{learnerId}\",\"activitySubset\": {JsonConvert.SerializeObject(activitySubset)}}}";
             }
-            Debug.Log(variables);
+
             using (UnityWebRequest request = client.Query(query, variables, clientToken, "fetchNextRecommendation"))
             {
                 yield return request.SendWebRequest();
@@ -153,7 +153,6 @@ namespace Adlete
                 this.activityCorrectness = observation.activityCorrectness;
                 this.activityDifficulty = observation.activityDifficulty;
                 this.timestamp = observation.timestamp;
-                this.additionalInfos = observation.additionalInfos;
                 this.learnerId = learnerId;
             }
 
