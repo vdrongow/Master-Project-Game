@@ -944,6 +944,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Button_AskForHelp
       objectReference: {fileID: 0}
+    - target: {fileID: 7505826330271815989, guid: 5a719f60a2fbfc64898505282f765e35, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7674812916203389430, guid: 5a719f60a2fbfc64898505282f765e35, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

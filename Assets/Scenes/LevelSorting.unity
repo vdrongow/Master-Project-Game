@@ -1106,6 +1106,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Button_AskForHelp
       objectReference: {fileID: 0}
+    - target: {fileID: 7505826330271815989, guid: 5a719f60a2fbfc64898505282f765e35, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7674812916203389430, guid: 5a719f60a2fbfc64898505282f765e35, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -4032,6 +4036,7 @@ PrefabInstance:
       propertyPath: m_text
       value: 'Game Mechanics:
 
+
         The goal is to sort the array by ascending
         size, according to the Sorting Algorithm.
 
@@ -4049,11 +4054,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3466424910501790170, guid: 9af7fa4741d1a7445ae08abeec2714a5, type: 3}
       propertyPath: m_fontSize
-      value: 26.7
+      value: 35.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3466424910501790170, guid: 9af7fa4741d1a7445ae08abeec2714a5, type: 3}
+      propertyPath: m_margin.x
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 3466424910501790170, guid: 9af7fa4741d1a7445ae08abeec2714a5, type: 3}
+      propertyPath: m_margin.z
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 3466424910501790170, guid: 9af7fa4741d1a7445ae08abeec2714a5, type: 3}
       propertyPath: m_fontStyle
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3466424910501790170, guid: 9af7fa4741d1a7445ae08abeec2714a5, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5497392827659010299, guid: 9af7fa4741d1a7445ae08abeec2714a5, type: 3}
       propertyPath: m_Pivot.x
@@ -4085,7 +4102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5497392827659010299, guid: 9af7fa4741d1a7445ae08abeec2714a5, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 310.8649
+      value: 489.43
       objectReference: {fileID: 0}
     - target: {fileID: 5497392827659010299, guid: 9af7fa4741d1a7445ae08abeec2714a5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4121,7 +4138,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5497392827659010299, guid: 9af7fa4741d1a7445ae08abeec2714a5, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -94
+      value: -4.7162
       objectReference: {fileID: 0}
     - target: {fileID: 5497392827659010299, guid: 9af7fa4741d1a7445ae08abeec2714a5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
