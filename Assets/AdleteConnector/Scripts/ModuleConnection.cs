@@ -131,10 +131,9 @@ namespace Adlete
         /// </summary>
         public void Logout(Action successCallback = null, Action<string> errorCallback = null, Action finallyCallback = null)
         {
-            this.loggedInLearnerId = "";
-            successCallback();
-
-            finallyCallback();
+            loggedInLearnerId = "";
+            successCallback?.Invoke();
+            finallyCallback?.Invoke();
         }
 
         /// <summary>
