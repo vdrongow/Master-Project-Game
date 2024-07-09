@@ -1,5 +1,6 @@
 ﻿using System;
 using Manager;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,6 +11,7 @@ public class ArrayElement : MonoBehaviour, IPointerClickHandler
     public bool IsSorted { get; set; }
     
     public GameObject highlightCurrent = null!;
+    public TextMeshProUGUI valueText = null!;
     private Action _onClick = null!;
 
     public void Init(int value, Action onClick = null)
@@ -18,6 +20,7 @@ public class ArrayElement : MonoBehaviour, IPointerClickHandler
         IsHighlighted = false;
         IsSorted = false;
         highlightCurrent.SetActive(false);
+        valueText.text = value.ToString();
         _onClick = onClick;
         SetBarHeight(value);
     }

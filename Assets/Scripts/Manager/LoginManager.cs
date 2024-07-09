@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Adlete;
 using TMPro;
@@ -195,6 +196,11 @@ namespace Manager
             infoText.text = text;
             yield return new WaitForSeconds(3);
             infoText.text = "";
+        }
+
+        private void OnDestroy()
+        {
+            StopAllCoroutines();
         }
     }
 }
