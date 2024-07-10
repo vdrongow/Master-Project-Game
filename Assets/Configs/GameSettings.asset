@@ -16,9 +16,7 @@ MonoBehaviour:
   showDebugLogs: 1
   showCountdown: 1
   countdownTime: 3
-  showTimer: 1
   timeLimit: 30
-  showMistakeVisualizer: 1
   errorCooldown: 1
   defaultSortingAlgorithm: 1
   defaultSortType: 0
@@ -27,3 +25,5 @@ MonoBehaviour:
   defaultBasicLevelElements: 10
   defaultMinValue: 1
   defaultMaxValue: 10
+  adlete_requestInterval: 10
+  adlete_defaultDifficulty: 1
